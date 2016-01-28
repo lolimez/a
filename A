@@ -1,0 +1,64 @@
+package me.lolimez.A;
+
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.plugin.java.JavaPlugin;
+
+public class A extends JavaPlugin implements Listener {
+	
+	@Override
+	public void onEnable() {
+		
+		Bukkit.getPluginManager().registerEvents(this, this);
+		
+		getConfig().options().copyDefaults(true);
+		saveConfig();
+		
+	}
+	
+	@Override
+	public void onDisable() {
+		
+		saveConfig();
+		
+	}
+	
+	@EventHandler
+	public void onPlayerJoin(PlayerJoinEvent e) {
+		
+		Player p = e.getPlayer();
+		String uuid = e.getPlayer().getUniqueId().toString();
+		
+		getConfig().set("PlayerInfo." + uuid, p.getName());
+		
+		if (p.hasPlayedBefore()) {
+			
+			e.setJoinMessage(" ");
+			
+		} else {
+			
+			getConfig().set("Rank.", 0);
+			getConfig().set("Cupid.", 0);
+			getConfig().set("Leprechaun.", 0);
+			getConfig().set("Ghoul.", 0);
+			getConfig().set("Snowflake.", 0);
+			
+			Bukkit.broadcastMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "(!) " + ChatColor.GRAY + "Welcome, " + ChatColor.BLACK + "" + ChatColor.BOLD + p.getName() + ", to Insurgency Factions!");
+
+		}
+		
+	}
+	
+	@EventHandler
+	public void onPlayerLeave(PlayerQuitEvent e) {
+		
+		e.setQuitMessage(" ");
+		
+	}
+
+}
