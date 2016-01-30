@@ -1,64 +1,118 @@
-package me.lolimez.A;
+package me.lolimez.Custom;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class A extends JavaPlugin implements Listener {
-	
-	@Override
-	public void onEnable() {
-		
-		Bukkit.getPluginManager().registerEvents(this, this);
-		
-		getConfig().options().copyDefaults(true);
-		saveConfig();
-		
-	}
-	
-	@Override
-	public void onDisable() {
-		
-		saveConfig();
-		
-	}
-	
-	@EventHandler
-	public void onPlayerJoin(PlayerJoinEvent e) {
-		
-		Player p = e.getPlayer();
-		String uuid = e.getPlayer().getUniqueId().toString();
-		
-		getConfig().set("PlayerInfo." + uuid, p.getName());
-		
-		if (p.hasPlayedBefore()) {
-			
-			e.setJoinMessage(" ");
-			
-		} else {
-			
-			getConfig().set("Rank.", 0);
-			getConfig().set("Cupid.", 0);
-			getConfig().set("Leprechaun.", 0);
-			getConfig().set("Ghoul.", 0);
-			getConfig().set("Snowflake.", 0);
-			
-			Bukkit.broadcastMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "(!) " + ChatColor.GRAY + "Welcome, " + ChatColor.BLACK + "" + ChatColor.BOLD + p.getName() + ", to Insurgency Factions!");
+import java.io.File;
 
-		}
-		
-	}
-	
-	@EventHandler
-	public void onPlayerLeave(PlayerQuitEvent e) {
-		
-		e.setQuitMessage(" ");
-		
-	}
+public class A extends JavaPlugin implements Listener {
+
+    public static File folder;
+    public static File file;
+    public static FileConfiguration permissions;
+
+    @Override
+    public void onEnable() {
+
+        Bukkit.getPluginManager().registerEvents(this, this);
+
+        folder = getDataFolder();
+
+        file =  new File(folder, "permissions.yml");
+
+        permissions = new YamlConfiguration();
+
+        if (folder.exists() == false)  {
+
+
+            try {
+
+                folder.mkdir();
+
+            } catch (Exception e) {
+
+
+
+            }
+
+        }
+
+        if (file.exists() == false) {
+
+            try {
+
+                file.createNewFile();
+
+            } catch (Exception e) {
+
+
+
+            }
+
+        }
+
+        try {
+
+            permissions.load(file);
+
+        } catch (Exception e) {
+
+
+
+        }
+
+    }
+
+    @Override
+    public void onDisable() {
+
+        try {
+
+            permissions.save(file);
+
+        } catch (Exception e) {
+
+
+
+        }
+
+    }
+
+    @EventHandler
+    public void onJoin(PlayerJoinEvent e) {
+
+        Player p = e.getPlayer();
+
+        String uuid = p.getUniqueId().toString();
+
+        permissions.set("PlayerInfo." + uuid, p.getName());
+
+        if (!(p.hasPlayedBefore())) {
+
+            permissions.set("Rank." + uuid, 0);
+
+            permissions.set("CupidKit." + uuid, 0);
+            permissions.set("LeprechaunKit." + uuid, 0);
+            permissions.set("GhoulKit." + uuid, 0);
+            permissions.set("SnowflakeKit." + uuid, 0);
+
+            e.setJoinMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "(!) " + ChatColor.GRAY + "Welcome, " + ChatColor.BLACK + "" + ChatColor.BOLD + p.getName() + ChatColor.GRAY + ", to Insurgency Factions!");
+
+        }
+
+        if (p.hasPlayedBefore()) {
+
+            e.setJoinMessage(" ");
+
+        }
+
+    }
 
 }
