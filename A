@@ -33,8 +33,18 @@ public class A extends JavaPlugin implements Listener {
     
     private HashMap<Player, Integer> starterTime;
     private HashMap<Player, BukkitRunnable> starterTask;
-        private HashMap<Player, Integer> starterTime;
-    private HashMap<Player, BukkitRunnable> starterTask;
+
+    private HashMap<Player, Integer> farmerTime;
+    private HashMap<Player, BukkitRunnable> farmerTask;
+    
+    private HashMap<Player, Integer> merchantTime;
+    private HashMap<Player, BukkitRunnable> merchantTask;
+    
+    private HashMap<Player, Integer> industrialistTime;
+    private HashMap<Player, BukkitRunnable> industrialistTask;
+    
+    private HashMap<Player, Integer> engineerTime;
+    private HashMap<Player, BukkitRunnable> engineerTask;
 
     public static File folder;
     public static File file;
@@ -45,6 +55,21 @@ public class A extends JavaPlugin implements Listener {
 
         snowflakeParticles = new HashMap<Player, Integer>();
         ghoulParticles = new HashMap<Player, Integer>();
+        
+        starterTime = new HashMap<Player, Integer>();
+        starterTask = new HashMap<Player, BukkitRunnable>();
+        
+        farmerTime = new HashMap<Player, Integer>();
+        farmerTask = new HashMap<Player, BukkitRunnable>();
+        
+        merchantTime = new HashMap<Player, Integer>();
+        merchantTask = new HashMap<Player, BukkitRunnable>();
+        
+        industrialistTime = new HashMap<Player, Integer>();
+        industrialistTask = new HashMap<Player, BukkitRunnable>();
+        
+        engineerTime = new HashMap<Player, Integer>();
+        engineerTask = new HashMap<Player, BukkitRunnable>();
 
         Bukkit.getPluginManager().registerEvents(this, this);
 
