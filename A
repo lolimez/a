@@ -1,7 +1,5 @@
 package me.lolimez.Custom;
 
-import com.sun.xml.internal.bind.v2.schemagen.xmlschema.Particle;
-import com.sun.xml.internal.ws.wsdl.writer.document.Part;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -32,6 +30,11 @@ public class A extends JavaPlugin implements Listener {
 
     private HashMap<Player, Integer> snowflakeParticles;
     private HashMap<Player, Integer> ghoulParticles;
+    
+    private HashMap<Player, Integer> starterTime;
+    private HashMap<Player, BukkitRunnable> starterTask;
+        private HashMap<Player, Integer> starterTime;
+    private HashMap<Player, BukkitRunnable> starterTask;
 
     public static File folder;
     public static File file;
@@ -106,7 +109,7 @@ public class A extends JavaPlugin implements Listener {
         }
 
     }
-
+    
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
 
@@ -231,6 +234,32 @@ public class A extends JavaPlugin implements Listener {
 
             e.setCancelled(true);
 
+        }
+        
+        if (e.getClickedInventory().getName().equalsIgnoreCase(ChatColor.BLUE + "" + ChatColor.BOLD + "Redeem Your Kit") {
+        
+            if (e.getClickedInventory().getName().equalsIgnoreCase(ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "Kit Starter")) {
+            
+            
+            
+            } else if (e.getClickedInventory().getName().equalsIgnoreCase(ChatColor.GREEN + "" + ChatColor.BOLD + "Kit Farmer")) {
+            
+            
+            
+            } else if (e.getClickedInventory().getName().equalsIgnoreCase(ChatColor.YELLOW + "" + ChatColor.BOLD + "Kit Merchant")) {
+            
+            
+            
+            } else if (e.getClickedInventory().getName().equalsIgnoreCase(ChatColor.GOLD + "" + ChatColor.BOLD + "Kit Industrialist")) {
+            
+            
+            
+            } else if (e.getClickedInventory().getName().equalsIgnoreCase(ChatColor.RED + "" + ChatColor.BOLD + "Kit Engineer")) {
+            
+            
+            
+            }
+        
         }
 
         if (e.getClickedInventory().getName().equalsIgnoreCase(ChatColor.BLUE + "" + ChatColor.BOLD + "Activate Your Particles")) {
