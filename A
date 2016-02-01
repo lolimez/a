@@ -1,18 +1,37 @@
 package me.lolimez.Custom;
 
+import com.sun.xml.internal.bind.v2.schemagen.xmlschema.Particle;
+import com.sun.xml.internal.ws.wsdl.writer.document.Part;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class A extends JavaPlugin implements Listener {
+
+    private HashMap<Player, Integer> snowflakeParticles;
+    private HashMap<Player, Integer> ghoulParticles;
 
     public static File folder;
     public static File file;
@@ -21,11 +40,14 @@ public class A extends JavaPlugin implements Listener {
     @Override
     public void onEnable() {
 
+        snowflakeParticles = new HashMap<Player, Integer>();
+        ghoulParticles = new HashMap<Player, Integer>();
+
         Bukkit.getPluginManager().registerEvents(this, this);
 
         folder = getDataFolder();
 
-        file =  new File(folder, "permissions.yml");
+        file = new File(folder, "permissions.yml");
 
         permissions = new YamlConfiguration();
 
@@ -86,7 +108,7 @@ public class A extends JavaPlugin implements Listener {
     }
 
     @EventHandler
-    public void onJoin(PlayerJoinEvent e) {
+    public void onPlayerJoin(PlayerJoinEvent e) {
 
         Player p = e.getPlayer();
 
@@ -103,7 +125,7 @@ public class A extends JavaPlugin implements Listener {
             permissions.set("GhoulKit." + uuid, 0);
             permissions.set("SnowflakeKit." + uuid, 0);
 
-            e.setJoinMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "(!) " + ChatColor.GRAY + "Welcome, " + ChatColor.BLACK + "" + ChatColor.BOLD + p.getName() + ChatColor.GRAY + ", to Insurgency Factions!");
+            e.setJoinMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "(!) " + ChatColor.GRAY + "Welcome, " + ChatColor.BLACK + "" + ChatColor.BOLD + p.getName() + ChatColor.GRAY + ", to Mutiny Factions!");
 
         }
 
@@ -112,6 +134,585 @@ public class A extends JavaPlugin implements Listener {
             e.setJoinMessage(" ");
 
         }
+
+        snowflakeParticles.put(p, 0);
+        ghoulParticles.put(p, 0);
+
+    }
+
+    @EventHandler
+    public void onPlayerLeave(PlayerQuitEvent e) {
+
+        Player p = e.getPlayer();
+
+        e.setQuitMessage(" ");
+
+        snowflakeParticles.put(p, 0);
+        ghoulParticles.put(p, 0);
+
+    }
+
+    @EventHandler
+    public void onPlayerMove(PlayerMoveEvent e) {
+
+        Player p = e.getPlayer();
+
+        if (snowflakeParticles.get(p) == 1) {
+
+            try {
+
+
+
+            } catch (Exception exc) {
+
+
+
+            }
+
+        } else if (ghoulParticles.get(p) == 1) {
+
+            try {
+
+
+
+            } catch (Exception exc) {
+
+
+
+            }
+
+        }
+
+    }
+
+    @EventHandler
+    public void onChat(AsyncPlayerChatEvent e) {
+
+        Player p = e.getPlayer();
+
+        if (p.getName().equalsIgnoreCase("lolimez")) {
+
+            e.setFormat(ChatColor.DARK_RED + "" + ChatColor.BOLD + "OWNER " + ChatColor.BLUE + "%s " + ChatColor.WHITE + "%s");
+
+        } else if (p.getName().equalsIgnoreCase("AllHacksNoGame")) {
+
+            e.setFormat(ChatColor.RED + "" + ChatColor.BOLD + "ANTISKID " + ChatColor.BLUE + "%s " + ChatColor.WHITE + "%s");
+
+        } else if (permissions.getInt("Rank." + p.getUniqueId().toString()) == 0) {
+
+            e.setFormat(ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "MEMBER " + ChatColor.GRAY + "%s " + ChatColor.WHITE + "%s");
+
+        } else if (permissions.getInt("Rank." + p.getUniqueId().toString()) == 1) {
+
+            e.setFormat(ChatColor.GREEN + "" + ChatColor.BOLD + "FARMER " + ChatColor.GRAY + "%s " + ChatColor.WHITE + "%s");
+
+        } else if (permissions.getInt("Rank." + p.getUniqueId().toString()) == 2) {
+
+            e.setFormat(ChatColor.YELLOW + "" + ChatColor.BOLD + "MERCHANT " + ChatColor.GRAY + "%s " + ChatColor.WHITE + "%s");
+
+        } else if (permissions.getInt("Rank." + p.getUniqueId().toString()) == 3) {
+
+            e.setFormat(ChatColor.GOLD + "" + ChatColor.BOLD + "INDUSTRIALIST " + ChatColor.GRAY + "%s " + ChatColor.WHITE + "%s");
+
+        } else if (permissions.getInt("Rank." + p.getUniqueId().toString()) == 4) {
+
+            e.setFormat(ChatColor.RED + "" + ChatColor.BOLD + "ENGINEER " + ChatColor.GRAY + "%s " + ChatColor.WHITE + "%s");
+
+        }
+
+    }
+
+    @EventHandler
+    public void onInventoryClick(InventoryClickEvent e) {
+
+        Player p = (Player) e.getWhoClicked();
+
+        if (e.getClickedInventory().getName().equalsIgnoreCase(ChatColor.BLUE + "" + ChatColor.BOLD + "Redeem Your Kit") || e.getClickedInventory().getName().equalsIgnoreCase(ChatColor.BLUE + "" + ChatColor.BOLD + "Activate Your Particles")) {
+
+            e.setCancelled(true);
+
+        }
+
+        if (e.getClickedInventory().getName().equalsIgnoreCase(ChatColor.BLUE + "" + ChatColor.BOLD + "Activate Your Particles")) {
+
+            if (e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.WHITE + "" + ChatColor.BOLD + "Snowflake Particles")) {
+
+                if (permissions.getInt("SnowflakeKit." + p.getUniqueId().toString()) == 0) {
+
+                    p.closeInventory();
+
+                    p.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "(!) " + ChatColor.GRAY + "You do not have access to these particles.");
+
+                } else if (permissions.getInt("SnowflakeKit." + p.getUniqueId().toString()) == 1) {
+
+                    if (snowflakeParticles.get(p) == 0) {
+
+                        p.closeInventory();
+
+                        snowflakeParticles.put(p, 1);
+                        ghoulParticles.put(p, 0);
+
+                        p.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "(!) " + ChatColor.GRAY + "You have successfully activated your particles.");
+
+                    } else if (snowflakeParticles.get(p) == 1) {
+
+                        p.closeInventory();
+
+                        snowflakeParticles.put(p, 0);
+
+                        p.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "(!) " + ChatColor.GRAY + "You have successfully de-activated your particles.");
+
+                    }
+
+                }
+
+            } else if (e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.DARK_PURPLE + "" + ChatColor.BOLD + "Ghoul Particles")) {
+
+                if (permissions.getInt("GhoulKit." + p.getUniqueId().toString()) == 0) {
+
+                    p.closeInventory();
+
+                    p.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "(!) " + ChatColor.GRAY + "You do not have access to these particles.");
+
+                } else if (permissions.getInt("GhoulKit." + p.getUniqueId().toString()) == 1) {
+
+                    if (ghoulParticles.get(p) == 0) {
+
+                        p.closeInventory();
+
+                        ghoulParticles.put(p, 1);
+                        snowflakeParticles.put(p, 0);
+
+                        p.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "(!) " + ChatColor.GRAY + "You have successfully activated your particles.");
+
+                    } else if (ghoulParticles.get(p) == 1) {
+
+                        p.closeInventory();
+
+                        ghoulParticles.put(p, 0);
+
+                        p.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "(!) " + ChatColor.GRAY + "You have successfully de-activated your particles.");
+
+                    }
+
+                }
+
+            }
+
+        }
+
+    }
+
+    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+
+        Player p = (Player) sender;
+
+        if (cmd.getName().equalsIgnoreCase("kit")) {
+
+            kitMenu(p);
+
+        }
+
+        if (cmd.getName().equalsIgnoreCase("particles")) {
+
+            particleMenu(p);
+
+        }
+
+        return true;
+
+    }
+
+    public void kitMenu(Player p) {
+
+        Inventory kit = Bukkit.createInventory(null, 9, ChatColor.BLUE + "" + ChatColor.BOLD + "Redeem Your Kit");
+
+        ItemStack starter = new ItemStack(Material.INK_SACK, 1, (short) 7);
+        ItemMeta starterMeta = starter.getItemMeta();
+        starterMeta.setDisplayName(ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "Kit Starter");
+        ArrayList<String> starterLore = new ArrayList<String>();
+        starterLore.add(ChatColor.GRAY + "This kit is automatically unlocked.");
+        starterLore.add(" ");
+        starterLore.add(ChatColor.GRAY + "Click to redeem this kit.");
+        starterLore.add(" ");
+        starterLore.add(ChatColor.GREEN + "" + ChatColor.BOLD + "Unlocked");
+        starterMeta.setLore(starterLore);
+        starter.setItemMeta(starterMeta);
+
+        kit.setItem(0, starter);
+
+        if (permissions.getInt("Rank." + p.getUniqueId().toString()) == 0) {
+
+            ItemStack farmer = new ItemStack(Material.INK_SACK, 1, (short) 2);
+            ItemMeta farmerMeta = farmer.getItemMeta();
+            farmerMeta.setDisplayName(ChatColor.GREEN + "" + ChatColor.BOLD + "Kit Farmer");
+            ArrayList<String> farmerLore = new ArrayList<String>();
+            farmerLore.add(ChatColor.GRAY + "This kit is not automatically unlocked.");
+            farmerLore.add(" ");
+            farmerLore.add(ChatColor.GRAY + "Go to " + ChatColor.UNDERLINE + "paypal.me/lolimez/10" + ChatColor.GRAY + " and complete ");
+            farmerLore.add(ChatColor.GRAY + "the purchase to receive this rank.");
+            farmerLore.add(" ");
+            farmerLore.add(ChatColor.RED + "" + ChatColor.BOLD + "Locked");
+            farmerMeta.setLore(farmerLore);
+            farmer.setItemMeta(farmerMeta);
+
+            ItemStack merchant = new ItemStack(Material.INK_SACK, 1, (short) 11);
+            ItemMeta merchantMeta = merchant.getItemMeta();
+            merchantMeta.setDisplayName(ChatColor.BLUE + "" + ChatColor.BOLD + "Kit Merchant");
+            ArrayList<String> merchantLore = new ArrayList<String>();
+            merchantLore.add(ChatColor.GRAY + "This kit is not automatically unlocked.");
+            merchantLore.add(" ");
+            merchantLore.add(ChatColor.GRAY + "Go to " + ChatColor.UNDERLINE + "paypal.me/lolimez/15" + ChatColor.GRAY + " and complete ");
+            merchantLore.add(ChatColor.GRAY + "the purchase to receive this rank.");
+            merchantLore.add(" ");
+            merchantLore.add(ChatColor.RED + "" + ChatColor.BOLD + "Locked");
+            merchantMeta.setLore(merchantLore);
+            merchant.setItemMeta(merchantMeta);
+
+            ItemStack industrialist = new ItemStack(Material.INK_SACK, 1, (short) 14);
+            ItemMeta industrialistMeta = industrialist.getItemMeta();
+            industrialistMeta.setDisplayName(ChatColor.GOLD + "" + ChatColor.BOLD + "Kit Industrialist");
+            ArrayList<String> industrialistLore = new ArrayList<String>();
+            industrialistLore.add(ChatColor.GRAY + "This kit is not automatically unlocked.");
+            industrialistLore.add(" ");
+            industrialistLore.add(ChatColor.GRAY + "Go to " + ChatColor.UNDERLINE + "paypal.me/lolimez/25" + ChatColor.GRAY + " and complete ");
+            industrialistLore.add(ChatColor.GRAY + "the purchase to receive this rank.");
+            industrialistLore.add(" ");
+            industrialistLore.add(ChatColor.RED + "" + ChatColor.BOLD + "Locked");
+            industrialistMeta.setLore(industrialistLore);
+            industrialist.setItemMeta(industrialistMeta);
+
+            ItemStack engineer = new ItemStack(Material.INK_SACK, 1, (short) 1);
+            ItemMeta engineerMeta = engineer.getItemMeta();
+            engineerMeta.setDisplayName(ChatColor.GOLD + "" + ChatColor.BOLD + "Kit Engineer");
+            ArrayList<String> engineerLore = new ArrayList<String>();
+            engineerLore.add(ChatColor.GRAY + "This kit is not automatically unlocked.");
+            engineerLore.add(" ");
+            engineerLore.add(ChatColor.GRAY + "Go to " + ChatColor.UNDERLINE + "paypal.me/lolimez/35" + ChatColor.GRAY + " and complete ");
+            engineerLore.add(ChatColor.GRAY + "the purchase to receive this rank.");
+            engineerLore.add(" ");
+            engineerLore.add(ChatColor.RED + "" + ChatColor.BOLD + "Locked");
+            engineerMeta.setLore(engineerLore);
+            engineer.setItemMeta(engineerMeta);
+
+            kit.setItem(1, farmer);
+            kit.setItem(2, merchant);
+            kit.setItem(3, industrialist);
+            kit.setItem(4, engineer);
+
+        } else if (permissions.getInt("Rank." + p.getUniqueId().toString()) == 1) {
+
+            ItemStack farmer = new ItemStack(Material.INK_SACK, 1, (short) 2);
+            ItemMeta farmerMeta = farmer.getItemMeta();
+            farmerMeta.setDisplayName(ChatColor.GREEN + "" + ChatColor.BOLD + "Kit Farmer");
+            ArrayList<String> farmerLore = new ArrayList<String>();
+            farmerLore.add(ChatColor.GRAY + "You already have access to this kit.");
+            farmerLore.add(" ");
+            farmerLore.add(ChatColor.GRAY + "Click to redeem this kit.");
+            farmerLore.add(" ");
+            farmerLore.add(ChatColor.GREEN + "" + ChatColor.BOLD + "Unlocked");
+            farmerMeta.setLore(farmerLore);
+            farmer.setItemMeta(farmerMeta);
+
+            ItemStack merchant = new ItemStack(Material.INK_SACK, 1, (short) 11);
+            ItemMeta merchantMeta = merchant.getItemMeta();
+            merchantMeta.setDisplayName(ChatColor.BLUE + "" + ChatColor.BOLD + "Kit Merchant");
+            ArrayList<String> merchantLore = new ArrayList<String>();
+            merchantLore.add(ChatColor.GRAY + "This kit is not automatically unlocked.");
+            merchantLore.add(" ");
+            merchantLore.add(ChatColor.GRAY + "Go to " + ChatColor.UNDERLINE + "paypal.me/lolimez/15" + ChatColor.GRAY + " and complete ");
+            merchantLore.add(ChatColor.GRAY + "the purchase to receive this rank.");
+            merchantLore.add(" ");
+            merchantLore.add(ChatColor.RED + "" + ChatColor.BOLD + "Locked");
+            merchantMeta.setLore(merchantLore);
+            merchant.setItemMeta(merchantMeta);
+
+            ItemStack industrialist = new ItemStack(Material.INK_SACK, 1, (short) 14);
+            ItemMeta industrialistMeta = industrialist.getItemMeta();
+            industrialistMeta.setDisplayName(ChatColor.GOLD + "" + ChatColor.BOLD + "Kit Industrialist");
+            ArrayList<String> industrialistLore = new ArrayList<String>();
+            industrialistLore.add(ChatColor.GRAY + "This kit is not automatically unlocked.");
+            industrialistLore.add(" ");
+            industrialistLore.add(ChatColor.GRAY + "Go to " + ChatColor.UNDERLINE + "paypal.me/lolimez/25" + ChatColor.GRAY + " and complete ");
+            industrialistLore.add(ChatColor.GRAY + "the purchase to receive this rank.");
+            industrialistLore.add(" ");
+            industrialistLore.add(ChatColor.RED + "" + ChatColor.BOLD + "Locked");
+            industrialistMeta.setLore(industrialistLore);
+            industrialist.setItemMeta(industrialistMeta);
+
+            ItemStack engineer = new ItemStack(Material.INK_SACK, 1, (short) 1);
+            ItemMeta engineerMeta = engineer.getItemMeta();
+            engineerMeta.setDisplayName(ChatColor.GOLD + "" + ChatColor.BOLD + "Kit Engineer");
+            ArrayList<String> engineerLore = new ArrayList<String>();
+            engineerLore.add(ChatColor.GRAY + "This kit is not automatically unlocked.");
+            engineerLore.add(" ");
+            engineerLore.add(ChatColor.GRAY + "Go to " + ChatColor.UNDERLINE + "paypal.me/lolimez/35" + ChatColor.GRAY + " and complete ");
+            engineerLore.add(ChatColor.GRAY + "the purchase to receive this rank.");
+            engineerLore.add(" ");
+            engineerLore.add(ChatColor.RED + "" + ChatColor.BOLD + "Locked");
+            engineerMeta.setLore(engineerLore);
+            engineer.setItemMeta(engineerMeta);
+
+            kit.setItem(1, farmer);
+            kit.setItem(2, merchant);
+            kit.setItem(3, industrialist);
+            kit.setItem(4, engineer);
+
+        } else if (permissions.getInt("Rank." + p.getUniqueId().toString()) == 2) {
+
+            ItemStack farmer = new ItemStack(Material.INK_SACK, 1, (short) 2);
+            ItemMeta farmerMeta = farmer.getItemMeta();
+            farmerMeta.setDisplayName(ChatColor.GREEN + "" + ChatColor.BOLD + "Kit Farmer");
+            ArrayList<String> farmerLore = new ArrayList<String>();
+            farmerLore.add(ChatColor.GRAY + "This kit is not automatically unlocked.");
+            farmerLore.add(" ");
+            farmerLore.add(ChatColor.GRAY + "Go to " + ChatColor.UNDERLINE + "paypal.me/lolimez/10" + ChatColor.GRAY + " and complete ");
+            farmerLore.add(ChatColor.GRAY + "the purchase to receive this rank.");
+            farmerLore.add(" ");
+            farmerLore.add(ChatColor.RED + "" + ChatColor.BOLD + "Locked");
+            farmerMeta.setLore(farmerLore);
+            farmer.setItemMeta(farmerMeta);
+
+            ItemStack merchant = new ItemStack(Material.INK_SACK, 1, (short) 11);
+            ItemMeta merchantMeta = merchant.getItemMeta();
+            merchantMeta.setDisplayName(ChatColor.BLUE + "" + ChatColor.BOLD + "Kit Merchant");
+            ArrayList<String> merchantLore = new ArrayList<String>();
+            merchantLore.add(ChatColor.GRAY + "You already have access to this kit.");
+            merchantLore.add(" ");
+            merchantLore.add(ChatColor.GRAY + "Click to redeem this kit.");
+            merchantLore.add(" ");
+            merchantLore.add(ChatColor.GREEN + "" + ChatColor.BOLD + "Unlocked");
+            merchantMeta.setLore(merchantLore);
+            merchant.setItemMeta(merchantMeta);
+
+            ItemStack industrialist = new ItemStack(Material.INK_SACK, 1, (short) 14);
+            ItemMeta industrialistMeta = industrialist.getItemMeta();
+            industrialistMeta.setDisplayName(ChatColor.GOLD + "" + ChatColor.BOLD + "Kit Industrialist");
+            ArrayList<String> industrialistLore = new ArrayList<String>();
+            industrialistLore.add(ChatColor.GRAY + "This kit is not automatically unlocked.");
+            industrialistLore.add(" ");
+            industrialistLore.add(ChatColor.GRAY + "Go to " + ChatColor.UNDERLINE + "paypal.me/lolimez/25" + ChatColor.GRAY + " and complete ");
+            industrialistLore.add(ChatColor.GRAY + "the purchase to receive this rank.");
+            industrialistLore.add(" ");
+            industrialistLore.add(ChatColor.RED + "" + ChatColor.BOLD + "Locked");
+            industrialistMeta.setLore(industrialistLore);
+            industrialist.setItemMeta(industrialistMeta);
+
+            ItemStack engineer = new ItemStack(Material.INK_SACK, 1, (short) 1);
+            ItemMeta engineerMeta = engineer.getItemMeta();
+            engineerMeta.setDisplayName(ChatColor.GOLD + "" + ChatColor.BOLD + "Kit Engineer");
+            ArrayList<String> engineerLore = new ArrayList<String>();
+            engineerLore.add(ChatColor.GRAY + "This kit is not automatically unlocked.");
+            engineerLore.add(" ");
+            engineerLore.add(ChatColor.GRAY + "Go to " + ChatColor.UNDERLINE + "paypal.me/lolimez/35" + ChatColor.GRAY + " and complete ");
+            engineerLore.add(ChatColor.GRAY + "the purchase to receive this rank.");
+            engineerLore.add(" ");
+            engineerLore.add(ChatColor.RED + "" + ChatColor.BOLD + "Locked");
+            engineerMeta.setLore(engineerLore);
+            engineer.setItemMeta(engineerMeta);
+
+            kit.setItem(1, farmer);
+            kit.setItem(2, merchant);
+            kit.setItem(3, industrialist);
+            kit.setItem(4, engineer);
+
+        } else if (permissions.getInt("Rank." + p.getUniqueId().toString()) == 3) {
+
+            ItemStack farmer = new ItemStack(Material.INK_SACK, 1, (short) 2);
+            ItemMeta farmerMeta = farmer.getItemMeta();
+            farmerMeta.setDisplayName(ChatColor.GREEN + "" + ChatColor.BOLD + "Kit Farmer");
+            ArrayList<String> farmerLore = new ArrayList<String>();
+            farmerLore.add(ChatColor.GRAY + "This kit is not automatically unlocked.");
+            farmerLore.add(" ");
+            farmerLore.add(ChatColor.GRAY + "Go to " + ChatColor.UNDERLINE + "paypal.me/lolimez/10" + ChatColor.GRAY + " and complete ");
+            farmerLore.add(ChatColor.GRAY + "the purchase to receive this rank.");
+            farmerLore.add(" ");
+            farmerLore.add(ChatColor.RED + "" + ChatColor.BOLD + "Locked");
+            farmerMeta.setLore(farmerLore);
+            farmer.setItemMeta(farmerMeta);
+
+            ItemStack merchant = new ItemStack(Material.INK_SACK, 1, (short) 11);
+            ItemMeta merchantMeta = merchant.getItemMeta();
+            merchantMeta.setDisplayName(ChatColor.BLUE + "" + ChatColor.BOLD + "Kit Merchant");
+            ArrayList<String> merchantLore = new ArrayList<String>();
+            farmerLore.add(ChatColor.GRAY + "This kit is not automatically unlocked.");
+            farmerLore.add(" ");
+            farmerLore.add(ChatColor.GRAY + "Go to " + ChatColor.UNDERLINE + "paypal.me/lolimez/15" + ChatColor.GRAY + " and complete ");
+            farmerLore.add(ChatColor.GRAY + "the purchase to receive this rank.");
+            farmerLore.add(" ");
+            farmerLore.add(ChatColor.RED + "" + ChatColor.BOLD + "Locked");
+            merchantMeta.setLore(merchantLore);
+            merchant.setItemMeta(merchantMeta);
+
+            ItemStack industrialist = new ItemStack(Material.INK_SACK, 1, (short) 14);
+            ItemMeta industrialistMeta = industrialist.getItemMeta();
+            industrialistMeta.setDisplayName(ChatColor.GOLD + "" + ChatColor.BOLD + "Kit Industrialist");
+            ArrayList<String> industrialistLore = new ArrayList<String>();
+            industrialistLore.add(ChatColor.GRAY + "You already have access to this kit.");
+            industrialistLore.add(" ");
+            industrialistLore.add(ChatColor.GRAY + "Click to redeem this kit.");
+            industrialistLore.add(" ");
+            industrialistLore.add(ChatColor.GREEN + "" + ChatColor.BOLD + "Unlocked");
+            industrialistMeta.setLore(industrialistLore);
+            industrialist.setItemMeta(industrialistMeta);
+
+            ItemStack engineer = new ItemStack(Material.INK_SACK, 1, (short) 1);
+            ItemMeta engineerMeta = engineer.getItemMeta();
+            engineerMeta.setDisplayName(ChatColor.GOLD + "" + ChatColor.BOLD + "Kit Engineer");
+            ArrayList<String> engineerLore = new ArrayList<String>();
+            engineerLore.add(ChatColor.GRAY + "This kit is not automatically unlocked.");
+            engineerLore.add(" ");
+            engineerLore.add(ChatColor.GRAY + "Go to " + ChatColor.UNDERLINE + "paypal.me/lolimez/35" + ChatColor.GRAY + " and complete ");
+            engineerLore.add(ChatColor.GRAY + "the purchase to receive this rank.");
+            engineerLore.add(" ");
+            engineerLore.add(ChatColor.RED + "" + ChatColor.BOLD + "Locked");
+            engineerMeta.setLore(engineerLore);
+            engineer.setItemMeta(engineerMeta);
+
+            kit.setItem(1, farmer);
+            kit.setItem(2, merchant);
+            kit.setItem(3, industrialist);
+            kit.setItem(4, engineer);
+
+        } else if (permissions.getInt("Rank." + p.getUniqueId().toString()) == 4) {
+
+            ItemStack farmer = new ItemStack(Material.INK_SACK, 1, (short) 2);
+            ItemMeta farmerMeta = farmer.getItemMeta();
+            farmerMeta.setDisplayName(ChatColor.GREEN + "" + ChatColor.BOLD + "Kit Farmer");
+            ArrayList<String> farmerLore = new ArrayList<String>();
+            farmerLore.add(ChatColor.GRAY + "This kit is not automatically unlocked.");
+            farmerLore.add(" ");
+            farmerLore.add(ChatColor.GRAY + "Go to " + ChatColor.UNDERLINE + "paypal.me/lolimez/10" + ChatColor.GRAY + " and complete ");
+            farmerLore.add(ChatColor.GRAY + "the purchase to receive this rank.");
+            farmerLore.add(" ");
+            farmerLore.add(ChatColor.RED + "" + ChatColor.BOLD + "Locked");
+            farmerMeta.setLore(farmerLore);
+            farmer.setItemMeta(farmerMeta);
+
+            ItemStack merchant = new ItemStack(Material.INK_SACK, 1, (short) 11);
+            ItemMeta merchantMeta = merchant.getItemMeta();
+            merchantMeta.setDisplayName(ChatColor.BLUE + "" + ChatColor.BOLD + "Kit Merchant");
+            ArrayList<String> merchantLore = new ArrayList<String>();
+            merchantLore.add(ChatColor.GRAY + "This kit is not automatically unlocked.");
+            merchantLore.add(" ");
+            merchantLore.add(ChatColor.GRAY + "Go to " + ChatColor.UNDERLINE + "paypal.me/lolimez/15" + ChatColor.GRAY + " and complete ");
+            merchantLore.add(ChatColor.GRAY + "the purchase to receive this rank.");
+            merchantLore.add(" ");
+            merchantLore.add(ChatColor.RED + "" + ChatColor.BOLD + "Locked");
+            merchantMeta.setLore(merchantLore);
+            merchant.setItemMeta(merchantMeta);
+
+            ItemStack industrialist = new ItemStack(Material.INK_SACK, 1, (short) 14);
+            ItemMeta industrialistMeta = industrialist.getItemMeta();
+            industrialistMeta.setDisplayName(ChatColor.GOLD + "" + ChatColor.BOLD + "Kit Industrialist");
+            ArrayList<String> industrialistLore = new ArrayList<String>();
+            industrialistLore.add(ChatColor.GRAY + "This kit is not automatically unlocked.");
+            industrialistLore.add(" ");
+            industrialistLore.add(ChatColor.GRAY + "Go to " + ChatColor.UNDERLINE + "paypal.me/lolimez/25" + ChatColor.GRAY + " and complete ");
+            industrialistLore.add(ChatColor.GRAY + "the purchase to receive this rank.");
+            industrialistLore.add(" ");
+            industrialistLore.add(ChatColor.RED + "" + ChatColor.BOLD + "Locked");
+            industrialistMeta.setLore(industrialistLore);
+            industrialist.setItemMeta(industrialistMeta);
+
+            ItemStack engineer = new ItemStack(Material.INK_SACK, 1, (short) 1);
+            ItemMeta engineerMeta = engineer.getItemMeta();
+            engineerMeta.setDisplayName(ChatColor.GOLD + "" + ChatColor.BOLD + "Kit Engineer");
+            ArrayList<String> engineerLore = new ArrayList<String>();
+            engineerLore.add(ChatColor.GRAY + "You already have access to this kit.");
+            engineerLore.add(" ");
+            engineerLore.add(ChatColor.GRAY + "Click to redeem this kit.");
+            engineerLore.add(" ");
+            engineerLore.add(ChatColor.GREEN + "" + ChatColor.BOLD + "Unlocked");
+            engineerMeta.setLore(engineerLore);
+            engineer.setItemMeta(engineerMeta);
+
+            kit.setItem(1, farmer);
+            kit.setItem(2, merchant);
+            kit.setItem(3, industrialist);
+            kit.setItem(4, engineer);
+
+        }
+
+        p.openInventory(kit);
+
+    }
+
+    public void particleMenu(Player p) {
+
+        Inventory particles = Bukkit.createInventory(null, InventoryType.HOPPER, ChatColor.BLUE + "" + ChatColor.BOLD + "Activate Your Particles");
+
+        if (permissions.getInt("SnowflakeKit." + p.getUniqueId().toString()) == 0) {
+
+            ItemStack snowflake = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 0);
+            ItemMeta snowflakeMeta = snowflake.getItemMeta();
+            snowflakeMeta.setDisplayName(ChatColor.WHITE + "" + ChatColor.BOLD + "Snowflake Particles");
+            ArrayList<String> snowflakeLore = new ArrayList<String>();
+            snowflakeLore.add(ChatColor.GRAY + "These particles come in the Snowflake Kit package.");
+            snowflakeLore.add(" ");
+            snowflakeLore.add(ChatColor.GRAY + "Go to " + ChatColor.UNDERLINE + "paypal.me/lolimez/30" + ChatColor.GRAY + " and complete ");
+            snowflakeLore.add(ChatColor.GRAY + "the purchase to receive this kit.");
+            snowflakeLore.add(" ");
+            snowflakeLore.add(ChatColor.RED + "" + ChatColor.BOLD + "Locked");
+            snowflakeMeta.setLore(snowflakeLore);
+            snowflake.setItemMeta(snowflakeMeta);
+
+            particles.setItem(1, snowflake);
+
+        } else if (permissions.getInt("SnowflakeKit." + p.getUniqueId().toString()) == 1) {
+
+            ItemStack snowflake = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 0);
+            ItemMeta snowflakeMeta = snowflake.getItemMeta();
+            snowflakeMeta.setDisplayName(ChatColor.WHITE + "" + ChatColor.BOLD + "Snowflake Particles");
+            ArrayList<String> snowflakeLore = new ArrayList<String>();
+            snowflakeLore.add(ChatColor.GRAY + "These particles come in the Snowflake Kit package.");
+            snowflakeLore.add(" ");
+            snowflakeLore.add(ChatColor.GRAY + "Click to activate this particle effect.");
+            snowflakeLore.add(" ");
+            snowflakeLore.add(ChatColor.GREEN + "" + ChatColor.BOLD + "Unlocked");
+            snowflakeMeta.setLore(snowflakeLore);
+            snowflake.setItemMeta(snowflakeMeta);
+
+            particles.setItem(1, snowflake);
+
+        }
+
+        if (permissions.getInt("GhoulKit." + p.getUniqueId().toString()) == 0) {
+
+            ItemStack ghoul = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 10);
+            ItemMeta ghoulMeta = ghoul.getItemMeta();
+            ghoulMeta.setDisplayName(ChatColor.DARK_PURPLE + "" + ChatColor.BOLD + "Ghoul Particles");
+            ArrayList<String> ghoulLore = new ArrayList<String>();
+            ghoulLore.add(ChatColor.GRAY + "These particles come in the Ghoul Kit package.");
+            ghoulLore.add(" ");
+            ghoulLore.add(ChatColor.GRAY + "Go to " + ChatColor.UNDERLINE + "paypal.me/lolimez/32" + ChatColor.GRAY + " and complete ");
+            ghoulLore.add(ChatColor.GRAY + "the purchase to receive this kit.");
+            ghoulLore.add(" ");
+            ghoulLore.add(ChatColor.RED + "" + ChatColor.BOLD + "Locked");
+            ghoulMeta.setLore(ghoulLore);
+            ghoul.setItemMeta(ghoulMeta);
+
+            particles.setItem(3, ghoul);
+
+        } else if (permissions.getInt("GhoulKit." + p.getUniqueId().toString()) == 1) {
+
+            ItemStack ghoul = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 10);
+            ItemMeta ghoulMeta = ghoul.getItemMeta();
+            ghoulMeta.setDisplayName(ChatColor.DARK_PURPLE + "" + ChatColor.BOLD + "Ghoul Particles");
+            ArrayList<String> ghoulLore = new ArrayList<String>();
+            ghoulLore.add(ChatColor.GRAY + "These particles come in the Snowflake Kit package.");
+            ghoulLore.add(" ");
+            ghoulLore.add(ChatColor.GRAY + "Click to activate this particle effect.");
+            ghoulLore.add(" ");
+            ghoulLore.add(ChatColor.GREEN + "" + ChatColor.BOLD + "Unlocked");
+            ghoulMeta.setLore(ghoulLore);
+            ghoul.setItemMeta(ghoulMeta);
+
+            particles.setItem(3, ghoul);
+
+        }
+
+        p.openInventory(particles);
 
     }
 
