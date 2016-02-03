@@ -264,9 +264,14 @@ public class A extends JavaPlugin implements Listener {
         if (e.getClickedInventory().getName().equalsIgnoreCase(ChatColor.BLUE + "" + ChatColor.BOLD + "Redeem Your Kit") {
         
             if (e.getClickedInventory().getName().equalsIgnoreCase(ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "Kit Starter")) {
-            
-            
-            
+                
+                if (starterTime.contains(p)) {
+                
+                    p.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "(!) " + ChatColor.GRAY + "This kit is still on cooldown.");
+                    return;
+                
+                }
+                
             } else if (e.getClickedInventory().getName().equalsIgnoreCase(ChatColor.GREEN + "" + ChatColor.BOLD + "Kit Farmer")) {
             
             
