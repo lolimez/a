@@ -1,4 +1,4 @@
-package me.lolimez.Custom;
+package me.lolimez.A;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -255,36 +255,124 @@ public class A extends JavaPlugin implements Listener {
 
         Player p = (Player) e.getWhoClicked();
 
-        if (e.getClickedInventory().getName().equalsIgnoreCase(ChatColor.BLUE + "" + ChatColor.BOLD + "Redeem Your Kit") || e.getClickedInventory().getName().equalsIgnoreCase(ChatColor.BLUE + "" + ChatColor.BOLD + "Activate Your Particles")) {
+        if (e.getInventory().getName().equalsIgnoreCase(ChatColor.BLUE + "" + ChatColor.BOLD + "Redeem Your Kit") || e.getInventory().getName().equalsIgnoreCase(ChatColor.BLUE + "" + ChatColor.BOLD + "Activate Your Particles")) {
 
             e.setCancelled(true);
 
         }
         
-        if (e.getClickedInventory().getName().equalsIgnoreCase(ChatColor.BLUE + "" + ChatColor.BOLD + "Redeem Your Kit") {
+        if (e.getInventory().getName().equalsIgnoreCase(ChatColor.BLUE + "" + ChatColor.BOLD + "Redeem Your Kit")) {
         
-            if (e.getClickedInventory().getName().equalsIgnoreCase(ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "Kit Starter")) {
+            if (e.getInventory().getName().equalsIgnoreCase(ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "Kit Starter")) {
                 
-                if (starterTime.contains(p)) {
+                if (starterTime.containsKey(p)) {
                 
                     p.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "(!) " + ChatColor.GRAY + "This kit is still on cooldown.");
                     return;
                 
+                } else {
+                	
+                	ItemStack sword = new ItemStack(Material.DIAMOND_SWORD, 1);
+                	ItemMeta swordMeta = sword.getItemMeta();
+                	swordMeta.setDisplayName(ChatColor.GRAY + "" + ChatColor.BOLD + "Starter");
+                	ArrayList<String> swordLore = new ArrayList<String>();
+                	swordLore.add(ChatColor.GRAY + "Starter Sword");
+                	swordMeta.setLore(swordLore);
+                	sword.setItemMeta(swordMeta);
+                	
+                	ItemStack helmet = new ItemStack(Material.IRON_HELMET, 1);
+                	ItemMeta helmetMeta = helmet.getItemMeta();
+                	helmetMeta.setDisplayName(ChatColor.GRAY + "" + ChatColor.BOLD + "Starter");
+                	ArrayList<String> helmetLore = new ArrayList<String>();
+                	helmetLore.add(ChatColor.GRAY + "Starter Helmet");
+                	helmetMeta.setLore(helmetLore);
+                	helmet.setItemMeta(helmetMeta);
+                	
+                	ItemStack chestplate = new ItemStack(Material.IRON_CHESTPLATE, 1);
+                	ItemMeta chestplateMeta = chestplate.getItemMeta();
+                	chestplateMeta.setDisplayName(ChatColor.GRAY + "" + ChatColor.BOLD + "Starter");
+                	ArrayList<String> chestplateLore = new ArrayList<String>();
+                	chestplateLore.add(ChatColor.GRAY + "Starter Chestplate");
+                	chestplateMeta.setLore(chestplateLore);
+                	chestplate.setItemMeta(chestplateMeta);
+                	
+                	ItemStack leggings = new ItemStack(Material.IRON_LEGGINGS, 1);
+                	ItemMeta leggingsMeta = leggings.getItemMeta();
+                	leggingsMeta.setDisplayName(ChatColor.GRAY + "" + ChatColor.BOLD + "Starter");
+                	ArrayList<String> leggingsLore = new ArrayList<String>();
+                	leggingsLore.add(ChatColor.GRAY + "Starter Leggings");
+                	leggingsMeta.setLore(leggingsLore);
+                	leggings.setItemMeta(leggingsMeta);
+                	
+                	ItemStack boots = new ItemStack(Material.IRON_BOOTS, 1);
+                	ItemMeta bootsMeta = boots.getItemMeta();
+                	bootsMeta.setDisplayName(ChatColor.GRAY + "" + ChatColor.BOLD + "Starter");
+                	ArrayList<String> bootsLore = new ArrayList<String>();
+                	bootsLore.add(ChatColor.GRAY + "Starter Boots");
+                	bootsMeta.setLore(bootsLore);
+                	boots.setItemMeta(bootsMeta);
+                	
+                	ItemStack pickaxe = new ItemStack(Material.DIAMOND_PICKAXE, 1);
+                	ItemMeta pickaxeMeta = pickaxe.getItemMeta();
+                	pickaxeMeta.setDisplayName(ChatColor.GRAY + "" + ChatColor.BOLD + "Starter");
+                	ArrayList<String> pickaxeLore = new ArrayList<String>();
+                	pickaxeLore.add(ChatColor.GRAY + "Starter Pickaxe");
+                	pickaxeMeta.setLore(pickaxeLore);
+                	pickaxe.setItemMeta(pickaxeMeta);
+                	
+                	ItemStack bow = new ItemStack(Material.BOW, 1);
+                	ItemMeta bowMeta = bow.getItemMeta();
+                	bowMeta.setDisplayName(ChatColor.GRAY + "" + ChatColor.BOLD + "Starter");
+                	ArrayList<String> bowLore = new ArrayList<String>();
+                	bowLore.add(ChatColor.GRAY + "Starter Bow");
+                	bowMeta.setLore(bowLore);
+                	bow.setItemMeta(bowMeta);
+                	
+                	ItemStack arrows = new ItemStack(Material.ARROW, 32);
+                	
+                	ItemStack crapples = new ItemStack(Material.GOLDEN_APPLE, 8);
+                	
+                	ItemStack tnt = new ItemStack()
+                	
+                	starterTime.put(p, 24);
+                	starterTask.put(p, new BukkitRunnable() {
+                		
+                		public void run() {
+                			
+                			starterTime.put(p, starterTime.get(p) - 1);
+                			
+                			if (starterTime.get(p) == 0) {
+                				
+                				starterTime.remove(p);
+                				starterTask.remove(p);
+                				
+                				cancel();
+                				
+                			}
+                			
+                		}
+                		
+                	});
+                	
+                	starterTask.get(p).runTaskTimer(this, 72000, 72000);
+                	
+                	return;
+                	
                 }
                 
-            } else if (e.getClickedInventory().getName().equalsIgnoreCase(ChatColor.GREEN + "" + ChatColor.BOLD + "Kit Farmer")) {
+            } else if (e.getInventory().getName().equalsIgnoreCase(ChatColor.GREEN + "" + ChatColor.BOLD + "Kit Farmer")) {
             
             
             
-            } else if (e.getClickedInventory().getName().equalsIgnoreCase(ChatColor.YELLOW + "" + ChatColor.BOLD + "Kit Merchant")) {
+            } else if (e.getInventory().getName().equalsIgnoreCase(ChatColor.YELLOW + "" + ChatColor.BOLD + "Kit Merchant")) {
             
             
             
-            } else if (e.getClickedInventory().getName().equalsIgnoreCase(ChatColor.GOLD + "" + ChatColor.BOLD + "Kit Industrialist")) {
+            } else if (e.getInventory().getName().equalsIgnoreCase(ChatColor.GOLD + "" + ChatColor.BOLD + "Kit Industrialist")) {
             
             
             
-            } else if (e.getClickedInventory().getName().equalsIgnoreCase(ChatColor.RED + "" + ChatColor.BOLD + "Kit Engineer")) {
+            } else if (e.getInventory().getName().equalsIgnoreCase(ChatColor.RED + "" + ChatColor.BOLD + "Kit Engineer")) {
             
             
             
@@ -292,7 +380,7 @@ public class A extends JavaPlugin implements Listener {
         
         }
 
-        if (e.getClickedInventory().getName().equalsIgnoreCase(ChatColor.BLUE + "" + ChatColor.BOLD + "Activate Your Particles")) {
+        if (e.getInventory().getName().equalsIgnoreCase(ChatColor.BLUE + "" + ChatColor.BOLD + "Activate Your Particles")) {
 
             if (e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.WHITE + "" + ChatColor.BOLD + "Snowflake Particles")) {
 
