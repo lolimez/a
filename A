@@ -267,10 +267,12 @@ public class A extends JavaPlugin implements Listener {
                 
                 if (starterTime.containsKey(p)) {
                 
-                    p.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "(!) " + ChatColor.GRAY + "This kit is still on cooldown.");
+                    p.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "(!) " + ChatColor.GRAY + "This kit is still on cooldown for " + ChatColor.UNDERLINE + starterTime.get(p) + ChatColor.GRAY + " hours.");
                     return;
                 
                 } else {
+                
+                    p.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "(!) " + ChatColor.GRAY + "You have redeemed your " + ChatColor.UNDERLINE + "Starter Kit" + ChatColor.GRAY + ".");
                 	
                 	ItemStack sword = new ItemStack(Material.DIAMOND_SWORD, 1);
                 	ItemMeta swordMeta = sword.getItemMeta();
@@ -330,9 +332,29 @@ public class A extends JavaPlugin implements Listener {
                 	
                 	ItemStack arrows = new ItemStack(Material.ARROW, 32);
                 	
+                	ItemStack gapples = new ItemStack(Material.GOLDEN_APPLE, 1, (short) 1);
+                	
                 	ItemStack crapples = new ItemStack(Material.GOLDEN_APPLE, 8);
                 	
-                	ItemStack tnt = new ItemStack()
+                	ItemStack tnt = new ItemStack(Material.TNT, 32);
+                	
+                	ItemStack obby = new ItemStack(Material.OBSIDIAN, 32);
+                	
+                	ItemStack stone = new ItemStack(Material.STONE, 64);
+                	
+                	p.getInventory().addItem(sword);
+                	p.getInventory().addItem(helmet);
+                	p.getInventory().addItem(chestplate);
+                	p.getInventory().addItem(leggings);
+                	p.getInventory().addItem(boots);
+                	p.getInventory().addItem(pickaxe);
+                	p.getInventory().addItem(bow);
+                	p.getInventory().addItem(arrows);
+                	p.getInventory().addItem(gapples);
+                	p.getInventory().addItem(crapples);
+                	p.getInventory().addItem(tnt);
+                	p.getInventory().addItem(obby);
+                	p.getInventory().addItem(stone);
                 	
                 	starterTime.put(p, 24);
                 	starterTask.put(p, new BukkitRunnable() {
@@ -362,8 +384,57 @@ public class A extends JavaPlugin implements Listener {
                 
             } else if (e.getInventory().getName().equalsIgnoreCase(ChatColor.GREEN + "" + ChatColor.BOLD + "Kit Farmer")) {
             
-            
-            
+                if (permissions.getInt("Rank." + p.getUniqueId()) == 0) {
+                
+                    p.closeInventory();
+                    
+                    p.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "(!) " + ChatColor.GRAY + "You do not have the required permissions.");
+                
+                } else if (permissions.getInt("Rank." + p.getUniqueId()) == 1) {
+                
+                    if (farmerTime.containsKey(p)) {
+                
+                        p.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "(!) " + ChatColor.GRAY + "This kit is still on cooldown for " + ChatColor.UNDERLINE + farmerTime.get(p) + ChatColor.GRAY + " hours.");
+                        return;
+                
+                    } else {
+                
+                        p.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "(!) " + ChatColor.GRAY + "You have redeemed your " + ChatColor.UNDERLINE + "Farmer Kit" + ChatColor.GRAY + ".");
+                	
+                    	farmerTime.put(p, 24);
+                    	farmerTask.put(p, new BukkitRunnable() {
+                		
+                    		public void run() {
+                			
+                    			farmerTime.put(p, starterTime.get(p) - 1);
+                			
+                    			if (farmerTime.get(p) == 0) {
+                				
+                    				farmerTime.remove(p);
+                    				farmerTask.remove(p);
+                				
+                    				cancel();
+                				
+                    			}
+                			
+                    		}
+                		
+                    	});
+                	
+                    	farmerTask.get(p).runTaskTimer(this, 72000, 72000);
+                	
+                    	return;
+                    	
+                    }
+                
+                } else {
+                
+                    p.closeInventory();
+                    
+                    p.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "(!) " + ChatColor.GRAY + "You already have another rank. If you'd like to upgrade, email " + ChatColor.UNDERLINE + "illiteracypvp@gmail.com" + ChatColor.GRAY + " for more information.");
+                
+                }
+                
             } else if (e.getInventory().getName().equalsIgnoreCase(ChatColor.YELLOW + "" + ChatColor.BOLD + "Kit Merchant")) {
             
             
