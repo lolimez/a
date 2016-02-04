@@ -7,6 +7,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -278,6 +279,7 @@ public class A extends JavaPlugin implements Listener {
                 	ItemMeta swordMeta = sword.getItemMeta();
                 	swordMeta.setDisplayName(ChatColor.GRAY + "" + ChatColor.BOLD + "Starter");
                 	ArrayList<String> swordLore = new ArrayList<String>();
+                	swordLore.add(" ");
                 	swordLore.add(ChatColor.GRAY + "Starter Sword");
                 	swordMeta.setLore(swordLore);
                 	sword.setItemMeta(swordMeta);
@@ -286,6 +288,7 @@ public class A extends JavaPlugin implements Listener {
                 	ItemMeta helmetMeta = helmet.getItemMeta();
                 	helmetMeta.setDisplayName(ChatColor.GRAY + "" + ChatColor.BOLD + "Starter");
                 	ArrayList<String> helmetLore = new ArrayList<String>();
+                	helmetLore.add(" ");
                 	helmetLore.add(ChatColor.GRAY + "Starter Helmet");
                 	helmetMeta.setLore(helmetLore);
                 	helmet.setItemMeta(helmetMeta);
@@ -294,6 +297,7 @@ public class A extends JavaPlugin implements Listener {
                 	ItemMeta chestplateMeta = chestplate.getItemMeta();
                 	chestplateMeta.setDisplayName(ChatColor.GRAY + "" + ChatColor.BOLD + "Starter");
                 	ArrayList<String> chestplateLore = new ArrayList<String>();
+                	chestplateLore.add(" ");
                 	chestplateLore.add(ChatColor.GRAY + "Starter Chestplate");
                 	chestplateMeta.setLore(chestplateLore);
                 	chestplate.setItemMeta(chestplateMeta);
@@ -302,6 +306,7 @@ public class A extends JavaPlugin implements Listener {
                 	ItemMeta leggingsMeta = leggings.getItemMeta();
                 	leggingsMeta.setDisplayName(ChatColor.GRAY + "" + ChatColor.BOLD + "Starter");
                 	ArrayList<String> leggingsLore = new ArrayList<String>();
+                	leggingsLore.add(" ");
                 	leggingsLore.add(ChatColor.GRAY + "Starter Leggings");
                 	leggingsMeta.setLore(leggingsLore);
                 	leggings.setItemMeta(leggingsMeta);
@@ -310,6 +315,7 @@ public class A extends JavaPlugin implements Listener {
                 	ItemMeta bootsMeta = boots.getItemMeta();
                 	bootsMeta.setDisplayName(ChatColor.GRAY + "" + ChatColor.BOLD + "Starter");
                 	ArrayList<String> bootsLore = new ArrayList<String>();
+                	bootsLore.add(" ");
                 	bootsLore.add(ChatColor.GRAY + "Starter Boots");
                 	bootsMeta.setLore(bootsLore);
                 	boots.setItemMeta(bootsMeta);
@@ -318,6 +324,7 @@ public class A extends JavaPlugin implements Listener {
                 	ItemMeta pickaxeMeta = pickaxe.getItemMeta();
                 	pickaxeMeta.setDisplayName(ChatColor.GRAY + "" + ChatColor.BOLD + "Starter");
                 	ArrayList<String> pickaxeLore = new ArrayList<String>();
+                	pickaxeLore.add(" ");
                 	pickaxeLore.add(ChatColor.GRAY + "Starter Pickaxe");
                 	pickaxeMeta.setLore(pickaxeLore);
                 	pickaxe.setItemMeta(pickaxeMeta);
@@ -326,6 +333,7 @@ public class A extends JavaPlugin implements Listener {
                 	ItemMeta bowMeta = bow.getItemMeta();
                 	bowMeta.setDisplayName(ChatColor.GRAY + "" + ChatColor.BOLD + "Starter");
                 	ArrayList<String> bowLore = new ArrayList<String>();
+                	bowLore.add(" ");
                 	bowLore.add(ChatColor.GRAY + "Starter Bow");
                 	bowMeta.setLore(bowLore);
                 	bow.setItemMeta(bowMeta);
@@ -400,13 +408,46 @@ public class A extends JavaPlugin implements Listener {
                     } else {
                 
                         p.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "(!) " + ChatColor.GRAY + "You have redeemed your " + ChatColor.UNDERLINE + "Farmer Kit" + ChatColor.GRAY + ".");
+                        
+                        ItemStack sword = new ItemStack(Material.DIAMOND_SWORD, 1);
+                        sword.addEnchantment(Enchantment.DAMAGE_ALL, 2);
+                        sword.addEnchantment(Enchantment.LOOT_BONUS_MOBS, 1);
+                        ItemMeta swordMeta = sword.getItemMeta();
+                        swordMeta.setDisplayName(ChatColor.GREEN + "" + ChatColor.BOLD + "Farmer");
+                        ArrayList<String> swordLore = new ArrayList<String>();
+                        swordLore.add(" ");
+                        swordLore.add(ChatColor.GREEN + "Farmer Sword");
+                        swordMeta.setLore(swordLore);
+                        sword.setItemMeta(swordMeta);
+                        
+                        ItemStack helmet = new ItemStack(Material.DIAMOND_HELMET, 1);
+                        helmet.addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 2);
+                        helmet.addEnchantment(Enchantment.DURABILITY, 1);
+                        ItemMeta helmetMeta = helmet.getItemMeta();
+                        helmetMeta.setDisplayName(ChatColor.GREEN + "" + ChatColor.BOLD + "Farmer");
+                        ArrayList<String> helmetLore = new ArrayList<String>();
+                        helmetLore.add(" ");
+                        helmetLore.add(ChatColor.GREEN + "Farmer Helmet");
+                        helmetMeta.setLore(helmetLore);
+                        helmet.setItemMeta(helmetMeta);
+                        
+                        ItemStack chestplate = new ItemStack(Material.DIAMOND_CHESTPLATE, 1);
+                        chestplate.addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 2);
+                        chestplate.addEnchantment(Enchantment.DURABILITY, 1);
+                        ItemMeta chestplateMeta = chestplate.getItemMeta();
+                        chestplateMeta.setDisplayName(ChatColor.GREEN + "" + ChatColor.BOLD + "Farmer");
+                        ArrayList<String> chestplateLore = new ArrayList<String>();
+                        chestplateLore.add(" ");
+                        chestplateLore.add(ChatColor.GREEN + "Farmer Chestplate");
+                        chestplateMeta.setLore(chestplateLore);
+                        chestplate.setItemMeta(chestplateMeta);
                 	
                     	farmerTime.put(p, 24);
                     	farmerTask.put(p, new BukkitRunnable() {
                 		
                     		public void run() {
                 			
-                    			farmerTime.put(p, starterTime.get(p) - 1);
+                    			farmerTime.put(p, farmerTime.get(p) - 1);
                 			
                     			if (farmerTime.get(p) == 0) {
                 				
@@ -427,25 +468,172 @@ public class A extends JavaPlugin implements Listener {
                     	
                     }
                 
-                } else {
+                } else if (permissions.getInt("Rank." + p.getUniqueId().toString()) == 2 || permissions.getInt("Rank." + p.getUniqueId().toString()) == 3 || permissions.getInt("Rank." + p.getUniqueId().toString()) == 4) {
                 
                     p.closeInventory();
                     
-                    p.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "(!) " + ChatColor.GRAY + "You already have another rank. If you'd like to upgrade, email " + ChatColor.UNDERLINE + "illiteracypvp@gmail.com" + ChatColor.GRAY + " for more information.");
+                    p.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "(!) " + ChatColor.GRAY + "You already have another rank. If you'd like to upgrade/downgrade, email " + ChatColor.UNDERLINE + "illiteracypvp@gmail.com" + ChatColor.GRAY + " for more information.");
                 
                 }
                 
             } else if (e.getInventory().getName().equalsIgnoreCase(ChatColor.YELLOW + "" + ChatColor.BOLD + "Kit Merchant")) {
             
-            
+                if (permissions.getInt("Rank." + p.getUniqueId()) == 0) {
+                    
+                    p.closeInventory();
+                    
+                    p.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "(!) " + ChatColor.GRAY + "You do not have the required permissions.");
+                
+                } else if (permissions.getInt("Rank." + p.getUniqueId()) == 2) {
+                
+                    if (merchantTime.containsKey(p)) {
+                
+                        p.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "(!) " + ChatColor.GRAY + "This kit is still on cooldown for " + ChatColor.UNDERLINE + merchantTime.get(p) + ChatColor.GRAY + " hours.");
+                        return;
+                
+                    } else {
+                
+                        p.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "(!) " + ChatColor.GRAY + "You have redeemed your " + ChatColor.UNDERLINE + "Merchant Kit" + ChatColor.GRAY + ".");
+                	
+                    	merchantTime.put(p, 24);
+                    	merchantTask.put(p, new BukkitRunnable() {
+                		
+                    		public void run() {
+                			
+                    			merchantTime.put(p, merchantTime.get(p) - 1);
+                			
+                    			if (merchantTime.get(p) == 0) {
+                				
+                    				merchantTime.remove(p);
+                    				merchantTask.remove(p);
+                				
+                    				cancel();
+                				
+                    			}
+                			
+                    		}
+                		
+                    	});
+                	
+                    	merchantTask.get(p).runTaskTimer(this, 72000, 72000);
+                	
+                    	return;
+                    	
+                    }
+                
+                } else if (permissions.getInt("Rank." + p.getUniqueId().toString()) == 1 || permissions.getInt("Rank." + p.getUniqueId().toString()) == 3 || permissions.getInt("Rank." + p.getUniqueId().toString()) == 4) {
+                
+                    p.closeInventory();
+                    
+                    p.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "(!) " + ChatColor.GRAY + "You already have another rank. If you'd like to upgrade/downgrade, email " + ChatColor.UNDERLINE + "illiteracypvp@gmail.com" + ChatColor.GRAY + " for more information.");
+                
+                }
             
             } else if (e.getInventory().getName().equalsIgnoreCase(ChatColor.GOLD + "" + ChatColor.BOLD + "Kit Industrialist")) {
             
-            
+                if (permissions.getInt("Rank." + p.getUniqueId()) == 0) {
+                    
+                    p.closeInventory();
+                    
+                    p.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "(!) " + ChatColor.GRAY + "You do not have the required permissions.");
+                
+                } else if (permissions.getInt("Rank." + p.getUniqueId()) == 3) {
+                
+                    if (industrialistTime.containsKey(p)) {
+                
+                        p.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "(!) " + ChatColor.GRAY + "This kit is still on cooldown for " + ChatColor.UNDERLINE + industrialistTime.get(p) + ChatColor.GRAY + " hours.");
+                        return;
+                
+                    } else {
+                
+                        p.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "(!) " + ChatColor.GRAY + "You have redeemed your " + ChatColor.UNDERLINE + "Industrialist Kit" + ChatColor.GRAY + ".");
+                	
+                    	industrialistTime.put(p, 24);
+                    	industrialistTask.put(p, new BukkitRunnable() {
+                		
+                    		public void run() {
+                			
+                    			industrialistTime.put(p, industrialistTime.get(p) - 1);
+                			
+                    			if (industrialistTime.get(p) == 0) {
+                				
+                    				industrialistTime.remove(p);
+                    				industrialistTask.remove(p);
+                				
+                    				cancel();
+                				
+                    			}
+                			
+                    		}
+                		
+                    	});
+                	
+                    	industrialistTask.get(p).runTaskTimer(this, 72000, 72000);
+                	
+                    	return;
+                    	
+                    }
+                
+                } else if (permissions.getInt("Rank." + p.getUniqueId().toString()) == 1 || permissions.getInt("Rank." + p.getUniqueId().toString()) == 2 || permissions.getInt("Rank." + p.getUniqueId().toString()) == 4) {
+                
+                    p.closeInventory();
+                    
+                    p.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "(!) " + ChatColor.GRAY + "You already have another rank. If you'd like to upgrade/downgrade, email " + ChatColor.UNDERLINE + "illiteracypvp@gmail.com" + ChatColor.GRAY + " for more information.");
+                
+                }
             
             } else if (e.getInventory().getName().equalsIgnoreCase(ChatColor.RED + "" + ChatColor.BOLD + "Kit Engineer")) {
             
-            
+                if (permissions.getInt("Rank." + p.getUniqueId()) == 0) {
+                    
+                    p.closeInventory();
+                    
+                    p.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "(!) " + ChatColor.GRAY + "You do not have the required permissions.");
+                
+                } else if (permissions.getInt("Rank." + p.getUniqueId()) == 4) {
+                
+                    if (engineerTime.containsKey(p)) {
+                
+                        p.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "(!) " + ChatColor.GRAY + "This kit is still on cooldown for " + ChatColor.UNDERLINE + engineerTime.get(p) + ChatColor.GRAY + " hours.");
+                        return;
+                
+                    } else {
+                
+                        p.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "(!) " + ChatColor.GRAY + "You have redeemed your " + ChatColor.UNDERLINE + "Engineer Kit" + ChatColor.GRAY + ".");
+                	
+                    	engineerTime.put(p, 24);
+                    	engineerTask.put(p, new BukkitRunnable() {
+                		
+                    		public void run() {
+                			
+                    			engineerTime.put(p, engineerTime.get(p) - 1);
+                			
+                    			if (engineerTime.get(p) == 0) {
+                				
+                    				engineerTime.remove(p);
+                    				engineerTask.remove(p);
+                				
+                    				cancel();
+                				
+                    			}
+                			
+                    		}
+                		
+                    	});
+                	
+                    	engineerTask.get(p).runTaskTimer(this, 72000, 72000);
+                	
+                    	return;
+                    	
+                    }
+                
+                } else if (permissions.getInt("Rank." + p.getUniqueId().toString()) == 1 || permissions.getInt("Rank." + p.getUniqueId().toString()) == 2 || permissions.getInt("Rank." + p.getUniqueId().toString()) == 3) {
+                
+                    p.closeInventory();
+                    
+                    p.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "(!) " + ChatColor.GRAY + "You already have another rank. If you'd like to upgrade/downgrade, email " + ChatColor.UNDERLINE + "illiteracypvp@gmail.com" + ChatColor.GRAY + " for more information.");
+                
+                }
             
             }
         
