@@ -731,7 +731,7 @@ public class A extends JavaPlugin implements Listener {
 
     public void kitMenu(Player p) {
 
-        Inventory kit = Bukkit.createInventory(null, 9, ChatColor.BLUE + "" + ChatColor.BOLD + "Redeem Your Kit");
+        Inventory kit = Bukkit.createInventory(null, 27, ChatColor.BLUE + "" + ChatColor.BOLD + "Redeem Your Kit");
 
         ItemStack starter = new ItemStack(Material.INK_SACK, 1, (short) 7);
         ItemMeta starterMeta = starter.getItemMeta();
@@ -1038,6 +1038,46 @@ public class A extends JavaPlugin implements Listener {
             kit.setItem(3, industrialist);
             kit.setItem(4, engineer);
 
+        }
+        
+        if (perimssions.getInt("CupidKit." + p.getUniqueId().toString()) == 0) {
+        
+        
+        
+        } else if (permissions.getInt("CupidKit." + p.getUniqueId().toString()) == 1) {
+        
+        
+        
+        }
+        
+        if (permissions.getInt("LeprechaunKit." + p.getUniqueId().toString()) == 0) {
+        
+        
+        
+        } else if (permissions.getInt("LeprechaunKit." + p.getUniqueId().toString()) == 1) {
+        
+        
+        
+        }
+        
+        if (permissions.getInt("GhoulKit." + p.getUniqueId().toString()) == 0) {
+        
+        
+        
+        } else if (permissions.getInt("GhoulKit." + p.getUniqueId().toString()) == 1) {
+        
+        
+        
+        }
+        
+        if (permissions.getInt("SnowflakeKit." + p.getUniqueId().toString()) == 0) {
+        
+        
+        
+        } else if (permissions.getInt("SnowflakeKit." + p.getUniqueId().toString()) == 1) {
+        
+        
+        
         }
 
         p.openInventory(kit);
