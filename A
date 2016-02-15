@@ -11,10 +11,9 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -23,6 +22,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -266,6 +266,28 @@ public class A extends JavaPlugin implements Listener {
 
         }
 
+    }
+    
+    @EventHandler
+    public void onBlockPlace(BlockPlaceEvent e) {
+    	
+    	Player p = e.getPlayer();
+    	
+    	if (e.getBlock().getType() == Material.CAULDRON) {
+    		
+    		if (e.getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.GOLD + "" + ChatColor.BOLD + "Pot of Gold")) {
+    			
+    			p.sendMessage(ChatColor.GREEN + "(!) " + ChatColor.GRAY + "You have used your " + ChatColor.GOLD + "" + ChatColor.UNDERLINE + "Pot of Gold" + ChatColor.GRAY + "!");
+    			
+    			e.setCancelled(true);
+    			
+    			p.setVelocity(new Vector(0, 0.5, 0));
+    			p.getWorld().getBlockAt(p.getLocation().add(0, -1, 0)).setType(Material.CAULDRON);
+    			
+    		}
+    		
+    	}
+    	
     }
 
     @EventHandler
@@ -1439,7 +1461,7 @@ public class A extends JavaPlugin implements Listener {
 
                     ItemStack goldpot = new ItemStack(Material.CAULDRON, 1);
                     ItemMeta goldpotmeta = goldpot.getItemMeta();
-                    goldpotmeta.setDisplayName(ChatColor.GREEN + "" + ChatColor.BOLD + "Pot of Gold");
+                    goldpotmeta.setDisplayName(ChatColor.GOLD + "" + ChatColor.BOLD + "Pot of Gold");
                     ArrayList<String> goldpotlore = new ArrayList<String>();
                     goldpotlore.add(ChatColor.GRAY + "Place this down on a solid block!");
                     goldpotmeta.setLore(goldpotlore);
@@ -1585,8 +1607,6 @@ public class A extends JavaPlugin implements Listener {
                     p.getInventory().addItem(spe);
                     p.getInventory().addItem(str);
                     p.getInventory().addItem(spe);
-                    p.getInventory().addItem(str);
-                    p.getInventory().addItem(spe);
 
                     ghoulTime.put(p, 48);
                     ghoulTask.put(p, new BukkitRunnable() {
@@ -1639,24 +1659,25 @@ public class A extends JavaPlugin implements Listener {
                     sword.addEnchantment(Enchantment.FIRE_ASPECT, 2);
                     sword.addEnchantment(Enchantment.DAMAGE_ALL, 4);
                     ItemMeta swordMeta = sword.getItemMeta();
-                    swordMeta.setDisplayName(ChatColor.DARK_PURPLE + "" + ChatColor.BOLD + "Snowman's Stick Arm");
+                    swordMeta.setDisplayName(ChatColor.WHITE + "" + ChatColor.BOLD + "Snowman's Stick Arm");
                     ArrayList<String> swordLore = new ArrayList<String>();
                     swordLore.add(ChatColor.GRAY + "Gelid III");
+                    swordLore.add(ChatColor.GRAY + "Frosty I");
                     swordMeta.setLore(swordLore);
                     sword.setItemMeta(swordMeta);
 
                     ItemStack helmet = new ItemStack(Material.DIAMOND_HELMET, 1);
-                    helmet.addEnchantment(Enchantment.DURABILITY, 1);
+                    helmet.addUnsafeEnchantment(Enchantment.DURABILITY, 4);
                     helmet.addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 3);
                     ItemMeta helmetMeta = helmet.getItemMeta();
-                    helmetMeta.setDisplayName(ChatColor.LIGHT_PURPLE + "Ghoul Hood");
+                    helmetMeta.setDisplayName(ChatColor.GRAY + "Frosty's Top Hat");
                     helmet.setItemMeta(helmetMeta);
 
                     ItemStack chestplate = new ItemStack(Material.DIAMOND_CHESTPLATE, 1);
-                    chestplate.addEnchantment(Enchantment.DURABILITY, 1);
+                    chestplate.addUnsafeEnchantment(Enchantment.DURABILITY, 4);
                     chestplate.addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 3);
                     ItemMeta chestplateMeta = chestplate.getItemMeta();
-                    chestplateMeta.setDisplayName(ChatColor.LIGHT_PURPLE + "Ghoul Rags");
+                    chestplateMeta.setDisplayName(ChatColor.LIGHT_PURPLE + "Frosty's Striped Scarf");
                     chestplate.setItemMeta(chestplateMeta);
 
                     ItemStack gapples = new ItemStack(Material.GOLDEN_APPLE, 6, (short) 1);
@@ -1693,17 +1714,17 @@ public class A extends JavaPlugin implements Listener {
                     p.getInventory().addItem(str);
                     p.getInventory().addItem(spe);
 
-                    ghoulTime.put(p, 48);
-                    ghoulTask.put(p, new BukkitRunnable() {
+                    snowflakeTime.put(p, 48);
+                    snowflakeTask.put(p, new BukkitRunnable() {
 
                         public void run() {
 
-                            ghoulTime.put(p, ghoulTime.get(p) - 1);
+                            snowflakeTime.put(p, snowflakeTime.get(p) - 1);
 
-                            if (ghoulTime.get(p) == 0) {
+                            if (snowflakeTime.get(p) == 0) {
 
-                                ghoulTime.remove(p);
-                                ghoulTask.remove(p);
+                                snowflakeTime.remove(p);
+                                snowflakeTask.remove(p);
 
                                 cancel();
 
@@ -1713,13 +1734,13 @@ public class A extends JavaPlugin implements Listener {
 
                     });
 
-                    ghoulTask.get(p).runTaskTimer(this, 72000, 72000);
+                    snowflakeTask.get(p).runTaskTimer(this, 72000, 72000);
 
                 } else {
 
                     p.closeInventory();
 
-                    p.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "(!) " + ChatColor.GRAY + "You do not have permissions for the " + ChatColor.UNDERLINE + "Ghoul Kit" + ChatColor.GRAY + ".");
+                    p.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "(!) " + ChatColor.GRAY + "You do not have permissions for the " + ChatColor.UNDERLINE + "Snowflake Kit" + ChatColor.GRAY + ".");
 
                 }
 
@@ -1736,12 +1757,6 @@ public class A extends JavaPlugin implements Listener {
         if (cmd.getName().equalsIgnoreCase("kit")) {
 
             kitMenu(p);
-
-        }
-
-        if (cmd.getName().equalsIgnoreCase("particles")) {
-
-            particleMenu(p);
 
         }
 
@@ -2179,7 +2194,7 @@ public class A extends JavaPlugin implements Listener {
             ArrayList<String> snowflakeLore = new ArrayList<String>();
             snowflakeLore.add(ChatColor.GRAY + "You do not have access to this kit.");
             snowflakeLore.add(" ");
-            snowflakeLore.add(ChatColor.GRAY + "Go to " + ChatColor.UNDERLINE + "paypal.me/lolimez/30" + ChatColor.GRAY + " and complete ");
+            snowflakeLore.add(ChatColor.GRAY + "Go to " + ChatColor.UNDERLINE + "paypal.me/lolimez/31" + ChatColor.GRAY + " and complete ");
             snowflakeLore.add(ChatColor.GRAY + "the purchase to receive this rank.");
             snowflakeLore.add(" ");
             snowflakeLore.add(ChatColor.RED + "" + ChatColor.BOLD + "Locked");
@@ -2209,84 +2224,6 @@ public class A extends JavaPlugin implements Listener {
         }
 
         p.openInventory(kit);
-
-    }
-
-    public void particleMenu(Player p) {
-
-        Inventory particles = Bukkit.createInventory(null, InventoryType.HOPPER, ChatColor.BLUE + "" + ChatColor.BOLD + "Activate Your Particles");
-
-        if (permissions.getInt("SnowflakeKit." + p.getUniqueId().toString()) == 0) {
-
-            ItemStack snowflake = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 0);
-            ItemMeta snowflakeMeta = snowflake.getItemMeta();
-            snowflakeMeta.setDisplayName(ChatColor.WHITE + "" + ChatColor.BOLD + "Snowflake Particles");
-            ArrayList<String> snowflakeLore = new ArrayList<String>();
-            snowflakeLore.add(ChatColor.GRAY + "These particles come in the Snowflake Kit package.");
-            snowflakeLore.add(" ");
-            snowflakeLore.add(ChatColor.GRAY + "Go to " + ChatColor.UNDERLINE + "paypal.me/lolimez/30" + ChatColor.GRAY + " and complete ");
-            snowflakeLore.add(ChatColor.GRAY + "the purchase to receive this kit.");
-            snowflakeLore.add(" ");
-            snowflakeLore.add(ChatColor.RED + "" + ChatColor.BOLD + "Locked");
-            snowflakeMeta.setLore(snowflakeLore);
-            snowflake.setItemMeta(snowflakeMeta);
-
-            particles.setItem(1, snowflake);
-
-        } else if (permissions.getInt("SnowflakeKit." + p.getUniqueId().toString()) == 1) {
-
-            ItemStack snowflake = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 0);
-            ItemMeta snowflakeMeta = snowflake.getItemMeta();
-            snowflakeMeta.setDisplayName(ChatColor.WHITE + "" + ChatColor.BOLD + "Snowflake Particles");
-            ArrayList<String> snowflakeLore = new ArrayList<String>();
-            snowflakeLore.add(ChatColor.GRAY + "These particles come in the Snowflake Kit package.");
-            snowflakeLore.add(" ");
-            snowflakeLore.add(ChatColor.GRAY + "Click to activate this particle effect.");
-            snowflakeLore.add(" ");
-            snowflakeLore.add(ChatColor.GREEN + "" + ChatColor.BOLD + "Unlocked");
-            snowflakeMeta.setLore(snowflakeLore);
-            snowflake.setItemMeta(snowflakeMeta);
-
-            particles.setItem(1, snowflake);
-
-        }
-
-        if (permissions.getInt("GhoulKit." + p.getUniqueId().toString()) == 0) {
-
-            ItemStack ghoul = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 10);
-            ItemMeta ghoulMeta = ghoul.getItemMeta();
-            ghoulMeta.setDisplayName(ChatColor.DARK_PURPLE + "" + ChatColor.BOLD + "Ghoul Particles");
-            ArrayList<String> ghoulLore = new ArrayList<String>();
-            ghoulLore.add(ChatColor.GRAY + "These particles come in the Ghoul Kit package.");
-            ghoulLore.add(" ");
-            ghoulLore.add(ChatColor.GRAY + "Go to " + ChatColor.UNDERLINE + "paypal.me/lolimez/32" + ChatColor.GRAY + " and complete ");
-            ghoulLore.add(ChatColor.GRAY + "the purchase to receive this kit.");
-            ghoulLore.add(" ");
-            ghoulLore.add(ChatColor.RED + "" + ChatColor.BOLD + "Locked");
-            ghoulMeta.setLore(ghoulLore);
-            ghoul.setItemMeta(ghoulMeta);
-
-            particles.setItem(3, ghoul);
-
-        } else if (permissions.getInt("GhoulKit." + p.getUniqueId().toString()) == 1) {
-
-            ItemStack ghoul = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 10);
-            ItemMeta ghoulMeta = ghoul.getItemMeta();
-            ghoulMeta.setDisplayName(ChatColor.DARK_PURPLE + "" + ChatColor.BOLD + "Ghoul Particles");
-            ArrayList<String> ghoulLore = new ArrayList<String>();
-            ghoulLore.add(ChatColor.GRAY + "These particles come in the Snowflake Kit package.");
-            ghoulLore.add(" ");
-            ghoulLore.add(ChatColor.GRAY + "Click to activate this particle effect.");
-            ghoulLore.add(" ");
-            ghoulLore.add(ChatColor.GREEN + "" + ChatColor.BOLD + "Unlocked");
-            ghoulMeta.setLore(ghoulLore);
-            ghoul.setItemMeta(ghoulMeta);
-
-            particles.setItem(3, ghoul);
-
-        }
-
-        p.openInventory(particles);
 
     }
 
