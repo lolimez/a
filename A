@@ -270,8 +270,10 @@ public class A extends JavaPlugin implements Listener {
     
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent e) {
-    	
+
     	Player p = e.getPlayer();
+    	
+    	Material blockUnderPlayer = p.getWorld().getBlockAt(p, getLocation().add(0, -1, 0)).getType();
     	
     	if (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) {
     		
@@ -1459,9 +1461,9 @@ public class A extends JavaPlugin implements Listener {
 
                     ItemStack goldpot = new ItemStack(Material.CAULDRON, 1);
                     ItemMeta goldpotmeta = goldpot.getItemMeta();
-                    goldpotmeta.setDisplayName(ChatColor.GOLD + "" + ChatColor.BOLD + "Pot of Gold");
+                    goldpotmeta.setDisplayName(ChatColor.GOLD + "" + ChatColor.BOLD + "Pot o' Gold");
                     ArrayList<String> goldpotlore = new ArrayList<String>();
-                    goldpotlore.add(ChatColor.GRAY + "Place this down on a solid block!");
+                    goldpotlore.add(ChatColor.GRAY + "Right click to activate!");
                     goldpotmeta.setLore(goldpotlore);
                     goldpot.setItemMeta(goldpotmeta);
 
@@ -1668,14 +1670,14 @@ public class A extends JavaPlugin implements Listener {
                     helmet.addUnsafeEnchantment(Enchantment.DURABILITY, 4);
                     helmet.addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 3);
                     ItemMeta helmetMeta = helmet.getItemMeta();
-                    helmetMeta.setDisplayName(ChatColor.GRAY + "Frosty's Top Hat");
+                    helmetMeta.setDisplayName(ChatColor.AQUA + "Frosty's Top Hat");
                     helmet.setItemMeta(helmetMeta);
 
                     ItemStack chestplate = new ItemStack(Material.DIAMOND_CHESTPLATE, 1);
                     chestplate.addUnsafeEnchantment(Enchantment.DURABILITY, 4);
                     chestplate.addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 3);
                     ItemMeta chestplateMeta = chestplate.getItemMeta();
-                    chestplateMeta.setDisplayName(ChatColor.LIGHT_PURPLE + "Frosty's Striped Scarf");
+                    chestplateMeta.setDisplayName(ChatColor.AQUA + "Frosty's Striped Scarf");
                     chestplate.setItemMeta(chestplateMeta);
 
                     ItemStack gapples = new ItemStack(Material.GOLDEN_APPLE, 6, (short) 1);
