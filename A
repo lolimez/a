@@ -269,17 +269,15 @@ public class A extends JavaPlugin implements Listener {
     }
     
     @EventHandler
-    public void onBlockPlace(BlockPlaceEvent e) {
+    public void onPlayerInteract(PlayerInteractEvent e) {
     	
     	Player p = e.getPlayer();
     	
-    	if (e.getBlock().getType() == Material.CAULDRON) {
+    	if (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) {
     		
-    		if (e.getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.GOLD + "" + ChatColor.BOLD + "Pot of Gold")) {
+    		if (e.getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.GOLD + "" + ChatColor.BOLD + "Pot o' Gold")) {
     			
-    			p.sendMessage(ChatColor.GREEN + "(!) " + ChatColor.GRAY + "You have used your " + ChatColor.GOLD + "" + ChatColor.UNDERLINE + "Pot of Gold" + ChatColor.GRAY + "!");
-    			
-    			e.setCancelled(true);
+    			p.sendMessage(ChatColor.GREEN + "(!) " + ChatColor.GRAY + "You have used your " + ChatColor.GOLD + "" + ChatColor.UNDERLINE + "Pot o' Gold" + ChatColor.GRAY + "!");
     			
     			p.setVelocity(new Vector(0, 0.5, 0));
     			p.getWorld().getBlockAt(p.getLocation().add(0, -1, 0)).setType(Material.CAULDRON);
