@@ -11,9 +11,11 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -27,6 +29,7 @@ import org.bukkit.util.Vector;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 
 public class A extends JavaPlugin implements Listener {
 
@@ -59,6 +62,12 @@ public class A extends JavaPlugin implements Listener {
 
     private HashMap<Player, Integer> ghoulTime;
     private HashMap<Player, BukkitRunnable> ghoulTask;
+    
+    private HashMap<Player, BukkitRunnable> goldPot1;
+    private HashMap<Player, BukkitRunnable> goldPot2;
+    private HashMap<Player, BukkitRunnable> goldPot3;
+    private HashMap<Player, BukkitRunnable> goldPot4;
+    private HashMap<Player, BukkitRunnable> goldPot5;
 
     public static File folder;
     public static File file;
@@ -96,6 +105,12 @@ public class A extends JavaPlugin implements Listener {
 
         ghoulTime = new HashMap<Player, Integer>();
         ghoulTask = new HashMap<Player, BukkitRunnable>();
+        
+        goldPot1 = new HashMap<Player, BukkitRunnable>();
+        goldPot2 = new HashMap<Player, BukkitRunnable>();
+        goldPot3 = new HashMap<Player, BukkitRunnable>();
+        goldPot4 = new HashMap<Player, BukkitRunnable>();
+        goldPot5 = new HashMap<Player, BukkitRunnable>();
 
         Bukkit.getPluginManager().registerEvents(this, this);
 
@@ -270,20 +285,61 @@ public class A extends JavaPlugin implements Listener {
     
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent e) {
-
-    	Player p = e.getPlayer();
     	
-    	Material blockUnderPlayer = p.getWorld().getBlockAt(p, getLocation().add(0, -1, 0)).getType();
+    	Player p = e.getPlayer();
     	
     	if (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) {
     		
-    		if (e.getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.GOLD + "" + ChatColor.BOLD + "Pot o' Gold")) {
+    		if (p.getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.GOLD + "" + ChatColor.BOLD + "Pot of Gold")) {
     			
-    			p.sendMessage(ChatColor.GREEN + "(!) " + ChatColor.GRAY + "You have used your " + ChatColor.GOLD + "" + ChatColor.UNDERLINE + "Pot o' Gold" + ChatColor.GRAY + "!");
+    			if (p.getInventory().getItemInHand().getAmount() > 1) {
+    				   			
+    				p.getInventory().getItemInHand().setAmount(p.getInventory().getItemInHand().getAmount() - 1);
+    				
+    				p.sendMessage(ChatColor.GREEN + "(!) " + ChatColor.GRAY + "You have used your " + ChatColor.GOLD + "" + ChatColor.UNDERLINE + "Pot of Gold" + ChatColor.GRAY + "!");
     			
-    			p.setVelocity(new Vector(0, 0.5, 0));
-    			p.getWorld().getBlockAt(p.getLocation().add(0, -1, 0)).setType(Material.CAULDRON);
+    				e.setCancelled(true);
     			
+    				p.setVelocity(new Vector(0, 0.25, 0));
+    				p.getWorld().getBlockAt(p.getLocation().add(0, -1, 0)).setType(Material.CAULDRON);
+    				
+    				goldPot1.put(p, new BukkitRunnable() {
+    					
+    					public void run() {
+    						
+    						goldPotMenu(p);
+    						
+    					}
+    					
+    				});
+    				
+    				goldPot1.get(p).runTaskLater(this, 60);
+    				
+    			} else {
+    				
+    				p.setItemInHand(new ItemStack(Material.AIR));
+    				
+    				p.sendMessage(ChatColor.GREEN + "(!) " + ChatColor.GRAY + "You have used your " + ChatColor.GOLD + "" + ChatColor.UNDERLINE + "Pot of Gold" + ChatColor.GRAY + "!");
+        			
+    				e.setCancelled(true);
+    			
+    				p.setVelocity(new Vector(0, 0.25, 0));
+    				p.getWorld().getBlockAt(p.getLocation().add(0, -1, 0)).setType(Material.CAULDRON);
+    				
+    				goldPot1.put(p, new BukkitRunnable() {
+    					
+    					public void run() {
+    						
+    						goldPotMenu(p);
+    						
+    					}
+    					
+    				});
+    				
+    				goldPot1.get(p).runTaskLater(this, 60);
+    				
+    			}
+
     		}
     		
     	}
@@ -294,15 +350,59 @@ public class A extends JavaPlugin implements Listener {
     public void onInventoryClick(InventoryClickEvent e) {
 
         Player p = (Player) e.getWhoClicked();
+        
+        if (e.getInventory().getName().equalsIgnoreCase(ChatColor.GOLD + "" + ChatColor.BOLD + "Pot o' Gold")) {
+        	
+        	e.setCancelled(true);
+        	
+        	p.closeInventory();
+        	
+        	if (e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.GOLD + "" + ChatColor.BOLD + "Prize")) {
+        		
+        		Random random = new Random();
+        		
+        		int rNum = random.nextInt(100);
+        		
+        		if (rNum > 0 && rNum < 45) {
+        			
+        			p.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "(!) " + ChatColor.GRAY + "You received a " + ChatColor.UNDERLINE + "Golden Apple Package" + ChatColor.GRAY + "!");
+        			
+        			goldPot2.put(p, new BukkitRunnable() {
+        				
+        				public void run() {
+        					
+        					ItemStack gapple = new ItemStack(Material.GOLDEN_APPLE, 1, (short) 1);
+        					
+        					p.getWorld().dropItemNaturally(p.getEyeLocation().add(0, 6, 0), gapple);
+        					
+        				}
+        				
+        			});
+        			
+        			goldPot2.get(p).runTaskLater(this, 20);
+        			
+        		} else if (rNum >= 45 && rNum < 92) {
+        			
+        			p.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "(!) " + ChatColor.GRAY + "You received " + ChatColor.UNDERLINE + "Gold Currency" + ChatColor.GRAY + "!");
+        			
+        		} else if (rNum >= 92 && rNum <= 100) {
+        			
+        			p.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "(!) " + ChatColor.GRAY + "You received a " + ChatColor.DARK_PURPLE + "" + ChatColor.UNDERLINE + "Golden Artifact" + ChatColor.GRAY + "!");
 
-        if (e.getInventory().getName().equalsIgnoreCase(ChatColor.BLUE + "" + ChatColor.BOLD + "Redeem Your Kit")) {
-
-            e.setCancelled(true);
-
+        		}
+        		
+        	} else {
+        		
+        		return;
+        		
+        	}
+        	
         }
 
         if (e.getInventory().getName().equalsIgnoreCase(ChatColor.BLUE + "" + ChatColor.BOLD + "Redeem Your Kit")) {
 
+        	e.setCancelled(true);
+        	
             if (e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "Kit Starter")) {
 
                 if (starterTime.containsKey(p)) {
@@ -1461,9 +1561,9 @@ public class A extends JavaPlugin implements Listener {
 
                     ItemStack goldpot = new ItemStack(Material.CAULDRON, 1);
                     ItemMeta goldpotmeta = goldpot.getItemMeta();
-                    goldpotmeta.setDisplayName(ChatColor.GOLD + "" + ChatColor.BOLD + "Pot o' Gold");
+                    goldpotmeta.setDisplayName(ChatColor.GOLD + "" + ChatColor.BOLD + "Pot of Gold");
                     ArrayList<String> goldpotlore = new ArrayList<String>();
-                    goldpotlore.add(ChatColor.GRAY + "Right click to activate!");
+                    goldpotlore.add(ChatColor.GRAY + "Place this down on a solid block!");
                     goldpotmeta.setLore(goldpotlore);
                     goldpot.setItemMeta(goldpotmeta);
 
@@ -1670,14 +1770,14 @@ public class A extends JavaPlugin implements Listener {
                     helmet.addUnsafeEnchantment(Enchantment.DURABILITY, 4);
                     helmet.addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 3);
                     ItemMeta helmetMeta = helmet.getItemMeta();
-                    helmetMeta.setDisplayName(ChatColor.AQUA + "Frosty's Top Hat");
+                    helmetMeta.setDisplayName(ChatColor.GRAY + "Frosty's Top Hat");
                     helmet.setItemMeta(helmetMeta);
 
                     ItemStack chestplate = new ItemStack(Material.DIAMOND_CHESTPLATE, 1);
                     chestplate.addUnsafeEnchantment(Enchantment.DURABILITY, 4);
                     chestplate.addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 3);
                     ItemMeta chestplateMeta = chestplate.getItemMeta();
-                    chestplateMeta.setDisplayName(ChatColor.AQUA + "Frosty's Striped Scarf");
+                    chestplateMeta.setDisplayName(ChatColor.LIGHT_PURPLE + "Frosty's Striped Scarf");
                     chestplate.setItemMeta(chestplateMeta);
 
                     ItemStack gapples = new ItemStack(Material.GOLDEN_APPLE, 6, (short) 1);
@@ -1762,6 +1862,55 @@ public class A extends JavaPlugin implements Listener {
 
         return true;
 
+    }
+    
+    public void goldPotMenu(Player p) {
+    	
+    	Inventory goldPot = Bukkit.createInventory(null, 27, ChatColor.GOLD + "" + ChatColor.BOLD + "Pot o' Gold");
+    	
+    	ItemStack blackGlass = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 7);
+    	ItemMeta blackGlassMeta = blackGlass.getItemMeta();
+    	blackGlassMeta.setDisplayName(" ");
+    	blackGlass.setItemMeta(blackGlassMeta);
+    	
+    	ItemStack orangeGlass = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 1);
+    	ItemMeta orangeGlassMeta = orangeGlass.getItemMeta();
+    	orangeGlassMeta.setDisplayName(ChatColor.GOLD + "" + ChatColor.BOLD + "Prize");
+    	ArrayList<String> orangeGlassLore = new ArrayList<String>();
+    	orangeGlassLore.add(ChatColor.GRAY + "Click on one of the prize panes for a random prize!");
+    	orangeGlassMeta.setLore(orangeGlassLore);
+    	orangeGlass.setItemMeta(orangeGlassMeta);
+    	
+    	goldPot.setItem(0, blackGlass);
+    	goldPot.setItem(1, blackGlass);
+    	goldPot.setItem(2, blackGlass);
+    	goldPot.setItem(3, blackGlass);
+    	goldPot.setItem(4, blackGlass);
+    	goldPot.setItem(5, blackGlass);
+    	goldPot.setItem(6, blackGlass);
+    	goldPot.setItem(7, blackGlass);
+    	goldPot.setItem(8, blackGlass);
+    	goldPot.setItem(9, blackGlass);
+    	goldPot.setItem(10, blackGlass);
+    	goldPot.setItem(11, blackGlass);
+    	goldPot.setItem(12, orangeGlass);
+    	goldPot.setItem(13, orangeGlass);
+    	goldPot.setItem(14, orangeGlass);
+    	goldPot.setItem(15, blackGlass);
+    	goldPot.setItem(16, blackGlass);
+    	goldPot.setItem(17, blackGlass);
+    	goldPot.setItem(18, blackGlass);
+    	goldPot.setItem(19, blackGlass);
+    	goldPot.setItem(20, blackGlass);
+    	goldPot.setItem(21, blackGlass);
+    	goldPot.setItem(22, blackGlass);
+    	goldPot.setItem(23, blackGlass);
+    	goldPot.setItem(24, blackGlass);
+    	goldPot.setItem(25, blackGlass);
+    	goldPot.setItem(26, blackGlass);
+    	
+    	p.openInventory(goldPot);
+    	
     }
 
     public void kitMenu(Player p) {
