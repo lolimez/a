@@ -33,9 +33,6 @@ import java.util.Random;
 
 public class A extends JavaPlugin implements Listener {
 
-    private HashMap<Player, Integer> snowflakeParticles;
-    private HashMap<Player, Integer> ghoulParticles;
-
     private HashMap<Player, Integer> starterTime;
     private HashMap<Player, BukkitRunnable> starterTask;
 
@@ -51,17 +48,17 @@ public class A extends JavaPlugin implements Listener {
     private HashMap<Player, Integer> engineerTime;
     private HashMap<Player, BukkitRunnable> engineerTask;
 
-    private HashMap<Player, Integer> snowflakeTime;
-    private HashMap<Player, BukkitRunnable> snowflakeTask;
+    private HashMap<Player, Integer> warriorTime;
+    private HashMap<Player, BukkitRunnable> warriorTask;
 
-    private HashMap<Player, Integer> dragonTime;
-    private HashMap<Player, BukkitRunnable> dragonTask;
+    private HashMap<Player, Integer> berserkerTime;
+    private HashMap<Player, BukkitRunnable> berserkerTask;
 
-    private HashMap<Player, Integer> leprechaunTime;
-    private HashMap<Player, BukkitRunnable> leprechaunTask;
+    private HashMap<Player, Integer> rogueTime;
+    private HashMap<Player, BukkitRunnable> rogueTask;
 
-    private HashMap<Player, Integer> ghoulTime;
-    private HashMap<Player, BukkitRunnable> ghoulTask;
+    private HashMap<Player, Integer> bruteTime;
+    private HashMap<Player, BukkitRunnable> bruteTask;
     
     private HashMap<Player, BukkitRunnable> goldPot1;
     private HashMap<Player, BukkitRunnable> goldPot2;
@@ -185,10 +182,10 @@ public class A extends JavaPlugin implements Listener {
 
             permissions.set("Rank." + uuid, 0);
 
-            permissions.set("DragonKit." + uuid, 0);
-            permissions.set("LeprechaunKit." + uuid, 0);
-            permissions.set("GhoulKit." + uuid, 0);
-            permissions.set("SnowflakeKit." + uuid, 0);
+            permissions.set("WarriorKit." + uuid, 0);
+            permissions.set("BerserkerKit." + uuid, 0);
+            permissions.set("RogueKit." + uuid, 0);
+            permissions.set("BruteKit." + uuid, 0);
 
             e.setJoinMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "(!) " + ChatColor.GRAY + "Welcome, " + ChatColor.BLACK + "" + ChatColor.BOLD + p.getName() + ChatColor.GRAY + ", to Mutiny Factions!");
 
@@ -200,9 +197,6 @@ public class A extends JavaPlugin implements Listener {
 
         }
 
-        snowflakeParticles.put(p, 0);
-        ghoulParticles.put(p, 0);
-
     }
 
     @EventHandler
@@ -211,9 +205,6 @@ public class A extends JavaPlugin implements Listener {
         Player p = e.getPlayer();
 
         e.setQuitMessage(" ");
-
-        snowflakeParticles.put(p, 0);
-        ghoulParticles.put(p, 0);
 
     }
 
