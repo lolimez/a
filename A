@@ -48,17 +48,17 @@ public class A extends JavaPlugin implements Listener {
     private HashMap<Player, Integer> engineerTime;
     private HashMap<Player, BukkitRunnable> engineerTask;
 
-    private HashMap<Player, Integer> warriorTime;
-    private HashMap<Player, BukkitRunnable> warriorTask;
+    private HashMap<Player, Integer> dragonTime;
+    private HashMap<Player, BukkitRunnable> dragonTask;
 
-    private HashMap<Player, Integer> berserkerTime;
-    private HashMap<Player, BukkitRunnable> berserkerTask;
+    private HashMap<Player, Integer> leprechauntime;
+    private HashMap<Player, BukkitRunnable> leprechaunTask;
 
-    private HashMap<Player, Integer> rogueTime;
-    private HashMap<Player, BukkitRunnable> rogueTask;
+    private HashMap<Player, Integer> ghoulTime;
+    private HashMap<Player, BukkitRunnable> ghoulTask;
 
-    private HashMap<Player, Integer> bruteTime;
-    private HashMap<Player, BukkitRunnable> bruteTask;
+    private HashMap<Player, Integer> snowflakeTime;
+    private HashMap<Player, BukkitRunnable> snowflakeTask;
     
     private HashMap<Player, BukkitRunnable> goldPot1;
     private HashMap<Player, BukkitRunnable> goldPot2;
@@ -152,6 +152,25 @@ public class A extends JavaPlugin implements Listener {
 
 
         }
+        
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
+        
+            @Override
+            public void run() {
+            
+                try {
+                
+                    perms = YamlConfiguration.reloadConfiguration(file);
+                
+                } catch(Exception exc) {
+                
+                
+                
+                }
+            
+            }
+        
+        }, 100, 100);
 
     }
 
@@ -182,10 +201,10 @@ public class A extends JavaPlugin implements Listener {
 
             permissions.set("Rank." + uuid, 0);
 
-            permissions.set("WarriorKit." + uuid, 0);
-            permissions.set("BerserkerKit." + uuid, 0);
-            permissions.set("RogueKit." + uuid, 0);
-            permissions.set("BruteKit." + uuid, 0);
+            permissions.set("DragonKit." + uuid, 0);
+            permissions.set("LeprechaunKit." + uuid, 0);
+            permissions.set("GhoulKit." + uuid, 0);
+            permissions.set("SnowflakeKit." + uuid, 0);
 
             e.setJoinMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "(!) " + ChatColor.GRAY + "Welcome, " + ChatColor.BLACK + "" + ChatColor.BOLD + p.getName() + ChatColor.GRAY + ", to Mutiny Factions!");
 
@@ -281,13 +300,13 @@ public class A extends JavaPlugin implements Listener {
     	
     	if (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) {
     		
-    		if (p.getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.GOLD + "" + ChatColor.BOLD + "Pot of Gold")) {
+    		if (p.getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.GOLD + "" + ChatColor.BOLD + "Pot o' Gold")) {
     			
     			if (p.getInventory().getItemInHand().getAmount() > 1) {
     				   			
     				p.getInventory().getItemInHand().setAmount(p.getInventory().getItemInHand().getAmount() - 1);
     				
-    				p.sendMessage(ChatColor.GREEN + "(!) " + ChatColor.GRAY + "You have used your " + ChatColor.GOLD + "" + ChatColor.UNDERLINE + "Pot of Gold" + ChatColor.GRAY + "!");
+    				p.sendMessage(ChatColor.GREEN + "(!) " + ChatColor.GRAY + "You have used your " + ChatColor.GOLD + "" + ChatColor.UNDERLINE + "Pot o' Gold" + ChatColor.GRAY + "!");
     			
     				e.setCancelled(true);
     			
@@ -310,7 +329,7 @@ public class A extends JavaPlugin implements Listener {
     				
     				p.setItemInHand(new ItemStack(Material.AIR));
     				
-    				p.sendMessage(ChatColor.GREEN + "(!) " + ChatColor.GRAY + "You have used your " + ChatColor.GOLD + "" + ChatColor.UNDERLINE + "Pot of Gold" + ChatColor.GRAY + "!");
+    				p.sendMessage(ChatColor.GREEN + "(!) " + ChatColor.GRAY + "You have used your " + ChatColor.GOLD + "" + ChatColor.UNDERLINE + "Pot o' Gold" + ChatColor.GRAY + "!");
         			
     				e.setCancelled(true);
     			
