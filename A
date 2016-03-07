@@ -203,7 +203,7 @@ public class A extends JavaPlugin implements Listener {
 
             perms.set("Kills." + uuid, 0);
 
-            e.setJoinMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "JOIN " + ChatColor.GRAY + "Welcome, " + ChatColor.UNDERLINE + p.getName() + ChatColor.GRAY + ", to " + ChatColor.GREEN + "" + ChatColor.BOLD + "Variance Factions!");
+            e.setJoinMessage(ChatColor.BLUE + "" + ChatColor.BOLD + "JOIN " + ChatColor.GRAY + "Welcome, " + ChatColor.UNDERLINE + p.getName() + ChatColor.GRAY + ", to " + ChatColor.GREEN + "" + ChatColor.BOLD + "Variance Factions!");
 
         }
 
@@ -231,11 +231,11 @@ public class A extends JavaPlugin implements Listener {
 
         if (p.getName().equalsIgnoreCase("irenmen")) {
 
-            e.setFormat(ChatColor.DARK_RED + "" + ChatColor.BOLD + "DEV " + ChatColor.BLUE + "%s " + ChatColor.WHITE + "%s");
+            e.setFormat(ChatColor.RED + "" + ChatColor.BOLD + "DEV " + ChatColor.BLUE + "%s " + ChatColor.WHITE + "%s");
 
         } else if (p.getName().equalsIgnoreCase("AllHacksNoGame")) {
 
-            e.setFormat(ChatColor.RED + "" + ChatColor.BOLD + "ANTISKID " + ChatColor.BLUE + "%s " + ChatColor.WHITE + "%s");
+            e.setFormat(ChatColor.DARK_RED + "" + ChatColor.BOLD + "ANTISKID " + ChatColor.BLUE + "%s " + ChatColor.WHITE + "%s");
 
         } else if (perms.getInt("Rank." + p.getUniqueId().toString()) == 0) {
 
@@ -273,7 +273,7 @@ public class A extends JavaPlugin implements Listener {
 
             String weapon = killer.getInventory().getItemInHand().getItemMeta().getDisplayName();
 
-            e.setDeathMessage(ChatColor.RED + "" + ChatColor.BOLD + "DEATH " + ChatColor.WHITE + killer.getName() + ChatColor.GRAY + "[" + ChatColor.WHITE + perms.getInt("Kills." + uuid) + ChatColor.GRAY + "] has slapped " + ChatColor.WHITE + killed.getName() + ChatColor.GRAY + " up using " + weapon);
+            e.setDeathMessage(ChatColor.BLUE + "" + ChatColor.BOLD + "DEATH " + ChatColor.WHITE + killer.getName() + ChatColor.GRAY + "[" + ChatColor.WHITE + perms.getInt("Kills." + uuid) + ChatColor.GRAY + "] has slapped " + ChatColor.WHITE + killed.getName() + ChatColor.GRAY + " up using " + weapon);
 
         } else {
 
@@ -292,6 +292,11 @@ public class A extends JavaPlugin implements Listener {
         PotionMeta strMeta = (PotionMeta) str.getItemMeta();
         strMeta.addCustomEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 4800, 1), true);
         str.setItemMeta(strMeta);
+        
+        ItemStack spe = new ItemStack(Material.POTION, 1, (short) 8226);
+        PotionMeta speMeta = (PotionMeta) spe.getItemMeta();
+        speMeta.addCustomEffect(new PotionEffect(PotionEffectType.SPEED, 4800, 1), true);
+        spe.setItemMeta(speMeta);
 
         if (e.getInventory().getName().equalsIgnoreCase(ChatColor.BLUE + "" + ChatColor.BOLD + "Redeem Your Kit")) {
 
@@ -302,14 +307,14 @@ public class A extends JavaPlugin implements Listener {
                 if (starterTime.containsKey(p)) {
 
                     p.closeInventory();
-                    p.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "KITS " + ChatColor.GRAY + "This kit is still on cooldown for " + ChatColor.UNDERLINE + starterTime.get(p) + ChatColor.GRAY + " hours.");
+                    p.sendMessage(ChatColor.BLUE + "" + ChatColor.BOLD + "KITS " + ChatColor.GRAY + "This kit is still on cooldown for " + ChatColor.UNDERLINE + starterTime.get(p) + ChatColor.GRAY + " hours.");
                     return;
 
                 }
 
                 p.closeInventory();
 
-                p.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "KITS " + ChatColor.GRAY + "You have redeemed your " + ChatColor.UNDERLINE + "Starter Kit" + ChatColor.GRAY + ".");
+                p.sendMessage(ChatColor.BLUE + "" + ChatColor.BOLD + "KITS " + ChatColor.GRAY + "You have redeemed your " + ChatColor.UNDERLINE + "Starter Kit" + ChatColor.GRAY + ".");
 
                 ItemStack sword = new ItemStack(Material.DIAMOND_SWORD, 1);
                 sword.addEnchantment(Enchantment.DAMAGE_ALL, 1);
@@ -355,8 +360,6 @@ public class A extends JavaPlugin implements Listener {
 
                 ItemStack arrows = new ItemStack(Material.ARROW, 32);
 
-                ItemStack gapples = new ItemStack(Material.GOLDEN_APPLE, 2, (short) 1);
-
                 ItemStack crapples = new ItemStack(Material.GOLDEN_APPLE, 8);
 
                 ItemStack tnt = new ItemStack(Material.TNT, 32);
@@ -368,12 +371,7 @@ public class A extends JavaPlugin implements Listener {
                 ItemStack diamonds = new ItemStack(Material.DIAMOND, 8);
 
                 ItemStack iron = new ItemStack(Material.IRON_INGOT, 12);
-
-                ItemStack spe = new ItemStack(Material.POTION, 1, (short) 8226);
-                PotionMeta speMeta = (PotionMeta) spe.getItemMeta();
-                speMeta.addCustomEffect(new PotionEffect(PotionEffectType.SPEED, 4800, 1), true);
-                spe.setItemMeta(speMeta);
-
+                
                 p.getInventory().addItem(sword);
                 p.getInventory().addItem(helmet);
                 p.getInventory().addItem(chestplate);
@@ -382,7 +380,6 @@ public class A extends JavaPlugin implements Listener {
                 p.getInventory().addItem(pickaxe);
                 p.getInventory().addItem(bow);
                 p.getInventory().addItem(arrows);
-                p.getInventory().addItem(gapples);
                 p.getInventory().addItem(crapples);
                 p.getInventory().addItem(tnt);
                 p.getInventory().addItem(obby);
@@ -421,14 +418,14 @@ public class A extends JavaPlugin implements Listener {
                     if (farmerTime.containsKey(p)) {
 
                         p.closeInventory();
-                        p.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "(!) " + ChatColor.GRAY + "This kit is still on cooldown for " + ChatColor.UNDERLINE + farmerTime.get(p) + ChatColor.GRAY + " hours.");
+                        p.sendMessage(ChatColor.BLUE + "" + ChatColor.BOLD + "KITS " + ChatColor.GRAY + "This kit is still on cooldown for " + ChatColor.UNDERLINE + farmerTime.get(p) + ChatColor.GRAY + " hours.");
                         return;
 
                     }
 
                     p.closeInventory();
 
-                    p.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "(!) " + ChatColor.GRAY + "You have redeemed your " + ChatColor.UNDERLINE + "Farmer Kit" + ChatColor.GRAY + ".");
+                    p.sendMessage(ChatColor.BLUE + "" + ChatColor.BOLD + "KITS " + ChatColor.GRAY + "You have redeemed your " + ChatColor.UNDERLINE + "Farmer Kit" + ChatColor.GRAY + ".");
 
                     ItemStack sword = new ItemStack(Material.DIAMOND_SWORD, 1);
                     sword.addEnchantment(Enchantment.DAMAGE_ALL, 2);
@@ -506,7 +503,7 @@ public class A extends JavaPlugin implements Listener {
                     bowMeta.setLore(bowLore);
                     bow.setItemMeta(bowMeta);
 
-                    ItemStack gapples = new ItemStack(Material.GOLDEN_APPLE, 3, (short) 1);
+                    ItemStack gapples = new ItemStack(Material.GOLDEN_APPLE, 2, (short) 1);
 
                     ItemStack crapples = new ItemStack(Material.GOLDEN_APPLE, 12);
 
@@ -567,7 +564,7 @@ public class A extends JavaPlugin implements Listener {
 
                     p.closeInventory();
 
-                    p.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "(!) " + ChatColor.GRAY + "You do not have permissions for the " + ChatColor.UNDERLINE + "Farmer Kit" + ChatColor.GRAY + ".");
+                    p.sendMessage(ChatColor.BLUE + "" + ChatColor.BOLD + "KITS " + ChatColor.GRAY + "You do not have permissions for the " + ChatColor.UNDERLINE + "Farmer Kit" + ChatColor.GRAY + ".");
 
                 }
 
@@ -578,14 +575,14 @@ public class A extends JavaPlugin implements Listener {
                     if (merchantTime.containsKey(p)) {
 
                         p.closeInventory();
-                        p.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "(!) " + ChatColor.GRAY + "This kit is still on cooldown for " + ChatColor.UNDERLINE + merchantTime.get(p) + ChatColor.GRAY + " hours.");
+                        p.sendMessage(ChatColor.BLUE + "" + ChatColor.BOLD + "KITS " + ChatColor.GRAY + "This kit is still on cooldown for " + ChatColor.UNDERLINE + merchantTime.get(p) + ChatColor.GRAY + " hours.");
                         return;
 
                     }
 
                     p.closeInventory();
 
-                    p.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "(!) " + ChatColor.GRAY + "You have redeemed your " + ChatColor.UNDERLINE + "Merchant Kit" + ChatColor.GRAY + ".");
+                    p.sendMessage(ChatColor.BLUE + "" + ChatColor.BOLD + "KITS " + ChatColor.GRAY + "You have redeemed your " + ChatColor.UNDERLINE + "Merchant Kit" + ChatColor.GRAY + ".");
 
                     ItemStack sword = new ItemStack(Material.DIAMOND_SWORD, 1);
                     sword.addEnchantment(Enchantment.DAMAGE_ALL, 3);
@@ -730,7 +727,7 @@ public class A extends JavaPlugin implements Listener {
 
                     p.closeInventory();
 
-                    p.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "(!) " + ChatColor.GRAY + "You do not have permissions for the " + ChatColor.UNDERLINE + "Merchant Kit" + ChatColor.GRAY + ".");
+                    p.sendMessage(ChatColor.BLUE + "" + ChatColor.BOLD + "KITS " + ChatColor.GRAY + "You do not have permissions for the " + ChatColor.UNDERLINE + "Merchant Kit" + ChatColor.GRAY + ".");
 
                 }
 
@@ -741,14 +738,14 @@ public class A extends JavaPlugin implements Listener {
                     if (industrialistTime.containsKey(p)) {
 
                         p.closeInventory();
-                        p.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "(!) " + ChatColor.GRAY + "This kit is still on cooldown for " + ChatColor.UNDERLINE + industrialistTime.get(p) + ChatColor.GRAY + " hours.");
+                        p.sendMessage(ChatColor.BLUE + "" + ChatColor.BOLD + "KITS " + ChatColor.GRAY + "This kit is still on cooldown for " + ChatColor.UNDERLINE + industrialistTime.get(p) + ChatColor.GRAY + " hours.");
                         return;
 
                     }
 
                     p.closeInventory();
 
-                    p.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "(!) " + ChatColor.GRAY + "You have redeemed your " + ChatColor.UNDERLINE + "Industrialist Kit" + ChatColor.GRAY + ".");
+                    p.sendMessage(ChatColor.BLUE + "" + ChatColor.BOLD + "KITS " + ChatColor.GRAY + "You have redeemed your " + ChatColor.UNDERLINE + "Industrialist Kit" + ChatColor.GRAY + ".");
 
                     ItemStack sword = new ItemStack(Material.DIAMOND_SWORD, 1);
                     sword.addEnchantment(Enchantment.DAMAGE_ALL, 4);
@@ -843,7 +840,7 @@ public class A extends JavaPlugin implements Listener {
                     bowMeta.setLore(bowLore);
                     bow.setItemMeta(bowMeta);
 
-                    ItemStack gapples = new ItemStack(Material.GOLDEN_APPLE, 5, (short) 1);
+                    ItemStack gapples = new ItemStack(Material.GOLDEN_APPLE, 4, (short) 1);
 
                     ItemStack crapples = new ItemStack(Material.GOLDEN_APPLE, 20);
 
@@ -909,7 +906,7 @@ public class A extends JavaPlugin implements Listener {
 
                     p.closeInventory();
 
-                    p.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "(!) " + ChatColor.GRAY + "You do not have permissions for the " + ChatColor.UNDERLINE + "Industrialist Kit" + ChatColor.GRAY + ".");
+                    p.sendMessage(ChatColor.BLUE + "" + ChatColor.BOLD + "KITS " + ChatColor.GRAY + "You do not have permissions for the " + ChatColor.UNDERLINE + "Industrialist Kit" + ChatColor.GRAY + ".");
 
                 }
 
@@ -920,14 +917,14 @@ public class A extends JavaPlugin implements Listener {
                     if (engineerTime.containsKey(p)) {
 
                         p.closeInventory();
-                        p.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "(!) " + ChatColor.GRAY + "This kit is still on cooldown for " + ChatColor.UNDERLINE + engineerTime.get(p) + ChatColor.GRAY + " hours.");
+                        p.sendMessage(ChatColor.BLUE + "" + ChatColor.BOLD + "KITS " + ChatColor.GRAY + "This kit is still on cooldown for " + ChatColor.UNDERLINE + engineerTime.get(p) + ChatColor.GRAY + " hours.");
                         return;
 
                     }
 
                     p.closeInventory();
 
-                    p.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "(!) " + ChatColor.GRAY + "You have redeemed your " + ChatColor.UNDERLINE + "Engineer Kit" + ChatColor.GRAY + ".");
+                    p.sendMessage(ChatColor.BLUE + "" + ChatColor.BOLD + "KITS " + ChatColor.GRAY + "You have redeemed your " + ChatColor.UNDERLINE + "Engineer Kit" + ChatColor.GRAY + ".");
 
                     ItemStack sword = new ItemStack(Material.DIAMOND_SWORD, 1);
                     sword.addEnchantment(Enchantment.DAMAGE_ALL, 5);
@@ -1138,7 +1135,7 @@ public class A extends JavaPlugin implements Listener {
 
                     p.closeInventory();
 
-                    p.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "(!) " + ChatColor.GRAY + "You do not have permissions for the " + ChatColor.UNDERLINE + "Engineer Kit" + ChatColor.GRAY + ".");
+                    p.sendMessage(ChatColor.BLUE + "" + ChatColor.BOLD + "KITS " + ChatColor.GRAY + "You do not have permissions for the " + ChatColor.UNDERLINE + "Engineer Kit" + ChatColor.GRAY + ".");
 
                 }
 
@@ -1149,14 +1146,14 @@ public class A extends JavaPlugin implements Listener {
                     if (dragonTime.containsKey(p)) {
 
                         p.closeInventory();
-                        p.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "(!) " + ChatColor.GRAY + "This kit is still on cooldown for " + ChatColor.UNDERLINE + dragonTime.get(p) + ChatColor.GRAY + " hours.");
+                        p.sendMessage(ChatColor.BLUE + "" + ChatColor.BOLD + "KITS " + ChatColor.GRAY + "This kit is still on cooldown for " + ChatColor.UNDERLINE + dragonTime.get(p) + ChatColor.GRAY + " hours.");
                         return;
 
                     }
 
                     p.closeInventory();
 
-                    p.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "(!) " + ChatColor.GRAY + "You have redeemed your " + ChatColor.UNDERLINE + "Dragon Kit" + ChatColor.GRAY + ".");
+                    p.sendMessage(ChatColor.BLUE + "" + ChatColor.BOLD + "KITS " + ChatColor.GRAY + "You have redeemed your " + ChatColor.UNDERLINE + "Dragon Kit" + ChatColor.GRAY + ".");
 
                     ItemStack sword = new ItemStack(Material.DIAMOND_SWORD, 1);
                     sword.addEnchantment(Enchantment.LOOT_BONUS_MOBS, 2);
@@ -1339,7 +1336,7 @@ public class A extends JavaPlugin implements Listener {
 
                     p.closeInventory();
 
-                    p.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "(!) " + ChatColor.GRAY + "You do not have permissions for the " + ChatColor.UNDERLINE + "Dragon Kit" + ChatColor.GRAY + ".");
+                    p.sendMessage(ChatColor.BLUE + "" + ChatColor.BOLD + "KITS " + ChatColor.GRAY + "You do not have permissions for the " + ChatColor.UNDERLINE + "Dragon Kit" + ChatColor.GRAY + ".");
 
                 }
 
@@ -1350,14 +1347,14 @@ public class A extends JavaPlugin implements Listener {
                     if (leprechaunTime.containsKey(p)) {
 
                         p.closeInventory();
-                        p.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "(!) " + ChatColor.GRAY + "This kit is still on cooldown for " + ChatColor.UNDERLINE + leprechaunTime.get(p) + ChatColor.GRAY + " hours.");
+                        p.sendMessage(ChatColor.BLUE + "" + ChatColor.BOLD + "KITS " + ChatColor.GRAY + "This kit is still on cooldown for " + ChatColor.UNDERLINE + leprechaunTime.get(p) + ChatColor.GRAY + " hours.");
                         return;
 
                     }
 
                     p.closeInventory();
 
-                    p.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "(!) " + ChatColor.GRAY + "You have redeemed your " + ChatColor.UNDERLINE + "Leprechaun Kit" + ChatColor.GRAY + ".");
+                    p.sendMessage(ChatColor.BLUE + "" + ChatColor.BOLD + "KITS " + ChatColor.GRAY + "You have redeemed your " + ChatColor.UNDERLINE + "Leprechaun Kit" + ChatColor.GRAY + ".");
 
                     ItemStack sword = new ItemStack(Material.DIAMOND_AXE, 1);
                     sword.addUnsafeEnchantment(Enchantment.DAMAGE_ALL, 5);
@@ -1484,7 +1481,7 @@ public class A extends JavaPlugin implements Listener {
 
                     p.closeInventory();
 
-                    p.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "(!) " + ChatColor.GRAY + "You do not have permissions for the " + ChatColor.UNDERLINE + "Leprechaun Kit" + ChatColor.GRAY + ".");
+                    p.sendMessage(ChatColor.BLUE + "" + ChatColor.BOLD + "KITS " + ChatColor.GRAY + "You do not have permissions for the " + ChatColor.UNDERLINE + "Leprechaun Kit" + ChatColor.GRAY + ".");
 
                 }
 
@@ -1495,14 +1492,14 @@ public class A extends JavaPlugin implements Listener {
                     if (ghoulTime.containsKey(p)) {
 
                         p.closeInventory();
-                        p.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "(!) " + ChatColor.GRAY + "This kit is still on cooldown for " + ChatColor.UNDERLINE + ghoulTime.get(p) + ChatColor.GRAY + " hours.");
+                        p.sendMessage(ChatColor.BLUE + "" + ChatColor.BOLD + "KITS " + ChatColor.GRAY + "This kit is still on cooldown for " + ChatColor.UNDERLINE + ghoulTime.get(p) + ChatColor.GRAY + " hours.");
                         return;
 
                     }
 
                     p.closeInventory();
 
-                    p.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "(!) " + ChatColor.GRAY + "You have redeemed your " + ChatColor.UNDERLINE + "Ghoul Kit" + ChatColor.GRAY + ".");
+                    p.sendMessage(ChatColor.BLUE + "" + ChatColor.BOLD + "(!) " + ChatColor.GRAY + "You have redeemed your " + ChatColor.UNDERLINE + "Ghoul Kit" + ChatColor.GRAY + ".");
 
                     ItemStack sword = new ItemStack(Material.DIAMOND_SWORD, 1);
                     sword.addUnsafeEnchantment(Enchantment.DAMAGE_ALL, 6);
@@ -1587,7 +1584,7 @@ public class A extends JavaPlugin implements Listener {
 
                     p.closeInventory();
 
-                    p.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "(!) " + ChatColor.GRAY + "You do not have permissions for the " + ChatColor.UNDERLINE + "Ghoul Kit" + ChatColor.GRAY + ".");
+                    p.sendMessage(ChatColor.BLUE + "" + ChatColor.BOLD + "KITS " + ChatColor.GRAY + "You do not have permissions for the " + ChatColor.UNDERLINE + "Ghoul Kit" + ChatColor.GRAY + ".");
 
                 }
 
@@ -1598,14 +1595,14 @@ public class A extends JavaPlugin implements Listener {
                     if (snowflakeTime.containsKey(p)) {
 
                         p.closeInventory();
-                        p.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "(!) " + ChatColor.GRAY + "This kit is still on cooldown for " + ChatColor.UNDERLINE + snowflakeTime.get(p) + ChatColor.GRAY + " hours.");
+                        p.sendMessage(ChatColor.BLUE + "" + ChatColor.BOLD + "KITS " + ChatColor.GRAY + "This kit is still on cooldown for " + ChatColor.UNDERLINE + snowflakeTime.get(p) + ChatColor.GRAY + " hours.");
                         return;
 
                     }
 
                     p.closeInventory();
 
-                    p.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "(!) " + ChatColor.GRAY + "You have redeemed your " + ChatColor.UNDERLINE + "Snowflake Kit" + ChatColor.GRAY + ".");
+                    p.sendMessage(ChatColor.BLUE + "" + ChatColor.BOLD + "KITS " + ChatColor.GRAY + "You have redeemed your " + ChatColor.UNDERLINE + "Snowflake Kit" + ChatColor.GRAY + ".");
 
                     ItemStack sword = new ItemStack(Material.DIAMOND_SWORD, 1);
                     sword.addUnsafeEnchantment(Enchantment.KNOCKBACK, 1);
@@ -1691,7 +1688,7 @@ public class A extends JavaPlugin implements Listener {
 
                     p.closeInventory();
 
-                    p.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "(!) " + ChatColor.GRAY + "You do not have permissions for the " + ChatColor.UNDERLINE + "Snowflake Kit" + ChatColor.GRAY + ".");
+                    p.sendMessage(ChatColor.BLUE + "" + ChatColor.BOLD + "KITS " + ChatColor.GRAY + "You do not have permissions for the " + ChatColor.UNDERLINE + "Snowflake Kit" + ChatColor.GRAY + ".");
 
                 }
 
@@ -1712,55 +1709,6 @@ public class A extends JavaPlugin implements Listener {
         }
 
         return true;
-
-    }
-
-    public void goldPotMenu(Player p) {
-
-        Inventory goldPot = Bukkit.createInventory(null, 27, ChatColor.GOLD + "" + ChatColor.BOLD + "Pot o' Gold");
-
-        ItemStack blackGlass = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 7);
-        ItemMeta blackGlassMeta = blackGlass.getItemMeta();
-        blackGlassMeta.setDisplayName(" ");
-        blackGlass.setItemMeta(blackGlassMeta);
-
-        ItemStack orangeGlass = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 1);
-        ItemMeta orangeGlassMeta = orangeGlass.getItemMeta();
-        orangeGlassMeta.setDisplayName(ChatColor.GOLD + "" + ChatColor.BOLD + "Prize");
-        ArrayList<String> orangeGlassLore = new ArrayList<String>();
-        orangeGlassLore.add(ChatColor.GRAY + "Click on one of the prize panes for a random prize!");
-        orangeGlassMeta.setLore(orangeGlassLore);
-        orangeGlass.setItemMeta(orangeGlassMeta);
-
-        goldPot.setItem(0, blackGlass);
-        goldPot.setItem(1, blackGlass);
-        goldPot.setItem(2, blackGlass);
-        goldPot.setItem(3, blackGlass);
-        goldPot.setItem(4, blackGlass);
-        goldPot.setItem(5, blackGlass);
-        goldPot.setItem(6, blackGlass);
-        goldPot.setItem(7, blackGlass);
-        goldPot.setItem(8, blackGlass);
-        goldPot.setItem(9, blackGlass);
-        goldPot.setItem(10, blackGlass);
-        goldPot.setItem(11, blackGlass);
-        goldPot.setItem(12, orangeGlass);
-        goldPot.setItem(13, orangeGlass);
-        goldPot.setItem(14, orangeGlass);
-        goldPot.setItem(15, blackGlass);
-        goldPot.setItem(16, blackGlass);
-        goldPot.setItem(17, blackGlass);
-        goldPot.setItem(18, blackGlass);
-        goldPot.setItem(19, blackGlass);
-        goldPot.setItem(20, blackGlass);
-        goldPot.setItem(21, blackGlass);
-        goldPot.setItem(22, blackGlass);
-        goldPot.setItem(23, blackGlass);
-        goldPot.setItem(24, blackGlass);
-        goldPot.setItem(25, blackGlass);
-        goldPot.setItem(26, blackGlass);
-
-        p.openInventory(goldPot);
 
     }
 
