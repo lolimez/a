@@ -23,7 +23,10 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
@@ -200,7 +203,7 @@ public class A extends JavaPlugin implements Listener {
 
             perms.set("Kills." + uuid, 0);
 
-            e.setJoinMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "{!} " + ChatColor.GRAY + "Welcome, " + ChatColor.UNDERLINE + p.getName() + ChatColor.GRAY + ", to " + ChatColor.GREEN + "" + ChatColor.BOLD + "Variance Factions!");
+            e.setJoinMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "JOIN " + ChatColor.GRAY + "Welcome, " + ChatColor.UNDERLINE + p.getName() + ChatColor.GRAY + ", to " + ChatColor.GREEN + "" + ChatColor.BOLD + "Variance Factions!");
 
         }
 
@@ -281,126 +284,14 @@ public class A extends JavaPlugin implements Listener {
     }
 
     @EventHandler
-    public void onPlayerInteract(PlayerInteractEvent e) {
-
-        Player p = e.getPlayer();
-
-        if (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) {
-
-            if (p.getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.GOLD + "" + ChatColor.BOLD + "Pot o' Gold")) {
-
-                if (p.getInventory().getItemInHand().getAmount() > 1) {
-
-                    p.getInventory().getItemInHand().setAmount(p.getInventory().getItemInHand().getAmount() - 1);
-
-                    p.sendMessage(ChatColor.GREEN + "(!) " + ChatColor.GRAY + "You have used your " + ChatColor.GOLD + "" + ChatColor.UNDERLINE + "Pot o' Gold" + ChatColor.GRAY + "!");
-
-                    e.setCancelled(true);
-
-                    p.setVelocity(new Vector(0, 0.25, 0));
-                    p.getWorld().getBlockAt(p.getLocation().add(0, -1, 0)).setType(Material.CAULDRON);
-
-                    goldPot1.put(p, new BukkitRunnable() {
-
-                        public void run() {
-
-                            goldPotMenu(p);
-
-                        }
-
-                    });
-
-                    goldPot1.get(p).runTaskLater(this, 60);
-
-                } else {
-
-                    p.setItemInHand(new ItemStack(Material.AIR));
-
-                    p.sendMessage(ChatColor.GREEN + "(!) " + ChatColor.GRAY + "You have used your " + ChatColor.GOLD + "" + ChatColor.UNDERLINE + "Pot o' Gold" + ChatColor.GRAY + "!");
-
-                    e.setCancelled(true);
-
-                    p.setVelocity(new Vector(0, 0.25, 0));
-                    p.getWorld().getBlockAt(p.getLocation().add(0, -1, 0)).setType(Material.CAULDRON);
-
-                    goldPot1.put(p, new BukkitRunnable() {
-
-                        public void run() {
-
-                            goldPotMenu(p);
-
-                        }
-
-                    });
-
-                    goldPot1.get(p).runTaskLater(this, 60);
-
-                }
-
-            }
-
-        }
-
-    }
-
-    @EventHandler
     public void onInventoryClick(InventoryClickEvent e) {
 
         Player p = (Player) e.getWhoClicked();
 
-        if (e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(" ")) {
-
-
-
-        }
-
-        if (e.getInventory().getName().equalsIgnoreCase(ChatColor.GOLD + "" + ChatColor.BOLD + "Pot o' Gold")) {
-
-            e.setCancelled(true);
-
-            p.closeInventory();
-
-            if (e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.GOLD + "" + ChatColor.BOLD + "Prize")) {
-
-                Random random = new Random();
-
-                int rNum = random.nextInt(100);
-
-                if (rNum > 0 && rNum < 45) {
-
-                    p.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "(!) " + ChatColor.GRAY + "You received a " + ChatColor.UNDERLINE + "Golden Apple Package" + ChatColor.GRAY + "!");
-
-                    goldPot2.put(p, new BukkitRunnable() {
-
-                        public void run() {
-
-                            ItemStack gapple = new ItemStack(Material.GOLDEN_APPLE, 1, (short) 1);
-
-                            p.getWorld().dropItemNaturally(p.getEyeLocation().add(0, 6, 0), gapple);
-
-                        }
-
-                    });
-
-                    goldPot2.get(p).runTaskLater(this, 20);
-
-                } else if (rNum >= 45 && rNum < 92) {
-
-                    p.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "(!) " + ChatColor.GRAY + "You received " + ChatColor.UNDERLINE + "Gold Currency" + ChatColor.GRAY + "!");
-
-                } else if (rNum >= 92 && rNum <= 100) {
-
-                    p.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "(!) " + ChatColor.GRAY + "You received a " + ChatColor.DARK_PURPLE + "" + ChatColor.UNDERLINE + "Golden Artifact" + ChatColor.GRAY + "!");
-
-                }
-
-            } else {
-
-                return;
-
-            }
-
-        }
+        ItemStack str = new ItemStack(Material.POTION, 1, (short) 8233);
+        PotionMeta strMeta = (PotionMeta) str.getItemMeta();
+        strMeta.addCustomEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 4800, 1), true);
+        str.setItemMeta(strMeta);
 
         if (e.getInventory().getName().equalsIgnoreCase(ChatColor.BLUE + "" + ChatColor.BOLD + "Redeem Your Kit")) {
 
@@ -411,14 +302,14 @@ public class A extends JavaPlugin implements Listener {
                 if (starterTime.containsKey(p)) {
 
                     p.closeInventory();
-                    p.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "(!) " + ChatColor.GRAY + "This kit is still on cooldown for " + ChatColor.UNDERLINE + starterTime.get(p) + ChatColor.GRAY + " hours.");
+                    p.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "KITS " + ChatColor.GRAY + "This kit is still on cooldown for " + ChatColor.UNDERLINE + starterTime.get(p) + ChatColor.GRAY + " hours.");
                     return;
 
                 }
 
                 p.closeInventory();
 
-                p.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "(!) " + ChatColor.GRAY + "You have redeemed your " + ChatColor.UNDERLINE + "Starter Kit" + ChatColor.GRAY + ".");
+                p.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "KITS " + ChatColor.GRAY + "You have redeemed your " + ChatColor.UNDERLINE + "Starter Kit" + ChatColor.GRAY + ".");
 
                 ItemStack sword = new ItemStack(Material.DIAMOND_SWORD, 1);
                 sword.addEnchantment(Enchantment.DAMAGE_ALL, 1);
@@ -478,9 +369,10 @@ public class A extends JavaPlugin implements Listener {
 
                 ItemStack iron = new ItemStack(Material.IRON_INGOT, 12);
 
-                ItemStack str = new ItemStack(Material.POTION, 1, (short) 8233);
-
                 ItemStack spe = new ItemStack(Material.POTION, 1, (short) 8226);
+                PotionMeta speMeta = (PotionMeta) spe.getItemMeta();
+                speMeta.addCustomEffect(new PotionEffect(PotionEffectType.SPEED, 4800, 1), true);
+                spe.setItemMeta(speMeta);
 
                 p.getInventory().addItem(sword);
                 p.getInventory().addItem(helmet);
@@ -627,8 +519,6 @@ public class A extends JavaPlugin implements Listener {
                     ItemStack diamonds = new ItemStack(Material.DIAMOND, 16);
 
                     ItemStack iron = new ItemStack(Material.IRON_INGOT, 32);
-
-                    ItemStack str = new ItemStack(Material.POTION, 1, (short) 8233);
 
                     ItemStack spe = new ItemStack(Material.POTION, 1, (short) 8226);
 
@@ -790,8 +680,6 @@ public class A extends JavaPlugin implements Listener {
                     ItemStack diamonds = new ItemStack(Material.DIAMOND, 32);
 
                     ItemStack iron = new ItemStack(Material.IRON_INGOT, 48);
-
-                    ItemStack str = new ItemStack(Material.POTION, 1, (short) 8233);
 
                     ItemStack spe = new ItemStack(Material.POTION, 1, (short) 8226);
 
@@ -968,8 +856,6 @@ public class A extends JavaPlugin implements Listener {
                     ItemStack diamonds = new ItemStack(Material.DIAMOND, 48);
 
                     ItemStack iron = new ItemStack(Material.IRON_INGOT, 56);
-
-                    ItemStack str = new ItemStack(Material.POTION, 1, (short) 8233);
 
                     ItemStack spe = new ItemStack(Material.POTION, 1, (short) 8226);
 
@@ -1194,8 +1080,6 @@ public class A extends JavaPlugin implements Listener {
 
                     ItemStack iron = new ItemStack(Material.IRON_INGOT, 64);
 
-                    ItemStack str = new ItemStack(Material.POTION, 1, (short) 8233);
-
                     ItemStack spe = new ItemStack(Material.POTION, 1, (short) 8226);
 
                     p.getInventory().addItem(sword);
@@ -1401,8 +1285,6 @@ public class A extends JavaPlugin implements Listener {
 
                     ItemStack iron = new ItemStack(Material.IRON_INGOT, 64);
 
-                    ItemStack str = new ItemStack(Material.POTION, 1, (short) 8233);
-
                     ItemStack spe = new ItemStack(Material.POTION, 1, (short) 8226);
 
                     p.getInventory().addItem(sword);
@@ -1553,8 +1435,6 @@ public class A extends JavaPlugin implements Listener {
 
                     ItemStack iron = new ItemStack(Material.IRON_INGOT, 64);
 
-                    ItemStack str = new ItemStack(Material.POTION, 1, (short) 8233);
-
                     ItemStack spe = new ItemStack(Material.POTION, 1, (short) 8226);
 
                     p.getInventory().addItem(sword);
@@ -1663,8 +1543,6 @@ public class A extends JavaPlugin implements Listener {
 
                     ItemStack iron = new ItemStack(Material.IRON_INGOT, 64);
 
-                    ItemStack str = new ItemStack(Material.POTION, 1, (short) 8233);
-
                     ItemStack spe = new ItemStack(Material.POTION, 1, (short) 8226);
 
                     p.getInventory().addItem(sword);
@@ -1766,8 +1644,6 @@ public class A extends JavaPlugin implements Listener {
                     ItemStack diamonds = new ItemStack(Material.DIAMOND, 32);
 
                     ItemStack iron = new ItemStack(Material.IRON_INGOT, 64);
-
-                    ItemStack str = new ItemStack(Material.POTION, 1, (short) 8233);
 
                     ItemStack spe = new ItemStack(Material.POTION, 1, (short) 8226);
 
