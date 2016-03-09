@@ -1404,6 +1404,15 @@ public class A extends JavaPlugin implements Listener {
                     ItemMeta bootsMeta = boots.getItemMeta();
                     bootsMeta.setDisplayName(ChatColor.GRAY + "[" + ChatColor.AQUA + "Snowman" + ChatColor.GRAY + "] " + ChatColor.WHITE + "Boots");
                     boots.setItemMeta(bootsMeta);
+                    
+                    ItemStack bow = new ItemStack(Material.BOW, 1);
+                    bow.addEnchantment(Enchantment.ARROW_DAMAGE, 5);
+                    bow.addEnchantment(Enchantment.ARROW_INFINITE, 1);
+                    bow.addUnsafeEnchantment(Enchantment.ARROW_KNOCKBACK, 3);
+                    ItemMeta bowMeta = bow.getItemMeta();
+                    bowMeta.setDisplayName(ChatColor.GRAY + "[" + ChatColor.AQUA + "Snowman" + ChatColor.GRAY + "] " + ChatColor.WHITE + "Bow");
+                    bow.setItemMeta(bowMeta);
+
 
                     ItemStack gapples = new ItemStack(Material.GOLDEN_APPLE, 6, (short) 1);
 
@@ -1420,6 +1429,9 @@ public class A extends JavaPlugin implements Listener {
                     p.getInventory().addItem(sword);
                     p.getInventory().addItem(helmet);
                     p.getInventory().addItem(chestplate);
+                    p.getInventory().addItem(leggings);
+                    p.getInventory().addItem(boots);
+                    p.getInventory().addItem(bow);
                     p.getInventory().addItem(tnt);
                     p.getInventory().addItem(obby);
                     p.getInventory().addItem(diamonds);
