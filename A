@@ -70,8 +70,6 @@ public class A extends JavaPlugin implements Listener {
     private HashMap<Player, BukkitRunnable> goldPot4;
     private HashMap<Player, BukkitRunnable> goldPot5;
 
-    private HashMap<Player, BukkitRunnable> reloadConfig;
-
     public static File folder;
     public static File file;
     public static FileConfiguration perms;
@@ -281,6 +279,23 @@ public class A extends JavaPlugin implements Listener {
 
         }
 
+    }
+    
+    @EventHandler
+    public void onPlayerInteract(PlayerInteractEvent e) {
+    	
+    	Player p = e.getPlayer();
+    	
+    	if (e.getAction() == Action.RIGHT_CLICK_AIR) {
+    		
+    		if (p.getInventory().getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.GOLD + "" + ChatColor.BOLD + "Pot o' Gold")) {
+    			
+    			
+    			
+    		}
+    		
+    	}
+    	
     }
 
     @EventHandler
@@ -1491,6 +1506,13 @@ public class A extends JavaPlugin implements Listener {
 
             kitMenu(p);
 
+        } else if (cmd.getName().equalsIgnoreCase("eat")) {
+        	
+        	p.setFoodLevel(20);
+        	p.setSaturation(20);
+        	
+        	p.sendMessage(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "PERMS " + ChatColor.GRAY + "Your food level and saturation has been set to " + ChatColor.UNDERLINE + "20" + ChatColor.GRAY + ".");
+        	
         }
 
         return true;
@@ -1927,7 +1949,7 @@ public class A extends JavaPlugin implements Listener {
             ArrayList<String> snowflakeLore = new ArrayList<String>();
             snowflakeLore.add(ChatColor.GRAY + "You do not have access to this kit.");
             snowflakeLore.add(" ");
-            snowflakeLore.add(ChatColor.GRAY + "Go to " + ChatColor.UNDERLINE + "paypal.me/VarianceFactions/31" + ChatColor.GRAY + " and complete ");
+            snowflakeLore.add(ChatColor.GRAY + "Go to " + ChatColor.UNDERLINE + "paypal.me/VarianceFactions/30" + ChatColor.GRAY + " and complete ");
             snowflakeLore.add(ChatColor.GRAY + "the purchase to receive this rank.");
             snowflakeLore.add(" ");
             snowflakeLore.add(ChatColor.RED + "" + ChatColor.BOLD + "Locked");
