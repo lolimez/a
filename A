@@ -8,17 +8,23 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Villager;
+import org.bukkit.entity.Villager.Profession;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -28,12 +34,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.util.Vector;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Random;
 
 public class A extends JavaPlugin implements Listener {
 
@@ -63,12 +67,6 @@ public class A extends JavaPlugin implements Listener {
 
     private HashMap<Player, Integer> snowflakeTime;
     private HashMap<Player, BukkitRunnable> snowflakeTask;
-
-    private HashMap<Player, BukkitRunnable> goldPot1;
-    private HashMap<Player, BukkitRunnable> goldPot2;
-    private HashMap<Player, BukkitRunnable> goldPot3;
-    private HashMap<Player, BukkitRunnable> goldPot4;
-    private HashMap<Player, BukkitRunnable> goldPot5;
 
     public static File folder;
     public static File file;
@@ -103,12 +101,6 @@ public class A extends JavaPlugin implements Listener {
 
         ghoulTime = new HashMap<Player, Integer>();
         ghoulTask = new HashMap<Player, BukkitRunnable>();
-
-        goldPot1 = new HashMap<Player, BukkitRunnable>();
-        goldPot2 = new HashMap<Player, BukkitRunnable>();
-        goldPot3 = new HashMap<Player, BukkitRunnable>();
-        goldPot4 = new HashMap<Player, BukkitRunnable>();
-        goldPot5 = new HashMap<Player, BukkitRunnable>();
 
         Bukkit.getPluginManager().registerEvents(this, this);
 
@@ -165,7 +157,7 @@ public class A extends JavaPlugin implements Listener {
 
         }, 40, 40);
         
-        BUkkit.getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
         
             @Override
             public void run() {
@@ -211,6 +203,7 @@ public class A extends JavaPlugin implements Listener {
             perms.set("SnowflakeKit." + uuid, 0);
 
             perms.set("Kills." + uuid, 0);
+            perms.set("InfiniteFood." + uuid, 0);
 
             e.setJoinMessage(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "JOIN " + ChatColor.GRAY + "Welcome, " + ChatColor.UNDERLINE + p.getName() + ChatColor.GRAY + ", to " + ChatColor.GREEN + "" + ChatColor.BOLD + "Variance Factions!");
 
@@ -237,6 +230,7 @@ public class A extends JavaPlugin implements Listener {
     public void onChat(AsyncPlayerChatEvent e) {
 
         Player p = e.getPlayer();
+        String uuid = p.getUniqueId().toString();
 
         if (p.getName().equalsIgnoreCase("irenmen")) {
 
@@ -286,10 +280,48 @@ public class A extends JavaPlugin implements Listener {
 
         } else {
 
-            return;
+            e.setDeathMessage(" ");
 
         }
-
+        
+    }
+    
+    @EventHandler
+    public void onPlayerMove(PlayerMoveEvent e) {
+    	
+    	Player p = e.getPlayer();
+    	String uuid = p.getUniqueId().toString();
+    	
+    	if (perms.getInt("InfiniteFood." + uuid) == 1) {
+    		
+    		p.setFoodLevel(20);
+    		p.setSaturation(20);
+    		
+    	}
+    	
+    }
+    
+    @EventHandler
+    public void onPlayerInteractEntity(PlayerInteractEntityEvent e) {
+    	
+    	Player p = e.getPlayer();
+    	Entity ent = e.getRightClicked();
+    	String uuid = p.getUniqueId().toString();
+    	
+    	if (ent instanceof Villager) {
+    		
+    		if (((Villager) ent).getProfession() == Profession.BLACKSMITH) {
+    			
+    			if (perms.getInt("Fix." + uuid) == 1) {
+    				
+    				ItemStack item = p.getInventory().getItemInHand();
+    				
+    			}
+    			
+    		}
+    		
+    	}
+    	
     }
     
     @EventHandler
@@ -1517,13 +1549,6 @@ public class A extends JavaPlugin implements Listener {
 
             kitMenu(p);
 
-        } else if (cmd.getName().equalsIgnoreCase("eat")) {
-        	
-        	p.setFoodLevel(20);
-        	p.setSaturation(20);
-        	
-        	p.sendMessage(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "PERMS " + ChatColor.GRAY + "Your food level and saturation has been set to " + ChatColor.UNDERLINE + "20" + ChatColor.GRAY + ".");
-        	
         }
 
         return true;
