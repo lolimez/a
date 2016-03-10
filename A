@@ -164,6 +164,17 @@ public class A extends JavaPlugin implements Listener {
             }
 
         }, 40, 40);
+        
+        BUkkit.getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
+        
+            @Override
+            public void run() {
+            
+                Bukkit.broadcastMessage(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "INFO " + ChatColor.GRAY + "When donating, enter your name as the message so staff know who to give the packages to.");
+            
+            }
+        
+        }, 600, 600);
 
     }
 
@@ -229,11 +240,11 @@ public class A extends JavaPlugin implements Listener {
 
         if (p.getName().equalsIgnoreCase("irenmen")) {
 
-            e.setFormat(ChatColor.RED + "" + ChatColor.BOLD + "DEV " + ChatColor.BLUE + "%s " + ChatColor.WHITE + "%s");
+            e.setFormat(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "DEV " + ChatColor.BLUE + "%s" + ChatColor.GRAY + "[" + ChatColor.WHITE + perms.getInt("kills" + uuid) + ChatColor.GRAY + "] " + ChatColor.WHITE + "%s");
 
         } else if (p.getName().equalsIgnoreCase("AllHacksNoGame")) {
 
-            e.setFormat(ChatColor.DARK_RED + "" + ChatColor.BOLD + "ANTISKID " + ChatColor.BLUE + "%s " + ChatColor.WHITE + "%s");
+            e.setFormat(ChatColor.DARK_RED + "" + ChatColor.BOLD + "ANTISKID " + ChatColor.BLUE + "%s" + ChatColor.GRAY + "[" + ChatColor.WHITE + perms.getInt("kills" + uuid) + ChatColor.GRAY + "] " + ChatColor.WHITE + "%s");
 
         } else if (perms.getInt("Rank." + p.getUniqueId().toString()) == 0) {
 
@@ -253,7 +264,7 @@ public class A extends JavaPlugin implements Listener {
 
         } else if (perms.getInt("Rank." + p.getUniqueId().toString()) == 4) {
 
-            e.setFormat(ChatColor.RED + "" + ChatColor.BOLD + "ENGINEER " + ChatColor.GRAY + "%s " + ChatColor.WHITE + "%s");
+            e.setFormat(ChatColor.RED + "" + ChatColor.BOLD + "ENGINEER " + ChatColor.GRAY + "%s" + ChatColor.GRAY + "[" + ChatColor.WHITE + perms.getInt("kills" + uuid) + ChatColor.GRAY + "] " + ChatColor.WHITE + "%s");
 
         }
 
