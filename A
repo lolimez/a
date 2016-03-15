@@ -3,6 +3,7 @@ package me.lolimez.A;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -13,6 +14,7 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.Villager.Profession;
+import org.bukkit.entity.Witch;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -232,7 +234,7 @@ public class A extends JavaPlugin implements Listener {
         Player p = e.getPlayer();
         String uuid = p.getUniqueId().toString();
 
-        if (p.getName().equalsIgnoreCase("irenmen")) {
+        if (p.getName().equalsIgnoreCase("Mercuric")) {
 
             e.setFormat(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "DEV " + ChatColor.BLUE + "%s" + ChatColor.GRAY + "[" + ChatColor.WHITE + perms.getInt("kills" + uuid) + ChatColor.GRAY + "] " + ChatColor.WHITE + "%s");
 
@@ -292,7 +294,7 @@ public class A extends JavaPlugin implements Listener {
     	Player p = e.getPlayer();
     	String uuid = p.getUniqueId().toString();
     	
-    	if (perms.getInt("InfiniteFood." + uuid) == 1) {
+    	if (perms.getInt("Rank." + uuid) == 4) {
     		
     		p.setFoodLevel(20);
     		p.setSaturation(20);
@@ -312,11 +314,36 @@ public class A extends JavaPlugin implements Listener {
     		
     		if (((Villager) ent).getProfession() == Profession.BLACKSMITH) {
     			
-    			if (perms.getInt("Fix." + uuid) == 1) {
+    			if (((Villager) ent).getCustomName().equalsIgnoreCase("BoBo the Blacksmith")) {
+    			
+    				if (perms.getInt("Rank." + uuid) >= 3) {
     				
-    				ItemStack item = p.getInventory().getItemInHand();
+    					ItemStack item = p.getInventory().getItemInHand();
     				
+    					item.setDurability(item.getType().getMaxDurability());
+    				
+    					p.playSound(p.getLocation(), Sound.ANVIL_USE, 1, 1);
+    					p.sendMessage(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "PERMS " + ChatColor.GRAY + ChatColor.UNDERLINE + item + ChatColor.GRAY + " has been fixed.");
+
+    				} else {
+    				
+    					p.sendMessage(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "PERMS " + ChatColor.GRAY + "You must have at least rank " + ChatColor.UNDERLINE + "Industrialist" + ChatColor.GRAY + " to do this!");
+    				
+    				}
+    			
     			}
+    			
+    		} else if (((Villager) ent).getProfession() == Profession.PRIEST) {
+    			
+    			
+    			
+    		}
+    		
+    	} else if (ent instanceof Witch) {
+    		
+    		if (((Witch) ent).getCustomName().equalsIgnoreCase("Wendy the Witch")) {
+    			
+    			
     			
     		}
     		
@@ -341,7 +368,8 @@ public class A extends JavaPlugin implements Listener {
     	
     }
 
-    @EventHandler
+    @SuppressWarnings("deprecation")
+	@EventHandler
     public void onInventoryClick(InventoryClickEvent e) {
 
         Player p = (Player) e.getWhoClicked();
@@ -351,10 +379,34 @@ public class A extends JavaPlugin implements Listener {
         strMeta.addCustomEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 4800, 1), true);
         str.setItemMeta(strMeta);
         
+        ItemStack str1 = new ItemStack(Material.POTION, 2, (short) 8233);
+        PotionMeta str1Meta = (PotionMeta) str1.getItemMeta();
+        str1Meta.addCustomEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 4800, 1), true);
+        str1.setItemMeta(str1Meta);
+        
         ItemStack spe = new ItemStack(Material.POTION, 1, (short) 8226);
         PotionMeta speMeta = (PotionMeta) spe.getItemMeta();
         speMeta.addCustomEffect(new PotionEffect(PotionEffectType.SPEED, 4800, 1), true);
         spe.setItemMeta(speMeta);
+        
+        ItemStack spe1 = new ItemStack(Material.POTION, 1, (short) 8226);
+        PotionMeta spe1Meta = (PotionMeta) spe1.getItemMeta();
+        spe1Meta.addCustomEffect(new PotionEffect(PotionEffectType.SPEED, 4800, 1), true);
+        spe1.setItemMeta(spe1Meta);
+        
+        if (e.getCurrentItem() == str && e.getCursor() == str) {
+        	
+        	e.setCurrentItem(str1);
+        	e.setCursor(new ItemStack(Material.AIR));
+        	
+        }
+        
+        if (e.getCurrentItem() == spe && e.getCursor() == spe) {
+        	
+        	e.setCurrentItem(spe1);
+        	e.setCursor(new ItemStack(Material.AIR));
+        	
+        }
 
         if (e.getInventory().getName().equalsIgnoreCase(ChatColor.BLUE + "" + ChatColor.BOLD + "Redeem Your Kit")) {
 
@@ -1326,28 +1378,28 @@ public class A extends JavaPlugin implements Listener {
                     sword.setItemMeta(swordMeta);
 
                     ItemStack helmet = new ItemStack(Material.DIAMOND_HELMET, 1);
-                    helmet.addEnchantment(Enchantment.DURABILITY, 1);
+                    helmet.addEnchantment(Enchantment.DURABILITY, 2);
                     helmet.addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 2);
                     ItemMeta helmetMeta = helmet.getItemMeta();
                     helmetMeta.setDisplayName(ChatColor.GRAY + "[" + ChatColor.DARK_PURPLE + "Ghoul" + ChatColor.GRAY + "] " + ChatColor.WHITE + "Helmet");
                     helmet.setItemMeta(helmetMeta);
 
                     ItemStack chestplate = new ItemStack(Material.DIAMOND_CHESTPLATE, 1);
-                    chestplate.addEnchantment(Enchantment.DURABILITY, 1);
+                    chestplate.addEnchantment(Enchantment.DURABILITY, 2);
                     chestplate.addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 2);
                     ItemMeta chestplateMeta = chestplate.getItemMeta();
                     chestplateMeta.setDisplayName(ChatColor.GRAY + "[" + ChatColor.DARK_PURPLE + "Ghoul" + ChatColor.GRAY + "] " + ChatColor.WHITE + "Chestplate");
                     chestplate.setItemMeta(chestplateMeta);
                     
                     ItemStack leggings = new ItemStack(Material.DIAMOND_LEGGINGS, 1);
-                    leggings.addEnchantment(Enchantment.DURABILITY, 1);
+                    leggings.addEnchantment(Enchantment.DURABILITY, 2);
                     leggings.addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 2);
                     ItemMeta leggingsMeta = leggings.getItemMeta();
                     leggingsMeta.setDisplayName(ChatColor.GRAY + "[" + ChatColor.DARK_PURPLE + "Ghoul" + ChatColor.GRAY + "] " + ChatColor.WHITE + "Leggings");
                     leggings.setItemMeta(leggingsMeta);
 
                     ItemStack boots = new ItemStack(Material.DIAMOND_CHESTPLATE, 1);
-                    boots.addEnchantment(Enchantment.DURABILITY, 1);
+                    boots.addEnchantment(Enchantment.DURABILITY, 2);
                     boots.addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 2);
                     ItemMeta bootsMeta = boots.getItemMeta();
                     bootsMeta.setDisplayName(ChatColor.GRAY + "[" + ChatColor.DARK_PURPLE + "Ghoul" + ChatColor.GRAY + "] " + ChatColor.WHITE + "Boots");
@@ -1368,6 +1420,8 @@ public class A extends JavaPlugin implements Listener {
                     p.getInventory().addItem(sword);
                     p.getInventory().addItem(helmet);
                     p.getInventory().addItem(chestplate);
+                    p.getInventory().addItem(leggings);
+                    p.getInventory().addItem(boots);
                     p.getInventory().addItem(tnt);
                     p.getInventory().addItem(obby);
                     p.getInventory().addItem(diamonds);
@@ -1428,9 +1482,7 @@ public class A extends JavaPlugin implements Listener {
                     p.sendMessage(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "KITS " + ChatColor.GRAY + "You have redeemed your " + ChatColor.UNDERLINE + "Snowflake Kit" + ChatColor.GRAY + ".");
 
                     ItemStack sword = new ItemStack(Material.DIAMOND_SWORD, 1);
-                    sword.addUnsafeEnchantment(Enchantment.KNOCKBACK, 1);
-                    sword.addEnchantment(Enchantment.FIRE_ASPECT, 2);
-                    sword.addEnchantment(Enchantment.DAMAGE_ALL, 4);
+                    sword.addEnchantment(Enchantment.DAMAGE_ALL, 5);
                     ItemMeta swordMeta = sword.getItemMeta();
                     swordMeta.setDisplayName(ChatColor.GRAY + "[" + ChatColor.AQUA + "Snowman" + ChatColor.GRAY + "] " + ChatColor.WHITE + "Sword");
                     sword.setItemMeta(swordMeta);
@@ -1537,6 +1589,20 @@ public class A extends JavaPlugin implements Listener {
 
             }
 
+        } else if (e.getInventory().getName().equalsIgnoreCase(ChatColor.GOLD + "" + ChatColor.BOLD + "Pot o' Gold")) {
+        	
+        	e.setCancelled(true);
+        	
+        	if (e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.GOLD + "" + ChatColor.BOLD + "Prize")) {
+        		
+        		
+        		
+        	} else {
+        		
+        		return;
+        		
+        	}
+        	
         }
 
     }
@@ -1553,6 +1619,50 @@ public class A extends JavaPlugin implements Listener {
 
         return true;
 
+    }
+    
+    public void goldPot(Player p) {
+    	
+    	Inventory pot = Bukkit.createInventory(null, 27, ChatColor.GOLD + "" + ChatColor.BOLD + "Pot o' Gold");
+    	
+    	ItemStack black = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 15);
+    	ItemMeta blackMeta = black.getItemMeta();
+    	blackMeta.setDisplayName(" ");
+    	black.setItemMeta(blackMeta);
+    	
+    	ItemStack orange = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 1);
+    	ItemMeta orangeMeta = orange.getItemMeta();
+    	orangeMeta.setDisplayName(ChatColor.GOLD + "" + ChatColor.BOLD + "Prize");
+    	orange.setItemMeta(orangeMeta);
+    	
+    	pot.setItem(0, black);
+    	pot.setItem(1, black);
+    	pot.setItem(2, black);
+    	pot.setItem(3, black);
+    	pot.setItem(4, black);
+    	pot.setItem(5, black);
+    	pot.setItem(6, black);
+    	pot.setItem(7, black);
+    	pot.setItem(8, black);
+    	pot.setItem(9, black);
+    	pot.setItem(10, black);
+    	pot.setItem(11, black);
+    	pot.setItem(12, orange);
+    	pot.setItem(13, orange);
+    	pot.setItem(14, orange);
+    	pot.setItem(15, black);
+    	pot.setItem(16, black);
+    	pot.setItem(17, black);
+    	pot.setItem(18, black);
+    	pot.setItem(19, black);
+    	pot.setItem(20, black);
+    	pot.setItem(21, black);
+    	pot.setItem(22, black);
+    	pot.setItem(23, black);
+    	pot.setItem(24, black);
+    	pot.setItem(25, black);
+    	pot.setItem(26, black);
+    	
     }
 
     public void kitMenu(Player p) {
@@ -1874,7 +1984,7 @@ public class A extends JavaPlugin implements Listener {
             ArrayList<String> dragonLore = new ArrayList<String>();
             dragonLore.add(ChatColor.GRAY + "You do not have access to this kit.");
             dragonLore.add(" ");
-            dragonLore.add(ChatColor.GRAY + "Go to " + ChatColor.UNDERLINE + "paypal.me/VarianceFactions/36" + ChatColor.GRAY + " and complete ");
+            dragonLore.add(ChatColor.GRAY + "Go to " + ChatColor.UNDERLINE + "paypal.me/VarianceFactions/35" + ChatColor.GRAY + " and complete ");
             dragonLore.add(ChatColor.GRAY + "the purchase to receive this rank.");
             dragonLore.add(" ");
             dragonLore.add(ChatColor.RED + "" + ChatColor.BOLD + "Locked");
@@ -1985,7 +2095,7 @@ public class A extends JavaPlugin implements Listener {
             ArrayList<String> snowflakeLore = new ArrayList<String>();
             snowflakeLore.add(ChatColor.GRAY + "You do not have access to this kit.");
             snowflakeLore.add(" ");
-            snowflakeLore.add(ChatColor.GRAY + "Go to " + ChatColor.UNDERLINE + "paypal.me/VarianceFactions/30" + ChatColor.GRAY + " and complete ");
+            snowflakeLore.add(ChatColor.GRAY + "Go to " + ChatColor.UNDERLINE + "paypal.me/VarianceFactions/36" + ChatColor.GRAY + " and complete ");
             snowflakeLore.add(ChatColor.GRAY + "the purchase to receive this rank.");
             snowflakeLore.add(" ");
             snowflakeLore.add(ChatColor.RED + "" + ChatColor.BOLD + "Locked");
