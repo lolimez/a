@@ -2,6 +2,7 @@ package me.lolimez.A;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
@@ -36,6 +37,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -69,6 +71,8 @@ public class A extends JavaPlugin implements Listener {
 
     private HashMap<Player, Integer> snowflakeTime;
     private HashMap<Player, BukkitRunnable> snowflakeTask;
+    
+    private HashMap<Location, Integer> potion;
 
     public static File folder;
     public static File file;
@@ -206,6 +210,7 @@ public class A extends JavaPlugin implements Listener {
 
             perms.set("Kills." + uuid, 0);
             perms.set("InfiniteFood." + uuid, 0);
+            perms.set("Money." + uuid, 10000);
 
             e.setJoinMessage(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "JOIN " + ChatColor.GRAY + "Welcome, " + ChatColor.UNDERLINE + p.getName() + ChatColor.GRAY + ", to " + ChatColor.GREEN + "" + ChatColor.BOLD + "Variance Factions!");
 
@@ -277,9 +282,17 @@ public class A extends JavaPlugin implements Listener {
         if (killer instanceof Player && killed instanceof Player) {
 
             String weapon = killer.getInventory().getItemInHand().getItemMeta().getDisplayName();
+            
+            if (killer.getItemInHand().getType() == Material.BOW) {
 
-            e.setDeathMessage(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "DEATH " + ChatColor.WHITE + killer.getName() + ChatColor.GRAY + "[" + ChatColor.WHITE + perms.getInt("Kills." + uuid) + ChatColor.GRAY + "] has slapped " + ChatColor.WHITE + killed.getName() + ChatColor.GRAY + " up using " + weapon);
+            	e.setDeathMessage(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "DEATH " + ChatColor.WHITE + killer.getName() + ChatColor.GRAY + "[" + ChatColor.WHITE + perms.getInt("Kills." + uuid) + ChatColor.GRAY + "] lit " + ChatColor.WHITE + killed.getName() + ChatColor.GRAY + " up using " + weapon);
 
+            } else {
+            	
+            	e.setDeathMessage(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "DEATH " + ChatColor.WHITE + killer.getName() + ChatColor.GRAY + "[" + ChatColor.WHITE + perms.getInt("Kills." + uuid) + ChatColor.GRAY + "] has slapped " + ChatColor.WHITE + killed.getName() + ChatColor.GRAY + " up using " + weapon);
+            	
+            }
+            
         } else {
 
             e.setDeathMessage(" ");
@@ -300,7 +313,7 @@ public class A extends JavaPlugin implements Listener {
     		p.setSaturation(20);
     		
     	}
-    	
+
     }
     
     @EventHandler
@@ -361,6 +374,30 @@ public class A extends JavaPlugin implements Listener {
     		if (p.getInventory().getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.GOLD + "" + ChatColor.BOLD + "Pot o' Gold")) {
     			
     			
+    			
+    		}
+    		
+    	} else if (e.getAction() == Action.LEFT_CLICK_BLOCK) {
+    		
+    		if (e.getClickedBlock().getType() == Material.CAULDRON_ITEM || e.getClickedBlock().getType() == Material.CAULDRON) {
+    			
+    			if (p.getItemInHand().getType() == Material.NETHER_WARTS || p.getItemInHand().getType() == Material.NETHER_STALK) {
+    				
+    				potion.put(e.getClickedBlock().getLocation(), 0);
+
+    				p.getWorld().dropItemNaturally(e.getClickedBlock().getLocation().add(0, 1, 0), new ItemStack(Material.NETHER_WARTS)).setVelocity(new Vector(0, 1, 0));
+    				
+    				if (p.getItemInHand().getAmount() > 1) {
+    					
+    					p.getItemInHand().setAmount(p.getItemInHand().getAmount() - 1);
+    					
+    				} else if (p.getItemInHand().getAmount() == 1) {
+    					
+    					p.setItemInHand(new ItemStack(Material.AIR));
+    					
+    				}
+    				
+    			}
     			
     		}
     		
