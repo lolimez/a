@@ -241,31 +241,31 @@ public class A extends JavaPlugin implements Listener {
 
         if (p.getName().equalsIgnoreCase("Mercuric")) {
 
-            e.setFormat(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "DEV " + ChatColor.BLUE + "%s" + ChatColor.GRAY + "[" + ChatColor.WHITE + perms.getInt("kills" + uuid) + ChatColor.GRAY + "] " + ChatColor.WHITE + "%s");
+            e.setFormat(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "DEV " + ChatColor.BLUE + "%s" + ChatColor.GRAY + "[" + ChatColor.WHITE + perms.getInt("kills." + uuid) + ChatColor.GRAY + "] " + ChatColor.WHITE + "%s");
 
         } else if (p.getName().equalsIgnoreCase("AllHacksNoGame")) {
 
-            e.setFormat(ChatColor.DARK_RED + "" + ChatColor.BOLD + "ANTISKID " + ChatColor.BLUE + "%s" + ChatColor.GRAY + "[" + ChatColor.WHITE + perms.getInt("kills" + uuid) + ChatColor.GRAY + "] " + ChatColor.WHITE + "%s");
+            e.setFormat(ChatColor.DARK_RED + "" + ChatColor.BOLD + "ANTISKID " + ChatColor.BLUE + "%s" + ChatColor.GRAY + "[" + ChatColor.WHITE + perms.getInt("kills." + uuid) + ChatColor.GRAY + "] " + ChatColor.WHITE + "%s");
 
         } else if (perms.getInt("Rank." + p.getUniqueId().toString()) == 0) {
 
-            e.setFormat(ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "MEMBER " + ChatColor.GRAY + "%s " + ChatColor.WHITE + "%s");
+            e.setFormat(ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "MEMBER " + ChatColor.GRAY + "%s " + ChatColor.GRAY + "[" + ChatColor.WHITE + perms.getInt("kills." + uuid) + ChatColor.GRAY + "] " + ChatColor.WHITE + "%s");
 
         } else if (perms.getInt("Rank." + p.getUniqueId().toString()) == 1) {
 
-            e.setFormat(ChatColor.GREEN + "" + ChatColor.BOLD + "FARMER " + ChatColor.GRAY + "%s " + ChatColor.WHITE + "%s");
+            e.setFormat(ChatColor.GREEN + "" + ChatColor.BOLD + "FARMER " + ChatColor.GRAY + "%s " + ChatColor.GRAY + "[" + ChatColor.WHITE + perms.getInt("kills." + uuid) + ChatColor.GRAY + "] " + ChatColor.WHITE + "%s");
 
         } else if (perms.getInt("Rank." + p.getUniqueId().toString()) == 2) {
 
-            e.setFormat(ChatColor.YELLOW + "" + ChatColor.BOLD + "MERCHANT " + ChatColor.GRAY + "%s " + ChatColor.WHITE + "%s");
+            e.setFormat(ChatColor.YELLOW + "" + ChatColor.BOLD + "MERCHANT " + ChatColor.GRAY + "%s " + ChatColor.GRAY + "[" + ChatColor.WHITE + perms.getInt("kills." + uuid) + ChatColor.GRAY + "] " + ChatColor.WHITE + "%s");
 
         } else if (perms.getInt("Rank." + p.getUniqueId().toString()) == 3) {
 
-            e.setFormat(ChatColor.GOLD + "" + ChatColor.BOLD + "INDUSTRIALIST " + ChatColor.GRAY + "%s " + ChatColor.WHITE + "%s");
+            e.setFormat(ChatColor.GOLD + "" + ChatColor.BOLD + "INDUSTRIALIST " + ChatColor.GRAY + "%s " + ChatColor.GRAY + "[" + ChatColor.WHITE + perms.getInt("kills." + uuid) + ChatColor.GRAY + "] " + ChatColor.WHITE + "%s");
 
         } else if (perms.getInt("Rank." + p.getUniqueId().toString()) == 4) {
 
-            e.setFormat(ChatColor.RED + "" + ChatColor.BOLD + "ENGINEER " + ChatColor.GRAY + "%s" + ChatColor.GRAY + "[" + ChatColor.WHITE + perms.getInt("kills" + uuid) + ChatColor.GRAY + "] " + ChatColor.WHITE + "%s");
+            e.setFormat(ChatColor.RED + "" + ChatColor.BOLD + "ENGINEER " + ChatColor.GRAY + "%s" + ChatColor.GRAY + "[" + ChatColor.WHITE + perms.getInt("kills." + uuid) + ChatColor.GRAY + "] " + ChatColor.WHITE + "%s");
 
         }
 
@@ -341,20 +341,13 @@ public class A extends JavaPlugin implements Listener {
     				} else {
     				
     					p.sendMessage(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "PERMS " + ChatColor.GRAY + "You must have at least rank " + ChatColor.UNDERLINE + "Industrialist" + ChatColor.GRAY + " to do this!");
+    					p.playSound(p.getLocation(), Sound.ITEM_BREAK, 1, 1);
     				
     				}
     			
     			}
     			
     		} else if (((Villager) ent).getProfession() == Profession.PRIEST) {
-    			
-    			
-    			
-    		}
-    		
-    	} else if (ent instanceof Witch) {
-    		
-    		if (((Witch) ent).getCustomName().equalsIgnoreCase("Wendy the Witch")) {
     			
     			
     			
@@ -369,38 +362,808 @@ public class A extends JavaPlugin implements Listener {
     	
     	Player p = e.getPlayer();
     	
-    	if (e.getAction() == Action.RIGHT_CLICK_AIR) {
-    		
-    		if (p.getInventory().getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.GOLD + "" + ChatColor.BOLD + "Pot o' Gold")) {
-    			
-    			
-    			
-    		}
-    		
-    	} else if (e.getAction() == Action.LEFT_CLICK_BLOCK) {
+    	if (e.getAction() == Action.LEFT_CLICK_BLOCK) {
     		
     		if (e.getClickedBlock().getType() == Material.CAULDRON_ITEM || e.getClickedBlock().getType() == Material.CAULDRON) {
     			
-    			if (p.getItemInHand().getType() == Material.NETHER_WARTS || p.getItemInHand().getType() == Material.NETHER_STALK) {
+    			if (p.getItemInHand().getType() == Material.NETHER_WARTS) {
+    			
+    				if (e.getClickedBlock().hasMetaData("Stage1") || e.getClickedBlock().hasMetaData("Stage2") || e.getClickedBlock().hasMetaData("Stage3") || e.getClickedBlock().hasMetaData("Stage4")) {
     				
-    				potion.put(e.getClickedBlock().getLocation(), 0);
+    					p.sendMessage(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "BREWING " + ChatColor.GRAY + " The brewing process has restarted.");
+    					e.getClickedBlock().setMetaData("Stage1", new FixedMetadataValue(this, "BrewingStage"));
+    				
+    				} else {
 
-    				p.getWorld().dropItemNaturally(e.getClickedBlock().getLocation().add(0, 1, 0), new ItemStack(Material.NETHER_WARTS)).setVelocity(new Vector(0, 1, 0));
+    					Item netherwart = p.getWorld().dropItemNaturally(e.getClickedBlock().getLocation().add(0, 1, 0), new ItemStack(Material.NETHER_WARTS)).setVelocity(new Vector(0, 1, 0));
+    					
+    					Bukkit.getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
+    					
+    						@Override
+    						public void run() {
+    						
+    							netherwart.remove();
+    						
+    						}
+    					
+    					}, 20);
+    					
+    					if (p.getItemInHand().getAmount() > 1) {
+    					
+    						p.getItemInHand().setAmount(p.getItemInHand().getAmount() - 1);
+    					
+    					} else if (p.getItemInHand().getAmount() == 1) {
+    					
+    						p.setItemInHand(new ItemStack(Material.AIR));
+    					
+    					}
     				
-    				if (p.getItemInHand().getAmount() > 1) {
-    					
-    					p.getItemInHand().setAmount(p.getItemInHand().getAmount() - 1);
-    					
-    				} else if (p.getItemInHand().getAmount() == 1) {
-    					
-    					p.setItemInHand(new ItemStack(Material.AIR));
-    					
+    					p.playSound(p.getLocation(), Sound.FIZZ, 1, 1);
+    				
+    					e.getClickedBlock().setMetaData("Stage1", new FixedMetadataValue(this, "BrewingStage"));
+    				
     				}
     				
+    			} else if (p.getItemInHand().getType() == Material.SUGAR || p.getItemInHand().getType() == Material.BLAZE_POWDER || p.getItemInHander().getType() == Material.SPECKLED_MELON || p.getItemInHand().getType() == Material.MAGMA_CREAM || p.getItemInHand().getType() == Material.GHAST_TEAR) {
+    			
+    				if (e.getClickedBlock().hasMetaData("Stage1")) {
+    				
+    					if (p.getItemInHand().getType() == Material.SUGAR) {
+    					
+    						Item sugar = p.getWorld().dropItemNaturally(e.getClickedBlock().getLocation().add(0, 1, 0), new ItemStack(Material.SUGAR)).setVelocity(new Vector(0, 1, 0));
+    					
+    						Bukkit.getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
+    					
+    							@Override
+    							public void run() {
+    						
+    								sugar.remove();
+    						
+    							}
+    					
+    						}, 20);
+    						
+    						if (p.getItemInHand().getAmount() > 1) {
+    					
+    							p.getItemInHand().setAmount(p.getItemInHand().getAmount() - 1);
+    					
+    						} else if (p.getItemInHand().getAmount() == 1) {
+    					
+    							p.setItemInHand(new ItemStack(Material.AIR));
+    					
+    						}
+    				
+    						p.playSound(p.getLocation(), Sound.FIZZ, 1, 1);
+    				
+    						e.getClickedBlock().setMetaData("SpeedNormal", new FixedMetadataValue(this, "BrewingStage"));
+    					
+    					} else if (p.getItemInHand().getType() == Material.BLAZE_POWDER) {
+    					
+    						Item blazepowder = p.getWorld().dropItemNaturally(e.getClickedBlock().getLocation().add(0, 1, 0), new ItemStack(Material.BLAZE_POWDER)).setVelocity(new Vector(0, 1, 0));
+    					
+    						Bukkit.getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
+    					
+    							@Override
+    							public void run() {
+    						
+    								blaze.remove();
+    						
+    							}
+    					
+    						}, 20);
+    						
+    						if (p.getItemInHand().getAmount() > 1) {
+    					
+    							p.getItemInHand().setAmount(p.getItemInHand().getAmount() - 1);
+    					
+    						} else if (p.getItemInHand().getAmount() == 1) {
+    					
+    							p.setItemInHand(new ItemStack(Material.AIR));
+    					
+    						}
+    				
+    						p.playSound(p.getLocation(), Sound.FIZZ, 1, 1);
+    				
+    						e.getClickedBlock().setMetaData("StrengthNormal", new FixedMetadataValue(this, "BrewingStage"));
+    					
+    					} else if (p.getItemInHand().getType() == Material.SPECKLED_MELON) {
+    					
+    						Item melon = p.getWorld().dropItemNaturally(e.getClickedBlock().getLocation().add(0, 1, 0), new ItemStack(Material.SPECKLED_MELON)).setVelocity(new Vector(0, 1, 0));
+    					
+    						Bukkit.getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
+    					
+    							@Override
+    							public void run() {
+    						
+    								melon.remove();
+    						
+    							}
+    					
+    						}, 20);
+    						
+    						if (p.getItemInHand().getAmount() > 1) {
+    					
+    							p.getItemInHand().setAmount(p.getItemInHand().getAmount() - 1);
+    					
+    						} else if (p.getItemInHand().getAmount() == 1) {
+    					
+    							p.setItemInHand(new ItemStack(Material.AIR));
+    					
+    						}
+    				
+    						p.playSound(p.getLocation(), Sound.FIZZ, 1, 1);
+    				
+    						e.getClickedBlock().setMetaData("HealingNormal", new FixedMetadataValue(this, "BrewingStage"));
+    					
+    					} else if (p.getItemInHand().getType() == Material.MAGMA_CREAM) {
+    					
+    						Item magmacream = p.getWorld().dropItemNaturally(e.getClickedBlock().getLocation().add(0, 1, 0), new ItemStack(Material.MAGMA_CREAM)).setVelocity(new Vector(0, 1, 0));
+    					
+    						Bukkit.getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
+    					
+    							@Override
+    							public void run() {
+    						
+    								magmacream.remove();
+    						
+    							}
+    					
+    						}, 20);
+    						
+    						if (p.getItemInHand().getAmount() > 1) {
+    					
+    							p.getItemInHand().setAmount(p.getItemInHand().getAmount() - 1);
+    					
+    						} else if (p.getItemInHand().getAmount() == 1) {
+    					
+    							p.setItemInHand(new ItemStack(Material.AIR));
+    					
+    						}
+    				
+    						p.playSound(p.getLocation(), Sound.FIZZ, 1, 1);
+    				
+    						e.getClickedBlock().setMetaData("FResNormal", new FixedMetadataValue(this, "BrewingStage"));
+    					
+    					} else if (p.getItemInHand().getType() == Material.GHAST_TEAR) {
+    					
+    						Item tear = p.getWorld().dropItemNaturally(e.getClickedBlock().getLocation().add(0, 1, 0), new ItemStack(Material.GHAST_TEAR)).setVelocity(new Vector(0, 1, 0));
+    					
+    						Bukkit.getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
+    					
+    							@Override
+    							public void run() {
+    						
+    								tear.remove();
+    						
+    							}
+    					
+    						}, 20);
+    						
+    						if (p.getItemInHand().getAmount() > 1) {
+    					
+    							p.getItemInHand().setAmount(p.getItemInHand().getAmount() - 1);
+    					
+    						} else if (p.getItemInHand().getAmount() == 1) {
+    					
+    							p.setItemInHand(new ItemStack(Material.AIR));
+    					
+    						}
+    				
+    						p.playSound(p.getLocation(), Sound.FIZZ, 1, 1);
+    				
+    						e.getClickedBlock().setMetaData("RegenNormal", new FixedMetadataValue(this, "BrewingStage"));
+    					
+    					}
+    				
+    				} else {
+    				
+    					p.sendMessage(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "BREWING " + ChatColor.GRAY + "You must follow the correct brewing process! Do /brew for further information.");
+    					p.playSound(p.getLocation(), Sound.ITEM_BREAK, 1, 1);
+    					
+    				}
+    			
+    			} else if (p.getItemInHand().getType() == Material.GLOWSTONE_DUST || p.getItemInHand().getType() == Material.REDSTONE_DUST) {
+    			
+    				if (e.getClickedBlock().hasMetaData("SpeedNormal")) {
+    				
+						if (p.getItemInHand().getType() == Material.GLOWSTONE_DUST) {
+    					
+    						Item glowstonedust = p.getWorld().dropItemNaturally(e.getClickedBlock().getLocation().add(0, 1, 0), new ItemStack(Material.GLOWSTONE_DUST)).setVelocity(new Vector(0, 1, 0));
+    					
+    						Bukkit.getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
+    					
+    							@Override
+    							public void run() {
+    						
+    								glowstonedust.remove();
+    						
+    							}
+    					
+    						}, 20);
+    						
+    						if (p.getItemInHand().getAmount() > 1) {
+    					
+    							p.getItemInHand().setAmount(p.getItemInHand().getAmount() - 1);
+    					
+    						} else if (p.getItemInHand().getAmount() == 1) {
+    					
+    							p.setItemInHand(new ItemStack(Material.AIR));
+    					
+    						}
+    				
+    						p.playSound(p.getLocation(), Sound.FIZZ, 1, 1);
+    				
+    						e.getClickedBlock().setMetaData("SpeedEnhanced", new FixedMetadataValue(this, "BrewingStage"));
+    					
+    					} else if (p.getItemInHand().getType() == Material.REDSTONE_DUST) {
+    					
+    						Item redstonedust = p.getWorld().dropItemNaturally(e.getClickedBlock().getLocation().add(0, 1, 0), new ItemStack(Material.REDSTONE_DUST)).setVelocity(new Vector(0, 1, 0));
+    					
+    						Bukkit.getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
+    					
+    							@Override
+    							public void run() {
+    						
+    								redstonedust.remove();
+    						
+    							}
+    					
+    						}, 20);
+    						
+    						if (p.getItemInHand().getAmount() > 1) {
+    					
+    							p.getItemInHand().setAmount(p.getItemInHand().getAmount() - 1);
+    					
+    						} else if (p.getItemInHand().getAmount() == 1) {
+    					
+    							p.setItemInHand(new ItemStack(Material.AIR));
+    					
+    						}
+    				
+    						p.playSound(p.getLocation(), Sound.FIZZ, 1, 1);
+    				
+    						e.getClickedBlock().setMetaData("SpeedExtended", new FixedMetadataValue(this, "BrewingStage"));
+    					
+    					}
+
+    				} else if (e.getClickedBlock().hasMetaData("StrengthNormal")) {
+    				
+    					if (p.getItemInHand().getType() == Material.GLOWSTONE_DUST) {
+    					
+    						Item glowstonedust = p.getWorld().dropItemNaturally(e.getClickedBlock().getLocation().add(0, 1, 0), new ItemStack(Material.GLOWSTONE_DUST)).setVelocity(new Vector(0, 1, 0));
+    					
+    						Bukkit.getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
+    					
+    							@Override
+    							public void run() {
+    						
+    								glowstonedust.remove();
+    						
+    							}
+    					
+    						}, 20);
+    						
+    						if (p.getItemInHand().getAmount() > 1) {
+    					
+    							p.getItemInHand().setAmount(p.getItemInHand().getAmount() - 1);
+    					
+    						} else if (p.getItemInHand().getAmount() == 1) {
+    					
+    							p.setItemInHand(new ItemStack(Material.AIR));
+    					
+    						}
+    				
+    						p.playSound(p.getLocation(), Sound.FIZZ, 1, 1);
+    				
+    						e.getClickedBlock().setMetaData("StrngthEnhanced", new FixedMetadataValue(this, "BrewingStage"));
+    					
+    					} else if (p.getItemInHand().getType() == Material.REDSTONE_DUST) {
+    					
+    						Item redstonedust = p.getWorld().dropItemNaturally(e.getClickedBlock().getLocation().add(0, 1, 0), new ItemStack(Material.REDSTONE_DUST)).setVelocity(new Vector(0, 1, 0));
+    					
+    						Bukkit.getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
+    					
+    							@Override
+    							public void run() {
+    						
+    								redstonedust.remove();
+    						
+    							}
+    					
+    						}, 20);
+    						
+    						if (p.getItemInHand().getAmount() > 1) {
+    					
+    							p.getItemInHand().setAmount(p.getItemInHand().getAmount() - 1);
+    					
+    						} else if (p.getItemInHand().getAmount() == 1) {
+    					
+    							p.setItemInHand(new ItemStack(Material.AIR));
+    					
+    						}
+    				
+    						p.playSound(p.getLocation(), Sound.FIZZ, 1, 1);
+    				
+    						e.getClickedBlock().setMetaData("StrengthExtended", new FixedMetadataValue(this, "BrewingStage"));
+    					
+    					}
+    				
+    				} else if (e.getClickedBlock().hasMetaData("HealingNormal")) {
+    				
+    					if (p.getItemInHand().getType() == Material.GLOWSTONE_DUST) {
+    					
+    						Item glowstonedust = p.getWorld().dropItemNaturally(e.getClickedBlock().getLocation().add(0, 1, 0), new ItemStack(Material.GLOWSTONE_DUST)).setVelocity(new Vector(0, 1, 0));
+    					
+    						Bukkit.getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
+    					
+    							@Override
+    							public void run() {
+    						
+    								glostonedust.remove();
+    						
+    							}
+    					
+    						}, 20);
+    						
+    						if (p.getItemInHand().getAmount() > 1) {
+    					
+    							p.getItemInHand().setAmount(p.getItemInHand().getAmount() - 1);
+    					
+    						} else if (p.getItemInHand().getAmount() == 1) {
+    					
+    							p.setItemInHand(new ItemStack(Material.AIR));
+    					
+    						}
+    				
+    						p.playSound(p.getLocation(), Sound.FIZZ, 1, 1);
+    				
+    						e.getClickedBlock().setMetaData("HealingEnhanced", new FixedMetadataValue(this, "BrewingStage"));
+    					
+    					} else if (p.getItemInHand().getType() == Material.REDSTONE_DUST) {
+    					
+    						p.sendMessage(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "BREWING " + ChatColor.GRAY + "You can't extend healing potions!");
+    						p.playSound(p.getLocation(), Sound.ITEM_BREAK, 1, 1);
+    					
+    					}
+    				
+    				} else if (e.getClickedBlock().hasMetaData("FResNormal")) {
+    				
+    					if (p.getItemInHand().getType() == Material.GLOWSTONE_DUST) {
+    					
+    						p.sendMessage(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "BREWING " + ChatColor.GRAY + "You can only make Fire Resistance potions extended by using redstone dust!");
+    						p.playSound(p.getLocatoin(), Soud.ITEM_BREAK, 1, 1);
+    					
+    					} else if (p.geItemInHand().getType() == Material.REDSTONE_DUST) {
+    					
+    						Item redstonedust = p.getWorld().dropItemNaturally(e.getClickedBlock().getLocation().add(0, 1, 0), new ItemStack(Material.REDSTONE_DUST)).setVelocity(new Vector(0, 1, 0));
+    					
+    						Bukkit.getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
+    					
+    							@Override
+    							public void run() {
+    						
+    								redstonedust.remove();
+    						
+    							}
+    					
+    						}, 20);
+    						
+    						if (p.getItemInHand().getAmount() > 1) {
+    					
+    							p.getItemInHand().setAmount(p.getItemInHand().getAmount() - 1);
+    					
+    						} else if (p.getItemInHand().getAmount() == 1) {
+    					
+    							p.setItemInHand(new ItemStack(Material.AIR));
+    					
+    						}
+    				
+    						p.playSound(p.getLocation(), Sound.FIZZ, 1, 1);
+    				
+    						e.getClickedBlock().setMetaData("FResExtended", new FixedMetadataValue(this, "BrewingStage"));
+    					
+    					}
+    				
+    				} else if (e.getClickedBlock().hasMetaData("RegenNormal")) {
+    				
+    					if (p.getItemInHand().getType() == Material.GLOWSTONE_DUST) {
+    					
+    						Item glowstonedust = p.getWorld().dropItemNaturally(e.getClickedBlock().getLocation().add(0, 1, 0), new ItemStack(Material.GLOWSTONE_DUST)).setVelocity(new Vector(0, 1, 0));
+    					
+    						Bukkit.getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
+    					
+    							@Override
+    							public void run() {
+    						
+    								glowstonedust.remove();
+    						
+    							}
+    					
+    						}, 20);
+    						
+    						if (p.getItemInHand().getAmount() > 1) {
+    					
+    							p.getItemInHand().setAmount(p.getItemInHand().getAmount() - 1);
+    					
+    						} else if (p.getItemInHand().getAmount() == 1) {
+    					
+    							p.setItemInHand(new ItemStack(Material.AIR));
+    					
+    						}
+    				
+    						p.playSound(p.getLocation(), Sound.FIZZ, 1, 1);
+    				
+    						e.getClickedBlock().setMetaData("RegenEnhanced", new FixedMetadataValue(this, "BrewingStage"));
+    					
+    					} else if (p.getItemInHand().getType() == Material.REDSTONE_DUST) {
+    					
+    						Item redstonedust = p.getWorld().dropItemNaturally(e.getClickedBlock().getLocation().add(0, 1, 0), new ItemStack(Material.REDSTONE_DUST)).setVelocity(new Vector(0, 1, 0));
+    					
+    						Bukkit.getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
+    					
+    							@Override
+    							public void run() {
+    						
+    								redstonedust.remove();
+    						
+    							}
+    					
+    						}, 20);
+    						
+    						if (p.getItemInHand().getAmount() > 1) {
+    					
+    							p.getItemInHand().setAmount(p.getItemInHand().getAmount() - 1);
+    					
+    						} else if (p.getItemInHand().getAmount() == 1) {
+    					
+    							p.setItemInHand(new ItemStack(Material.AIR));
+    					
+    						}
+    				
+    						p.playSound(p.getLocation(), Sound.FIZZ, 1, 1);
+    				
+    						e.getClickedBlock().setMetaData("RegenExtended", new FixedMetadataValue(this, "BrewingStage"));
+    					
+    					}
+    				
+    				} else {
+    				
+    					p.sendMessage(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "BREWING " + ChatColor.GRAY + "You must follow the correct brewing process! Do /brew for further information.");
+    					p.playSound(p.getLocation(), Sound.ITEM_BREAK, 1, 1);
+    				
+    				}
+    			
+    			} else if (p.getItemInHand().getType() == Material.SULPHUR) {
+    			
+    				if (e.getClickedBlock().hasMetaData("HealingNormal")) {
+    				
+    					Item gunpowder = p.getWorld().dropItemNaturally(e.getClickedBlock().getLocation().add(0, 1, 0), new ItemStack(Material.SULPHUR)).setVelocity(new Vector(0, 1, 0));
+    					
+    					Bukkit.getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
+    					
+    						@Override
+    						public void run() {
+    						
+    							gunpowder.remove();
+    						
+    						}
+    					
+    					}, 20);
+    						
+    					if (p.getItemInHand().getAmount() > 1) {
+    					
+    						p.getItemInHand().setAmount(p.getItemInHand().getAmount() - 1);
+    					
+    					} else if (p.getItemInHand().getAmount() == 1) {
+    					
+    						p.setItemInHand(new ItemStack(Material.AIR));
+    					
+    					}
+    				
+    					p.playSound(p.getLocation(), Sound.FIZZ, 1, 1);
+    				
+    					e.getClickedBlock().setMetaData("HealingSplash", new FixedMetadataValue(this, "BrewingStage"));
+    				
+    				} else if (e.getClickedBlock().hasMetaData("HealingEnhanced")) {
+    				
+    					Item gunpowder = p.getWorld().dropItemNaturally(e.getClickedBlock().getLocation().add(0, 1, 0), new ItemStack(Material.SULPHUR)).setVelocity(new Vector(0, 1, 0));
+    					
+    					Bukkit.getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
+    					
+    						@Override
+    						public void run() {
+    						
+    							gunpowder.remove();
+    						
+    						}
+    					
+    					}, 20);
+    						
+    					if (p.getItemInHand().getAmount() > 1) {
+    					
+    						p.getItemInHand().setAmount(p.getItemInHand().getAmount() - 1);
+    					
+    					} else if (p.getItemInHand().getAmount() == 1) {
+    					
+    						p.setItemInHand(new ItemStack(Material.AIR));
+    					
+    					}
+    				
+    					p.playSound(p.getLocation(), Sound.FIZZ, 1, 1);
+    				
+    					e.getClickedBlock().setMetaData("HealingEnhancedSplash", new FixedMetadataValue(this, "BrewingStage"));
+    				
+    				} else {
+    				
+    					p.sendMessage(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "BREWING " + ChatColor.GRAY + "Only healing potions can be made splash!");
+    					p.playSound(p.getLocation(), Sound.ITEM_BREAK, 1, 1);
+    				
+    				}
+    			
     			}
     			
     		}
     		
+    	} else if (e.getAction() == Action.RIGHT_CLICK_BLOCK) {
+    	
+    		if (p.isSneaking()) {
+    		
+    			if (e.getClickedBlock().hasMetaData("Stage1")) {
+    			
+    				p.sendMessage(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "BREWING " + ChatColor.GRAY + "You successfully brewed an awkward potion!");
+    				p.playSound(p.getLocation(), Sound.ITEM_PICKUP, 1, 1);
+    				
+    				Item potion = p.getWorld().dropItemNaturally(p.getLocation(), new ItemStack(Material.POTION, 1, (short) 16));
+    				potion.setPickupDelay(1);
+    			
+    			} else if (e.getClickedBlock().hasMetaData("SpeedNormal")) {
+    			
+					p.playSound(p.getLocation(), Sound.ITEM_PICKUP, 1, 1);
+    				
+    				ItemStack spe = new ItemStack(Material.POTION, 1, (short) 8226);
+        			PotionMeta speMeta = (PotionMeta) spe.getItemMeta();
+        			speMeta.addCustomEffect(new PotionEffect(PotionEffectType.SPEED, 3600, 0), true);
+        			spe.setItemMeta(speMeta);
+        			
+    				Item potion = p.getWorld().dropItemNaturally(p.getLocation(), spe);
+    				potion.setPickupDelay(1);
+    			
+    			} else if (e.getClickedBlock().hasMetaData("SpeedEnhanced")) {
+    			
+    				p.playSound(p.getLocation(), Sound.ITEM_PICKUP, 1, 1);
+    				
+    				ItemStack spe = new ItemStack(Material.POTION, 1, (short) 8226);
+        			PotionMeta speMeta = (PotionMeta) spe.getItemMeta();
+        			speMeta.addCustomEffect(new PotionEffect(PotionEffectType.SPEED, 4800, 1), true);
+        			spe.setItemMeta(speMeta);
+        			
+    				Item potion = p.getWorld().dropItemNaturally(p.getLocation(), spe);
+    				potion.setPickupDelay(1);
+    			
+    			} else if (e.getClickedBlock().hasMetaData("SpeedExtended")) {
+    			
+    				p.playSound(p.getLocation(), Sound.ITEM_PICKUP, 1, 1);
+    				
+    				ItemStack spe = new ItemStack(Material.POTION, 1, (short) 8226);
+        			PotionMeta speMeta = (PotionMeta) spe.getItemMeta();
+        			speMeta.addCustomEffect(new PotionEffect(PotionEffectType.SPEED, 9600, 0), true);
+        			spe.setItemMeta(speMeta);
+        			
+    				Item potion = p.getWorld().dropItemNaturally(p.getLocation(), spe);
+    				potion.setPickupDelay(1);
+    			
+    			} else if (e.getClickedBlock().hasMetaData("StrengthNormal")) {
+    			
+    				p.playSound(p.getLocation(), Sound.ITEM_PICKUP, 1, 1);
+    				
+    				ItemStack str = new ItemStack(Material.POTION, 1, (short) 8233);
+        			PotionMeta strMeta = (PotionMeta) str.getItemMeta();
+        			strMeta.addCustomEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 3600, 0), true);
+        			str.setItemMeta(strMeta);
+        			
+    				Item potion = p.getWorld().dropItemNaturally(p.getLocation(), str);
+    				potion.setPickupDelay(1);
+    			
+    			} else if (e.getClickedBlock().hasMetaData("StrengthEnhanced")) {
+    			
+    				p.playSound(p.getLocation(), Sound.ITEM_PICKUP, 1, 1);
+    				
+    				ItemStack str = new ItemStack(Material.POTION, 1, (short) 8233);
+        			PotionMeta strMeta = (PotionMeta) str.getItemMeta();
+        			strMeta.addCustomEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 4800, 1), true);
+        			str.setItemMeta(strMeta);
+        			
+    				Item potion = p.getWorld().dropItemNaturally(p.getLocation(), str);
+    				potion.setPickupDelay(1);
+    			
+    			} else if (e.getClickedBlock().hasMetaData("StrengthExtended")) {
+    			
+    				p.playSound(p.getLocation(), Sound.ITEM_PICKUP, 1, 1);
+    				
+    				ItemStack str = new ItemStack(Material.POTION, 1, (short) 8233);
+        			PotionMeta strMeta = (PotionMeta) str.getItemMeta();
+        			strMeta.addCustomEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 9600, 0), true);
+        			str.setItemMeta(strMeta);
+        			
+    				Item potion = p.getWorld().dropItemNaturally(p.getLocation(), str);
+    				potion.setPickupDelay(1);
+    			
+    			} else if (e.getClickedBlock().hasMetaData("HealingNormal")) {
+    			
+    				p.playSound(p.getLocation(), Sound.ITEM_PICKUP, 1, 1);
+    				
+    				ItemStack hea = new ItemStack(Material.POTION, 1, (short) 8197);
+        			PotionMeta heaMeta = (PotionMeta) hea.getItemMeta();
+        			heaMeta.addCustomEffect(new PotionEffect(PotionEffectType.HEAL, 1, 0), true);
+        			hea.setItemMeta(heaMeta);
+        			
+    				Item potion = p.getWorld().dropItemNaturally(p.getLocation(), hea);
+    				potion.setPickupDelay(1);
+    			
+    			} else if (e.getClickedBlock().hasMetaData("HealingSplash")) {
+    			
+    				p.playSound(p.getLocation(), Sound.ITEM_PICKUP, 1, 1);
+    				
+    				ItemStack hea = new ItemStack(Material.POTION, 1, (short) 16389);
+        			PotionMeta heaMeta = (PotionMeta) hea.getItemMeta();
+        			heaMeta.addCustomEffect(new PotionEffect(PotionEffectType.HEAL, 1, 0), true);
+        			hea.setItemMeta(heaMeta);
+        			
+    				Item potion = p.getWorld().dropItemNaturally(p.getLocation(), hea);
+    				potion.setPickupDelay(1);
+    			
+    			} else if (e.getClickedBlock().hasMetaData("HealingEnhanced")) {
+    			
+    				p.playSound(p.getLocation(), Sound.ITEM_PICKUP, 1, 1);
+    				
+    				ItemStack hea = new ItemStack(Material.POTION, 1, (short) 8197);
+        			PotionMeta heaMeta = (PotionMeta) hea.getItemMeta();
+        			heaMeta.addCustomEffect(new PotionEffect(PotionEffectType.HEAL, 1, 1), true);
+        			hea.setItemMeta(heaMeta);
+        			
+    				Item potion = p.getWorld().dropItemNaturally(p.getLocation(), hea);
+    				potion.setPickupDelay(1);
+    			
+    			} else if (e.getClickedBlock().hasMetaData("HealingEnhancedSplash")) {
+    			
+    				p.playSound(p.getLocation(), Sound.ITEM_PICKUP, 1, 1);
+    				
+    				ItemStack hea = new ItemStack(Material.POTION, 1, (short) 16389);
+        			PotionMeta heaMeta = (PotionMeta) hea.getItemMeta();
+        			heaMeta.addCustomEffect(new PotionEffect(PotionEffectType.HEAL, 1, 1), true);
+        			hea.setItemMeta(heaMeta);
+        			
+    				Item potion = p.getWorld().dropItemNaturally(p.getLocation(), hea);
+    				potion.setPickupDelay(1);
+    			
+    			} else if (e.getClickedBlock().hasMetaData("FResNormal")) {
+    			
+    				p.playSound(p.getLocation(), Sound.ITEM_PICKUP, 1, 1);
+    				
+    				ItemStack fres = new ItemStack(Material.POTION, 1, (short) 8195);
+        			PotionMeta fresMeta = (PotionMeta) fres.getItemMeta();
+        			fresMeta.addCustomEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 3600, 0), true);
+        			fres.setItemMeta(fresMeta);
+        			
+    				Item potion = p.getWorld().dropItemNaturally(p.getLocation(), fres);
+    				potion.setPickupDelay(1);
+    			
+    			} else if (p.getClickedBlock().hasMetaData("FResExtended")) {
+    			
+    				p.playSound(p.getLocation(), Sound.ITEM_PICKUP, 1, 1);
+    				
+    				ItemStack fres = new ItemStack(Material.POTION, 1, (short) 8195);
+        			PotionMeta fresMeta = (PotionMeta) fres.getItemMeta();
+        			fresMeta.addCustomEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 9600, 0), true);
+        			fres.setItemMeta(fresMeta);
+        			
+    				Item potion = p.getWorld().dropItemNaturally(p.getLocation(), fres);
+    				potion.setPickupDelay(1);
+    			
+    			} else if (p.getClickedBlock().hasMetaData("RegenNormal")) {
+    			
+    				p.playSound(p.getLocation(), Sound.ITEM_PICKUP, 1, 1);
+    				
+    				ItemStack reg = new ItemStack(Material.POTION, 1, (short) 8193);
+        			PotionMeta regMeta = (PotionMeta) reg.getItemMeta();
+        			regMeta.addCustomEffect(new PotionEffect(PotionEffectType.REGENERATION, 3600, 0), true);
+        			reg.setItemMeta(regMeta);
+        			
+    				Item potion = p.getWorld().dropItemNaturally(p.getLocation(), fres);
+    				potion.setPickupDelay(1);
+    			
+    			} else if (p.getClickedBlock().hasMetaData("RegenExtended")) {
+    			
+    				p.playSound(p.getLocation(), Sound.ITEM_PICKUP, 1, 1);
+    				
+    				ItemStack reg = new ItemStack(Material.POTION, 1, (short) 8193);
+        			PotionMeta regMeta = (PotionMeta) reg.getItemMeta();
+        			regMeta.addCustomEffect(new PotionEffect(PotionEffectType.REGENERATION, 9600, 0), true);
+        			reg.setItemMeta(regMeta);
+        			
+    				Item potion = p.getWorld().dropItemNaturally(p.getLocation(), fres);
+    				potion.setPickupDelay(1);
+    			
+    			} else if (p.getClickedBlock().hasMetaData("RegenEnhanced")) {
+    			
+    				p.playSound(p.getLocation(), Sound.ITEM_PICKUP, 1, 1);
+    				
+    				ItemStack reg = new ItemStack(Material.POTION, 1, (short) 8193);
+        			PotionMeta regMeta = (PotionMeta) reg.getItemMeta();
+        			regMeta.addCustomEffect(new PotionEffect(PotionEffectType.REGENERATION, 2400, 1), true);
+        			reg.setItemMeta(regMeta);
+        			
+    				Item potion = p.getWorld().dropItemNaturally(p.getLocation(), fres);
+    				potion.setPickupDelay(1);
+    			
+    			}
+    		
+    		} else if (!(p.isSneaking())) {
+    		
+    			if (p.getClickedBlock().hasMetaData("Stage1")) {
+    			
+    				p.sendMessage(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "BREWING " + ChatColor.GRAY + "This cauldron is brewing an awkward potion. Shift-Right-Click to retrieve this potion.");
+    			
+    			} else if (p.getClickedBlock().hasMetaData("SpeedNormal")) {
+    			
+    				p.sendMessage(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "BREWING " + ChatColor.GRAY + "This cauldron is brewing a normal speed potion. Shift-Right-Click to retrieve this potion.");
+    			
+    			} else if (p.getClickedBlock().hasMetaData("SpeedEnhanced")) {
+    			
+    				p.sendMessage(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "BREWING " + ChatColor.GRAY + "This cauldron is brewing an enhanced speed potion. Shift-Right-Click to retrieve this potion.");
+    			
+    			} else if (p.getClickedBlock().hasMetaData("SpeedExtended")) {
+    			
+    				p.sendMessage(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "BREWING " + ChatColor.GRAY + "This cauldron is brewing an extended speed potion. Shift-Right-Click to retrieve this potion.");
+    			
+    			} else if (p.getClickedBlock().hasMetaData("StrengthNormal")) {
+    			
+    				p.sendMessage(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "BREWING " + ChatColor.GRAY + "This cauldron is brewing a normal strength potion. Shift-Right-Click to retrieve this potion.");
+    			
+    			} else if (p.getClickedBlock().hasMetaData("StrengthEnhanced")) {
+    			
+    				p.sendMessage(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "BREWING " + ChatColor.GRAY + "This cauldron is brewing an enhanced strength potion. Shift-Right-Click to retrieve this potion.");
+    			
+    			} else if (p.getClickedBlock().hasMetaData("StrengthExtended")) {
+    			
+    				p.sendMessage(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "BREWING " + ChatColor.GRAY + "This cauldron is brewing an extended strength potion. Shift-Right-Click to retrieve this potion.");
+    			
+    			} else if (p.getClickedBlock().hasMetaData("HealingNormal")) {
+    			
+    				p.sendMessage(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "BREWING " + ChatColor.GRAY + "This cauldron is brewing a normal healing potion. Shift-Right-Click to retrieve this potion.");
+    			
+    			} else if (p.getClickedBlock().hasMetaData("HealingEnhanced")) {
+    			
+    				p.sendMessage(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "BREWING " + ChatColor.GRAY + "This cauldron is brewing an enhanced healing potion. Shift-Right-Click to retrieve this potion.");
+    			
+    			} else if (p.getClickedBlock().hasMetaData("HealingEnhancedSplash")) {
+    			
+    				p.sendMessage(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "BREWING " + ChatColor.GRAY + "This cauldron is brewing an enhanced splash healing potion. Shift-Right-Click to retrieve this potion.");
+    			
+    			} else if (p.getClickedBlock().hasMetaData("FResNormal")) {
+    			
+    				p.sendMessage(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "BREWING " + ChatColor.GRAY + "This cauldron is brewing a normal fire res potion. Shift-Right-Click to retrieve this potion.");
+    			
+    			} else if (p.getClickedBlock().hasMetaData("FResExtended")) {
+    			
+    				p.sendMessage(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "BREWING " + ChatColor.GRAY + "This cauldron is brewing an extended fire res potion. Shift-Right-Click to retrieve this potion.");
+    			
+    			} else if (p.getClickedBlock().hasMetaData("RegenNormal")) {
+    			
+    				p.sendMessage(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "BREWING " + ChatColor.GRAY + "This cauldron is brewing a normal regen potion. Shift-Right-Click to retrieve this potion.");
+    			
+    			} else if (p.getClickedBlock().hasMetaData("RegenExtended")) {
+    			
+    				p.sendMessage(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "BREWING " + ChatColor.GRAY + "This cauldron is brewing an extended regen potion. Shift-Right-Click to retrieve this potion.");
+    			
+    			} else if (p.getClickedBlock().hasMetaData("RegenEnhanced")) {
+    			
+    				p.sendMessage(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "BREWING " + ChatColor.GRAY + "This cauldron is brewing an enhanced regen potion. Shift-Right-Click to retrieve this potion.");
+    			
+    			}
+    		
+    		}
+    	
     	}
     	
     }
@@ -433,12 +1196,16 @@ public class A extends JavaPlugin implements Listener {
         
         if (e.getCurrentItem() == str && e.getCursor() == str) {
         	
+        	e.setCancelled(true);
+        	
         	e.setCurrentItem(str1);
         	e.setCursor(new ItemStack(Material.AIR));
         	
         }
         
         if (e.getCurrentItem() == spe && e.getCursor() == spe) {
+        	
+        	e.setCancelled(true);
         	
         	e.setCurrentItem(spe1);
         	e.setCursor(new ItemStack(Material.AIR));
@@ -507,7 +1274,7 @@ public class A extends JavaPlugin implements Listener {
 
                 ItemStack arrows = new ItemStack(Material.ARROW, 32);
 
-                ItemStack crapples = new ItemStack(Material.GOLDEN_APPLE, 8);
+                ItemStack crapples = new ItemStack(Material.GOLDEN_APPLE, 4);
 
                 ItemStack tnt = new ItemStack(Material.TNT, 32);
 
@@ -518,6 +1285,8 @@ public class A extends JavaPlugin implements Listener {
                 ItemStack diamonds = new ItemStack(Material.DIAMOND, 8);
 
                 ItemStack iron = new ItemStack(Material.IRON_INGOT, 12);
+                
+                ItemStack exp = new ItemStack(Material.EXP_BOTTLE, 16);
                 
                 p.getInventory().addItem(sword);
                 p.getInventory().addItem(helmet);
@@ -531,6 +1300,7 @@ public class A extends JavaPlugin implements Listener {
                 p.getInventory().addItem(tnt);
                 p.getInventory().addItem(obby);
                 p.getInventory().addItem(stone);
+                p.getInventory().addItem(exp);
                 p.getInventory().addItem(diamonds);
                 p.getInventory().addItem(iron);
                 p.getInventory().addItem(str);
@@ -622,8 +1392,6 @@ public class A extends JavaPlugin implements Listener {
                     bowMeta.setDisplayName(ChatColor.GRAY + "[" + ChatColor.GREEN + "Farmer" + ChatColor.GRAY + "] " + ChatColor.WHITE + "Bow");
                     bow.setItemMeta(bowMeta);
 
-                    ItemStack gapples = new ItemStack(Material.GOLDEN_APPLE, 2, (short) 1);
-
                     ItemStack crapples = new ItemStack(Material.GOLDEN_APPLE, 12);
 
                     ItemStack arrows = new ItemStack(Material.ARROW, 64);
@@ -635,6 +1403,8 @@ public class A extends JavaPlugin implements Listener {
                     ItemStack diamonds = new ItemStack(Material.DIAMOND, 16);
 
                     ItemStack iron = new ItemStack(Material.IRON_INGOT, 32);
+                    
+                    ItemStack exp = new ItemStack(Material.EXP_BOTTLE, 32);
 
                     p.getInventory().addItem(sword);
                     p.getInventory().addItem(helmet);
@@ -643,11 +1413,11 @@ public class A extends JavaPlugin implements Listener {
                     p.getInventory().addItem(boots);
                     p.getInventory().addItem(pickaxe);
                     p.getInventory().addItem(bow);
-                    p.getInventory().addItem(gapples);
                     p.getInventory().addItem(crapples);
                     p.getInventory().addItem(arrows);
                     p.getInventory().addItem(tnt);
                     p.getInventory().addItem(obby);
+                    p.getInventory().addItem(exp);
                     p.getInventory().addItem(diamonds);
                     p.getInventory().addItem(iron);
                     p.getInventory().addItem(str);
@@ -753,9 +1523,7 @@ public class A extends JavaPlugin implements Listener {
                     bowMeta.setDisplayName(ChatColor.GRAY + "[" + ChatColor.YELLOW + "Merchant" + ChatColor.GRAY + "] " + ChatColor.WHITE + "Bow");
                     bow.setItemMeta(bowMeta);
 
-                    ItemStack gapples = new ItemStack(Material.GOLDEN_APPLE, 4, (short) 1);
-
-                    ItemStack crapples = new ItemStack(Material.GOLDEN_APPLE, 16);
+                    ItemStack crapples = new ItemStack(Material.GOLDEN_APPLE, 18);
 
                     ItemStack arrows = new ItemStack(Material.ARROW, 64);
 
@@ -766,6 +1534,8 @@ public class A extends JavaPlugin implements Listener {
                     ItemStack diamonds = new ItemStack(Material.DIAMOND, 32);
 
                     ItemStack iron = new ItemStack(Material.IRON_INGOT, 48);
+                    
+                    ItemStack exp = new ItemStack(Material.EXP_BOTTLE, 48);
 
                     p.getInventory().addItem(sword);
                     p.getInventory().addItem(helmet);
@@ -774,11 +1544,11 @@ public class A extends JavaPlugin implements Listener {
                     p.getInventory().addItem(boots);
                     p.getInventory().addItem(pickaxe);
                     p.getInventory().addItem(bow);
-                    p.getInventory().addItem(gapples);
                     p.getInventory().addItem(crapples);
                     p.getInventory().addItem(arrows);
                     p.getInventory().addItem(tnt);
                     p.getInventory().addItem(obby);
+                    p.getInventory().addItem(exp);
                     p.getInventory().addItem(diamonds);
                     p.getInventory().addItem(iron);
                     p.getInventory().addItem(str);
@@ -895,9 +1665,7 @@ public class A extends JavaPlugin implements Listener {
                     bowMeta.setDisplayName(ChatColor.GRAY + "[" + ChatColor.GOLD + "Industrialist" + ChatColor.GRAY + "] " + ChatColor.WHITE + "Bow");
                     bow.setItemMeta(bowMeta);
 
-                    ItemStack gapples = new ItemStack(Material.GOLDEN_APPLE, 4, (short) 1);
-
-                    ItemStack crapples = new ItemStack(Material.GOLDEN_APPLE, 20);
+                    ItemStack crapples = new ItemStack(Material.GOLDEN_APPLE, 24);
 
                     ItemStack arrows = new ItemStack(Material.ARROW, 64);
 
@@ -908,6 +1676,8 @@ public class A extends JavaPlugin implements Listener {
                     ItemStack diamonds = new ItemStack(Material.DIAMOND, 48);
 
                     ItemStack iron = new ItemStack(Material.IRON_INGOT, 56);
+                    
+                    ItemStack exp = new ItemStack(Material.EXP_BOTTLE, 64);
 
                     p.getInventory().addItem(sword);
                     p.getInventory().addItem(helmet);
@@ -917,11 +1687,11 @@ public class A extends JavaPlugin implements Listener {
                     p.getInventory().addItem(pickaxe);
                     p.getInventory().addItem(pickaxe1);
                     p.getInventory().addItem(bow);
-                    p.getInventory().addItem(gapples);
                     p.getInventory().addItem(crapples);
                     p.getInventory().addItem(arrows);
                     p.getInventory().addItem(tnt);
                     p.getInventory().addItem(obby);
+                    p.getInventory().addItem(exp);
                     p.getInventory().addItem(diamonds);
                     p.getInventory().addItem(iron);
                     p.getInventory().addItem(str);
@@ -1048,9 +1818,9 @@ public class A extends JavaPlugin implements Listener {
                     bowMeta.setDisplayName(ChatColor.GRAY + "[" + ChatColor.RED + "Engineer" + ChatColor.GRAY + "] " + ChatColor.WHITE + "Bow");
                     bow.setItemMeta(bowMeta);
 
-                    ItemStack gapples = new ItemStack(Material.GOLDEN_APPLE, 6, (short) 1);
+					ItemStack gapples = new ItemStack(Material.GOLDEN_APPLE, 1, (short) 1);
 
-                    ItemStack crapples = new ItemStack(Material.GOLDEN_APPLE, 24);
+                    ItemStack crapples = new ItemStack(Material.GOLDEN_APPLE, 30);
 
                     ItemStack arrows = new ItemStack(Material.ARROW, 64);
 
@@ -1061,6 +1831,8 @@ public class A extends JavaPlugin implements Listener {
                     ItemStack diamonds = new ItemStack(Material.DIAMOND, 64);
 
                     ItemStack iron = new ItemStack(Material.IRON_INGOT, 64);
+                    
+                    ItemStack exp = new ItemStack(Material.EXP_BOTTLE, 64);
 
                     p.getInventory().addItem(sword);
                     p.getInventory().addItem(helmet);
@@ -1075,6 +1847,8 @@ public class A extends JavaPlugin implements Listener {
                     p.getInventory().addItem(arrows);
                     p.getInventory().addItem(tnt);
                     p.getInventory().addItem(obby);
+                    p.getInventory().addItem(exp);
+                    p.getInventory().addItem(exp);
                     p.getInventory().addItem(diamonds);
                     p.getInventory().addItem(iron);
                     p.getInventory().addItem(str);
@@ -1206,7 +1980,7 @@ public class A extends JavaPlugin implements Listener {
                     pickaxeMeta.setDisplayName(ChatColor.GRAY + "[" + ChatColor.DARK_RED + "Dragon" + ChatColor.GRAY + "] " + ChatColor.WHITE + "Pickaxe");
                     pickaxe.setItemMeta(pickaxeMeta);
 
-                    ItemStack gapples = new ItemStack(Material.GOLDEN_APPLE, 6, (short) 1);
+                    ItemStack gapples = new ItemStack(Material.GOLDEN_APPLE, 1, (short) 1);
 
                     ItemStack crapples = new ItemStack(Material.GOLDEN_APPLE, 24);
 
@@ -1219,6 +1993,8 @@ public class A extends JavaPlugin implements Listener {
                     ItemStack diamonds = new ItemStack(Material.DIAMOND, 32);
 
                     ItemStack iron = new ItemStack(Material.IRON_INGOT, 64);
+                    
+                    ItemStack exp = new ItemStack(Material.EXP_BOTTLE, 64);
 
                     p.getInventory().addItem(sword);
                     p.getInventory().addItem(helmet);
@@ -1235,6 +2011,7 @@ public class A extends JavaPlugin implements Listener {
                     p.getInventory().addItem(arrows);
                     p.getInventory().addItem(tnt);
                     p.getInventory().addItem(obby);
+                    p.getInventory().addItem(exp);
                     p.getInventory().addItem(diamonds);
                     p.getInventory().addItem(iron);
                     p.getInventory().addItem(str);
@@ -1323,15 +2100,7 @@ public class A extends JavaPlugin implements Listener {
                     bootsMeta.setDisplayName(ChatColor.GRAY + "[" + ChatColor.DARK_GREEN + "Leprechaun" + ChatColor.GRAY + "] " + ChatColor.WHITE + "Boots");
                     boots.setItemMeta(bootsMeta);
 
-                    ItemStack goldpot = new ItemStack(Material.CAULDRON_ITEM, 1);
-                    ItemMeta goldpotmeta = goldpot.getItemMeta();
-                    goldpotmeta.setDisplayName(ChatColor.GOLD + "" + ChatColor.BOLD + "Pot o' Gold");
-                    ArrayList<String> goldpotlore = new ArrayList<String>();
-                    goldpotlore.add(ChatColor.GRAY + "Right click to use this item!");
-                    goldpotmeta.setLore(goldpotlore);
-                    goldpot.setItemMeta(goldpotmeta);
-
-                    ItemStack gapples = new ItemStack(Material.GOLDEN_APPLE, 6, (short) 1);
+                    ItemStack gapples = new ItemStack(Material.GOLDEN_APPLE, 1, (short) 1);
 
                     ItemStack crapples = new ItemStack(Material.GOLDEN_APPLE, 24);
 
@@ -1342,6 +2111,8 @@ public class A extends JavaPlugin implements Listener {
                     ItemStack diamonds = new ItemStack(Material.DIAMOND, 32);
 
                     ItemStack iron = new ItemStack(Material.IRON_INGOT, 64);
+                    
+                    ItemStack exp = new ItemStack(Material.EXP_BOTTLE, 64);
 
                     p.getInventory().addItem(axe);
                     p.getInventory().addItem(helmet);
@@ -1350,11 +2121,11 @@ public class A extends JavaPlugin implements Listener {
                     p.getInventory().addItem(boots);
                     p.getInventory().addItem(tnt);
                     p.getInventory().addItem(obby);
+                    p.getInventory().addItem(exp);
                     p.getInventory().addItem(diamonds);
                     p.getInventory().addItem(iron);
                     p.getInventory().addItem(gapples);
                     p.getInventory().addItem(crapples);
-                    p.getInventory().addItem(goldpot);
                     p.getInventory().addItem(str);
                     p.getInventory().addItem(spe);
                     p.getInventory().addItem(str);
@@ -1442,7 +2213,7 @@ public class A extends JavaPlugin implements Listener {
                     bootsMeta.setDisplayName(ChatColor.GRAY + "[" + ChatColor.DARK_PURPLE + "Ghoul" + ChatColor.GRAY + "] " + ChatColor.WHITE + "Boots");
                     boots.setItemMeta(bootsMeta);
 
-                    ItemStack gapples = new ItemStack(Material.GOLDEN_APPLE, 6, (short) 1);
+                    ItemStack gapples = new ItemStack(Material.GOLDEN_APPLE, 1, (short) 1);
 
                     ItemStack crapples = new ItemStack(Material.GOLDEN_APPLE, 24);
 
@@ -1453,6 +2224,8 @@ public class A extends JavaPlugin implements Listener {
                     ItemStack diamonds = new ItemStack(Material.DIAMOND, 32);
 
                     ItemStack iron = new ItemStack(Material.IRON_INGOT, 64);
+                    
+                    ItemStack exp = new ItemStack(Material.EXP_BOTTLE, 64);
 
                     p.getInventory().addItem(sword);
                     p.getInventory().addItem(helmet);
@@ -1461,6 +2234,7 @@ public class A extends JavaPlugin implements Listener {
                     p.getInventory().addItem(boots);
                     p.getInventory().addItem(tnt);
                     p.getInventory().addItem(obby);
+                    p.getInventory().addItem(exp);
                     p.getInventory().addItem(diamonds);
                     p.getInventory().addItem(iron);
                     p.getInventory().addItem(gapples);
@@ -1561,7 +2335,7 @@ public class A extends JavaPlugin implements Listener {
                     bow.setItemMeta(bowMeta);
 
 
-                    ItemStack gapples = new ItemStack(Material.GOLDEN_APPLE, 6, (short) 1);
+                    ItemStack gapples = new ItemStack(Material.GOLDEN_APPLE, 1, (short) 1);
 
                     ItemStack crapples = new ItemStack(Material.GOLDEN_APPLE, 24);
 
@@ -1572,6 +2346,8 @@ public class A extends JavaPlugin implements Listener {
                     ItemStack diamonds = new ItemStack(Material.DIAMOND, 32);
 
                     ItemStack iron = new ItemStack(Material.IRON_INGOT, 64);
+                    
+                    ItemStack exp = new ItemStack(Material.EXP_BOTTLE, 64);
 
                     p.getInventory().addItem(sword);
                     p.getInventory().addItem(helmet);
@@ -1581,6 +2357,7 @@ public class A extends JavaPlugin implements Listener {
                     p.getInventory().addItem(bow);
                     p.getInventory().addItem(tnt);
                     p.getInventory().addItem(obby);
+                    p.getInventory().addItem(exp);
                     p.getInventory().addItem(diamonds);
                     p.getInventory().addItem(iron);
                     p.getInventory().addItem(gapples);
@@ -1626,20 +2403,6 @@ public class A extends JavaPlugin implements Listener {
 
             }
 
-        } else if (e.getInventory().getName().equalsIgnoreCase(ChatColor.GOLD + "" + ChatColor.BOLD + "Pot o' Gold")) {
-        	
-        	e.setCancelled(true);
-        	
-        	if (e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.GOLD + "" + ChatColor.BOLD + "Prize")) {
-        		
-        		
-        		
-        	} else {
-        		
-        		return;
-        		
-        	}
-        	
         }
 
     }
@@ -1656,50 +2419,6 @@ public class A extends JavaPlugin implements Listener {
 
         return true;
 
-    }
-    
-    public void goldPot(Player p) {
-    	
-    	Inventory pot = Bukkit.createInventory(null, 27, ChatColor.GOLD + "" + ChatColor.BOLD + "Pot o' Gold");
-    	
-    	ItemStack black = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 15);
-    	ItemMeta blackMeta = black.getItemMeta();
-    	blackMeta.setDisplayName(" ");
-    	black.setItemMeta(blackMeta);
-    	
-    	ItemStack orange = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 1);
-    	ItemMeta orangeMeta = orange.getItemMeta();
-    	orangeMeta.setDisplayName(ChatColor.GOLD + "" + ChatColor.BOLD + "Prize");
-    	orange.setItemMeta(orangeMeta);
-    	
-    	pot.setItem(0, black);
-    	pot.setItem(1, black);
-    	pot.setItem(2, black);
-    	pot.setItem(3, black);
-    	pot.setItem(4, black);
-    	pot.setItem(5, black);
-    	pot.setItem(6, black);
-    	pot.setItem(7, black);
-    	pot.setItem(8, black);
-    	pot.setItem(9, black);
-    	pot.setItem(10, black);
-    	pot.setItem(11, black);
-    	pot.setItem(12, orange);
-    	pot.setItem(13, orange);
-    	pot.setItem(14, orange);
-    	pot.setItem(15, black);
-    	pot.setItem(16, black);
-    	pot.setItem(17, black);
-    	pot.setItem(18, black);
-    	pot.setItem(19, black);
-    	pot.setItem(20, black);
-    	pot.setItem(21, black);
-    	pot.setItem(22, black);
-    	pot.setItem(23, black);
-    	pot.setItem(24, black);
-    	pot.setItem(25, black);
-    	pot.setItem(26, black);
-    	
     }
 
     public void kitMenu(Player p) {
