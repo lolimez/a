@@ -72,7 +72,26 @@ public class A extends JavaPlugin implements Listener {
     private HashMap<Player, Integer> snowflakeTime;
     private HashMap<Player, BukkitRunnable> snowflakeTask;
     
-    private HashMap<Location, Integer> potion;
+    private HashMap<Player, Integer> knock1;
+    private HashMap<Player, Integer> knock2;
+    private HashMap<Player, Integer> knock3;
+    private HashMap<Player, Integer> knock4;
+    private HashMap<Player, Integer> knock5;
+    private HashMap<Player, Integer> knock6;
+    private HashMap<Player, Integer> knock7;
+    private HashMap<Player, Integer> knock8;
+    private HashMap<Player, Integer> knock9;
+    private HashMap<Player, Integer> knock10;
+    private HashMap<Player, Integer> knock11;
+    private HashMap<Player, Integer> knock12;
+    private HashMap<Player, Integer> knock12;
+    private HashMap<Player, Integer> knock14;
+    private HashMap<Player, Integer> knock15;
+    private HashMap<Player, Integer> knock16;
+    private HashMap<Player, Integer> knock17;
+    private HashMap<Player, Integer> knock18;
+    private HashMap<Player, Integer> knock19;
+    private HashMap<Player, Integer> knock20;
 
     public static File folder;
     public static File file;
@@ -107,6 +126,27 @@ public class A extends JavaPlugin implements Listener {
 
         ghoulTime = new HashMap<Player, Integer>();
         ghoulTask = new HashMap<Player, BukkitRunnable>();
+        
+        knock1 = new HashMap<Player, Integer>();
+        knock2 = new HashMap<Player, Integer>();
+        knock3 = new HashMap<Player, Integer>();
+	    knock4 = new HashMap<Player, Integer>();
+	    knock5 = new HashMap<Player, Integer>();
+	    knock6 = new HashMap<Player, Integer>();
+	    knock7 = new HashMap<Player, Integer>();
+	    knock8 = new HashMap<Player, Integer>();
+	    knock9 = new HashMap<Player, Integer>();
+	    knock10 = new HashMap<Player, Integer>();
+	    knock11 = new HashMap<Player, Integer>();
+	    knock12 = new HashMap<Player, Integer>();
+	    knock13 = new HashMap<Player, Integer>();
+	    knock14 = new HashMap<Player, Integer>();
+	    knock15 = new HashMap<Player, Integer>();
+	    knock16 = new HashMap<Player, Integer>();
+	    knock17 = new HashMap<Player, Integer>();
+	    knock18 = new HashMap<Player, Integer>();
+	    knock19 = new HashMap<Player, Integer>();
+	    knock20 = new HashMap<Player, Integer>();
 
         Bukkit.getPluginManager().registerEvents(this, this);
 
