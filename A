@@ -72,6 +72,9 @@ public class A extends JavaPlugin implements Listener {
     private HashMap<Player, Integer> snowflakeTime;
     private HashMap<Player, BukkitRunnable> snowflakeTask;
     
+    private HashMap<Player, Integer> combatTime;
+    private HashMap<Player, BUkkitRunnable> combatTask;
+    
     private HashMap<Player, Integer> knock1;
     private HashMap<Player, Integer> knock2;
     private HashMap<Player, Integer> knock3;
@@ -126,6 +129,9 @@ public class A extends JavaPlugin implements Listener {
 
         ghoulTime = new HashMap<Player, Integer>();
         ghoulTask = new HashMap<Player, BukkitRunnable>();
+        
+        combatTime = new HashMap<PLayer, Integer>();
+        combatTask = new HashMap<Player, BukkitRunnable>();
         
         knock1 = new HashMap<Player, Integer>();
         knock2 = new HashMap<Player, Integer>();
