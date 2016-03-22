@@ -328,26 +328,9 @@ public class A extends JavaPlugin implements Listener {
     	
     	if (damagee instanceof Player && damager instanceof Player) {
     	
-    		if (combatTask.containsKey(p)) {
+    		if (combatTask.containsKey(damager)) {
 
-                combatTask.put(p, new BukkitRunnable() {
-
-                    public void run() {
-
-						combatTask.remove(p);
-						p.sendMessage(ChatColor.WHITE + "You have " + ChatColor.DARK_PURPLE + "left" + ChatColor.WHITE + " combat.");
-
-                    }
-
-                });
-
-                combatTask.get(p).runTaskLater(this, 600);
-    		
-    		} else {
-    		
-    			damager.sendMessage(ChatColor.WHITE + "You have " + ChatColor.DARK_PURPLE + "entered" + ChatColr.WHITE + " combat.");
-    			
-    			combatTask.put(p, new BukkitRunnable() {
+                combatTask.put(damager, new BukkitRunnable() {
 
                     public void run() {
 
@@ -359,10 +342,29 @@ public class A extends JavaPlugin implements Listener {
                 });
 
                 combatTask.get(damager).runTaskLater(this, 600);
-                
-                damagee.sendMessage(ChatColor.WHITE + "You have " + ChatColor.DARK_PURPLE + "entered" + ChatColr.WHITE + " combat.");
+    		
+    		} else {
+    		
+    			damager.sendMessage(ChatColor.WHITE + "You have " + ChatColor.DARK_PURPLE + "entered" + ChatColr.WHITE + " combat.");
     			
-    			combatTask.put(p, new BukkitRunnable() {
+    			combatTask.put(damager, new BukkitRunnable() {
+
+                    public void run() {
+
+						combatTask.remove(damager);
+						damager.sendMessage(ChatColor.WHITE + "You have " + ChatColor.DARK_PURPLE + "left" + ChatColor.WHITE + " combat.");
+
+                    }
+
+                });
+
+                combatTask.get(damager).runTaskLater(this, 600);
+
+    		}
+    		
+    		if (combatTask.containsKey(damagee)) {
+
+                combatTask.put(damagee, new BukkitRunnable() {
 
                     public void run() {
 
@@ -374,11 +376,26 @@ public class A extends JavaPlugin implements Listener {
                 });
 
                 combatTask.get(damagee).runTaskLater(this, 600);
-    			
-    		}
     		
-    		if ()
-    	
+    		} else {
+    		
+    			damagee.sendMessage(ChatColor.WHITE + "You have " + ChatColor.DARK_PURPLE + "entered" + ChatColr.WHITE + " combat.");
+    			
+    			combatTask.put(damagee, new BukkitRunnable() {
+
+                    public void run() {
+
+						combatTask.remove(damagee);
+						damagee.sendMessage(ChatColor.WHITE + "You have " + ChatColor.DARK_PURPLE + "left" + ChatColor.WHITE + " combat.");
+
+                    }
+
+                });
+
+                combatTask.get(damagee).runTaskLater(this, 600);
+
+    		}
+
     	} else {
     	
     		return;
