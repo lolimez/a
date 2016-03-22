@@ -71,8 +71,7 @@ public class A extends JavaPlugin implements Listener {
 
     private HashMap<Player, Integer> snowflakeTime;
     private HashMap<Player, BukkitRunnable> snowflakeTask;
-    
-    private HashMap<Player, Integer> combatTime;
+
     private HashMap<Player, BUkkitRunnable> combatTask;
     
     private HashMap<Player, Integer> knock1;
@@ -95,6 +94,8 @@ public class A extends JavaPlugin implements Listener {
     private HashMap<Player, Integer> knock18;
     private HashMap<Player, Integer> knock19;
     private HashMap<Player, Integer> knock20;
+    
+    private HashMap<Player, Integer> inffood;
 
     public static File folder;
     public static File file;
@@ -129,14 +130,13 @@ public class A extends JavaPlugin implements Listener {
 
         ghoulTime = new HashMap<Player, Integer>();
         ghoulTask = new HashMap<Player, BukkitRunnable>();
-        
-        combatTime = new HashMap<PLayer, Integer>();
+
         combatTask = new HashMap<Player, BukkitRunnable>();
         
         knock1 = new HashMap<Player, Integer>();
         knock2 = new HashMap<Player, Integer>();
         knock3 = new HashMap<Player, Integer>();
-	    knock4 = new HashMap<Player, Integer>();
+		knock4 = new HashMap<Player, Integer>();
 	    knock5 = new HashMap<Player, Integer>();
 	    knock6 = new HashMap<Player, Integer>();
 	    knock7 = new HashMap<Player, Integer>();
@@ -153,6 +153,8 @@ public class A extends JavaPlugin implements Listener {
 	    knock18 = new HashMap<Player, Integer>();
 	    knock19 = new HashMap<Player, Integer>();
 	    knock20 = new HashMap<Player, Integer>();
+	    
+	    inffood = new HashMap<Player, Integer>();
 
         Bukkit.getPluginManager().registerEvents(this, this);
 
@@ -214,7 +216,7 @@ public class A extends JavaPlugin implements Listener {
             @Override
             public void run() {
             
-                Bukkit.broadcastMessage(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "INFO " + ChatColor.GRAY + "When donating, enter your name as the message so staff know who to give the packages to.");
+                Bukkit.broadcastMessage(ChatColor.DARK_PURPLE + "" + ChatColor.BOLD + "INFO " + ChatColor.GRAY + "When donating through PayPal, enter your IGN in the message box!");
             
             }
         
@@ -255,7 +257,6 @@ public class A extends JavaPlugin implements Listener {
             perms.set("SnowflakeKit." + uuid, 0);
 
             perms.set("Kills." + uuid, 0);
-            perms.set("InfiniteFood." + uuid, 0);
             perms.set("Money." + uuid, 10000);
 
             e.setJoinMessage(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "JOIN " + ChatColor.GRAY + "Welcome, " + ChatColor.UNDERLINE + p.getName() + ChatColor.GRAY + ", to " + ChatColor.GREEN + "" + ChatColor.BOLD + "Variance Factions!");
@@ -267,6 +268,8 @@ public class A extends JavaPlugin implements Listener {
             e.setJoinMessage(" ");
 
         }
+        
+        inffood.put(p, 0);
 
     }
 
@@ -287,7 +290,7 @@ public class A extends JavaPlugin implements Listener {
 
         if (p.getName().equalsIgnoreCase("Mercuric")) {
 
-            e.setFormat(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "DEV " + ChatColor.BLUE + "%s" + ChatColor.GRAY + "[" + ChatColor.WHITE + perms.getInt("kills." + uuid) + ChatColor.GRAY + "] " + ChatColor.WHITE + "%s");
+            e.setFormat(ChatColor.DARK_PURPLE + "" + ChatColor.BOLD + "DEV " + ChatColor.BLUE + "%s" + ChatColor.GRAY + "[" + ChatColor.WHITE + perms.getInt("kills." + uuid) + ChatColor.GRAY + "] " + ChatColor.WHITE + "%s");
 
         } else if (p.getName().equalsIgnoreCase("AllHacksNoGame")) {
 
@@ -315,6 +318,73 @@ public class A extends JavaPlugin implements Listener {
 
         }
 
+    }
+    
+    @EventHandler
+    public void onPlayerDamage(EntityDamageByEntityEvent e) {
+    
+    	Player damagee = (Player) e.getEntity();
+    	Player damager = (Player) e.getDamager();
+    	
+    	if (damagee instanceof Player && damager instanceof Player) {
+    	
+    		if (combatTask.containsKey(p)) {
+
+                combatTask.put(p, new BukkitRunnable() {
+
+                    public void run() {
+
+						combatTask.remove(p);
+						p.sendMessage(ChatColor.WHITE + "You have " + ChatColor.DARK_PURPLE + "left" + ChatColor.WHITE + " combat.");
+
+                    }
+
+                });
+
+                combatTask.get(p).runTaskLater(this, 600);
+    		
+    		} else {
+    		
+    			damager.sendMessage(ChatColor.WHITE + "You have " + ChatColor.DARK_PURPLE + "entered" + ChatColr.WHITE + " combat.");
+    			
+    			combatTask.put(p, new BukkitRunnable() {
+
+                    public void run() {
+
+						combatTask.remove(damager);
+						damager.sendMessage(ChatColor.WHITE + "You have " + ChatColor.DARK_PURPLE + "left" + ChatColor.WHITE + " combat.");
+
+                    }
+
+                });
+
+                combatTask.get(damager).runTaskLater(this, 600);
+                
+                damagee.sendMessage(ChatColor.WHITE + "You have " + ChatColor.DARK_PURPLE + "entered" + ChatColr.WHITE + " combat.");
+    			
+    			combatTask.put(p, new BukkitRunnable() {
+
+                    public void run() {
+
+						combatTask.remove(damagee);
+						damagee.sendMessage(ChatColor.WHITE + "You have " + ChatColor.DARK_PURPLE + "left" + ChatColor.WHITE + " combat.");
+
+                    }
+
+                });
+
+                combatTask.get(damagee).runTaskLater(this, 600);
+    			
+    		}
+    		
+    		if ()
+    	
+    	} else {
+    	
+    		return;
+    	
+    	}
+    
     }
 
     @EventHandler
@@ -351,13 +421,16 @@ public class A extends JavaPlugin implements Listener {
     public void onPlayerMove(PlayerMoveEvent e) {
     	
     	Player p = e.getPlayer();
-    	String uuid = p.getUniqueId().toString();
-    	
-    	if (perms.getInt("Rank." + uuid) == 4) {
+
+    	if (inffood.get(p) == 1) {
     		
     		p.setFoodLevel(20);
     		p.setSaturation(20);
     		
+    	} else {
+    	
+    		return;
+    	
     	}
 
     }
@@ -2461,6 +2534,20 @@ public class A extends JavaPlugin implements Listener {
 
             kitMenu(p);
 
+        } else if (cmd.getName().equalsIgnoreCase("feed")) {
+        
+        	if (inffood.get(p) == 0) {
+        	
+        		inffood.put(p, 1);
+        		p.sendMessage(ChatColor.WHITE + "Infinite Food perk has been " + ChatColor.DARK_PURPLE + "activated" + ChatColor.WHITE + ".");
+        	
+        	} else if (inffood.get(p) == 1) {
+        	
+        		inffood.put(p, 0);
+        		p.sendMessage(ChatColor.WHITE + "Infinite Food perk has been " + ChatColor.DARK_PURPLE + "de-activated" + ChatColor.WHITE + ".");
+        	
+        	}
+        
         }
 
         return true;
