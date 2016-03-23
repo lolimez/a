@@ -259,7 +259,7 @@ public class A extends JavaPlugin implements Listener {
             perms.set("Kills." + uuid, 0);
             perms.set("Money." + uuid, 10000);
 
-            e.setJoinMessage(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "JOIN " + ChatColor.GRAY + "Welcome, " + ChatColor.UNDERLINE + p.getName() + ChatColor.GRAY + ", to " + ChatColor.GREEN + "" + ChatColor.BOLD + "Variance Factions!");
+            e.setJoinMessage(ChatColor.GRAY + "Welcome, " + ChatColor.UNDERLINE + p.getName() + ChatColor.GRAY + ", to " + ChatColor.DARK_PURPLE + "" + ChatColor.BOLD + "Variance Factions!");
 
         }
 
@@ -398,7 +398,45 @@ public class A extends JavaPlugin implements Listener {
     		
     		if (p.getItemInHand().getType() == Material.DIAMOND_SWORD || p.getItemInHand().getType() == Material.IRON_SWORD || p.getItemInHand().getType() == Material.STONE_SWORD || p.getItemInHand().getType() == Material.WOOD_SWORD || p.getItemInHand().getType() == Material.GOLD_SWORD) {
     		
+    			Random r = new Random();
+    			int randomNum = r.nextInt(100) + 1;
+    			if (randomNum <= 8) {
+    			
+    				
+    			
+    			} else {
+    			
+    				return;
+    			
+    			}
     		
+    		} else if (p.getItemInHand().getType() == Material.DIAMOND_AXE || p.getItemInHand().getType() == Material.IRON_AXE || p.getItemINHand().getType() == Material.STONE_AXE || p.getItemInHand().getType() == Material.WOOD_AXE || p.getItemInHand().getType() == Material.GOLD_AXE) {
+    		
+    			Random r = new Random();
+    			int randomNum = r.nextInt(100) + 1;
+    			if (randomNum <= 8) {
+    			
+    				p.sendMessage(ChatColor.DARK_PURPLE + "" + ChatColor.BOLD + "Crippled! " + ChatColor.GRAY + "You have been crippled by " + damager + ". You ");
+    			
+    			} else {
+    			
+    				return;
+    			
+    			}
+    		
+    		} else if (p.getItemInHand().getType() == Material.BOW) {
+    		
+    			Random r = new Random();
+    			int randomNum = r.nextInt(100) + 1;
+    			if (randomNum <= 8) {
+    			
+    				p.sendMessage(ChatColor.DARK_PURPLE + "" + ChatColor.BOLD + "Flagged! " + ChatColor.GRAY + "You have been flagged by " + damager + ". You take an extra " + ChatColor.DARK_PURPLE + "2" + ChatColor.GRAY + " damage per hit.");
+    			
+    			} else {
+    			
+    				return;
+    			
+    			}
     		
     		}
 
