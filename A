@@ -395,6 +395,12 @@ public class A extends JavaPlugin implements Listener {
                 combatTask.get(damagee).runTaskLater(this, 600);
 
     		}
+    		
+    		if (p.getItemInHand().getType() == Material.DIAMOND_SWORD || p.getItemInHand().getType() == Material.IRON_SWORD || p.getItemInHand().getType() == Material.STONE_SWORD || p.getItemInHand().getType() == Material.WOOD_SWORD || p.getItemInHand().getType() == Material.GOLD_SWORD) {
+    		
+    		
+    		
+    		}
 
     	} else {
     	
